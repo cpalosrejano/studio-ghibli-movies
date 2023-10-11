@@ -19,6 +19,7 @@ class MainViewModel @Inject constructor(
     fun getNotes() = viewModelScope.launch {
         _uiState.value = MainUIState(isLoading = true)
 
+        /*
         try {
             // get the result and send to the UI
             val result = getNotesUseCase().getOrThrow()
@@ -28,8 +29,8 @@ class MainViewModel @Inject constructor(
             // get the exception and send to the UI
             val error = ExceptionManager.getMessage(e)
             _uiState.value = MainUIState(isLoading = false, error = error)
-
         }
+         */
 
     }
 

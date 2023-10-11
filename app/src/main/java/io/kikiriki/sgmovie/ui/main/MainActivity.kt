@@ -1,7 +1,12 @@
 package io.kikiriki.sgmovie.ui.main
 
+import android.os.Build.VERSION.SDK_INT
 import android.os.Bundle
 import androidx.core.view.isVisible
+import coil.ImageLoader
+import coil.decode.GifDecoder
+import coil.decode.ImageDecoderDecoder
+import coil.load
 import dagger.hilt.android.AndroidEntryPoint
 import io.kikiriki.sgmovie.R
 import io.kikiriki.sgmovie.databinding.ActivityMainBinding
@@ -28,17 +33,34 @@ class MainActivity : BaseActivity() {
     }
 
     private fun setupView() {
+
+        // custom image loader to load gif images
+        val imageLoader = ImageLoader.Builder(this)
+            .components {
+                if (SDK_INT >= 28) {
+                    add(ImageDecoderDecoder.Factory())
+                } else {
+                    add(GifDecoder.Factory())
+                }
+            }
+            .build()
+        viewBinding.loading.load(R.drawable.ic_error, imageLoader)
+
+        // click try again
         viewBinding.btnTryAgain.setOnClickListener { viewModel.getNotes() }
+
+        // recycler view adapter and item click
         viewBinding.recyclerView.adapter = adapter
         adapter.onItemClick = { shortToast(R.string.app_name) }
     }
 
     private fun setupObservers() = viewModel.uiState.observe(this) { uiState ->
+
         // loading
         viewBinding.loading.isVisible = uiState.isLoading
-        viewBinding.recyclerView.isVisible = !uiState.isLoading
 
         // items
+        viewBinding.recyclerView.isVisible = !uiState.isLoading
         adapter.submitList(uiState.items)
 
         // error
