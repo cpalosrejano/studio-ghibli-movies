@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Blank Project Template</string>
+
+    <string name="default_error">Ops, something went wrong. Please try again.</string>
+    <string name="default_remote_error">Error connecting with our servers. Please try again.</string>
+    <string name="default_local_error">Error connecting with our database. Please try again.</string>
+    <string name="error_feature_not_implemented">Feature not implemented yet</string>
+
+</resources>
