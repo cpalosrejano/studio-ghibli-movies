@@ -62,3 +62,5 @@ To build this app, I used the following tools / resources:
 * Material Symbol (icons): https://fonts.google.com/icons?icon.platform=web
 
 * Material theme generator: https://m3.material.io/theme-builder#/custom
+
+* Totoro Gifs: https://mott.pe/noticias/estos-gifs-de-totoro-haciendo-ejercicio-te-sacaran-del-sedentarismo/
