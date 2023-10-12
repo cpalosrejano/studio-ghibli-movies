@@ -5,29 +5,29 @@ import io.kikiriki.sgmovie.data.model.domain.Movie
 data class MovieRemote(
     val id: String? = null,
     val title: String? = null,
-    val originalTitleRomanised: String? = null,
+    val original_title_romanised: String? = null,
     val image: String? = null,
-    val movieBanner: String? = null,
+    val movie_banner: String? = null,
     val description: String,
     val director: String? = null,
     val producer: String? = null,
-    val releaseDate: String? = null,
-    val runningTime: String? = null,
-    val rtScore: String? = null,
+    val release_date: String? = null,
+    val running_time: String? = null,
+    val rt_score: String? = null,
 )
 
 fun MovieRemote.toDomain() = Movie(
     id = id.toString(),
     title = title.toString(),
-    originalTitleRomanised = originalTitleRomanised.toString(),
+    originalTitleRomanised = original_title_romanised.toString(),
     image = image.toString(),
-    movieBanner = movieBanner,
+    movieBanner = movie_banner,
     description = description,
     director = director.toString(),
     producer = producer,
-    releaseDate = releaseDate,
-    runningTime = runningTime,
-    rtScore = rtScore.toString()
+    releaseDate = release_date,
+    runningTime = running_time,
+    rtScore = rt_score.toString()
 )
 
 fun List<MovieRemote>.toDomain() : List<Movie> {

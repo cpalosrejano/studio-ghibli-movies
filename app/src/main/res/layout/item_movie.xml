@@ -3,7 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    style="?attr/materialCardViewFilledStyle"
+    style="?attr/materialCardViewElevatedStyle"
+    app:cardElevation="8dp"
     android:layout_height="wrap_content"
     android:layout_width="match_parent"
     android:layout_marginStart="16dp"
@@ -27,7 +28,7 @@
 
         <TextView
             android:id="@+id/lbl_title"
-            android:textAppearance="@style/TextAppearance.Material3.TitleSmall"
+            android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toEndOf="@id/img_image"
@@ -41,8 +42,6 @@
             android:textAppearance="@style/TextAppearance.Material3.BodySmall"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:ellipsize="end"
-            android:maxLines="6"
             app:layout_constraintStart_toStartOf="@id/lbl_title"
             app:layout_constraintTop_toBottomOf="@id/lbl_title"
             app:layout_constraintEnd_toEndOf="parent"
