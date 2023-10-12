@@ -1,18 +1,13 @@
 package io.kikiriki.sgmovie.ui.main
 
-import android.os.Build.VERSION.SDK_INT
 import android.os.Bundle
 import androidx.core.view.isVisible
-import coil.ImageLoader
-import coil.decode.GifDecoder
-import coil.decode.ImageDecoderDecoder
 import coil.load
-import coil.request.ImageRequest
-import coil.transform.RoundedCornersTransformation
 import dagger.hilt.android.AndroidEntryPoint
 import io.kikiriki.sgmovie.R
 import io.kikiriki.sgmovie.data.model.domain.Movie
 import io.kikiriki.sgmovie.databinding.ActivityMainBinding
+import io.kikiriki.sgmovie.framework.coil.CoilUtils
 import io.kikiriki.sgmovie.ui.BaseActivity
 import io.kikiriki.sgmovie.ui.adapter.AdapterMovie
 import io.kikiriki.sgmovie.utils.extension.shortToast
@@ -38,16 +33,7 @@ class MainActivity : BaseActivity() {
     private fun setupView() {
 
         // custom image loader to load gif images
-        val imageLoader = ImageLoader.Builder(this)
-            .components {
-                if (SDK_INT >= 28) {
-                    add(ImageDecoderDecoder.Factory())
-                } else {
-                    add(GifDecoder.Factory())
-                }
-            }
-            .build()
-        viewBinding.loading.load(R.drawable.ic_loading, imageLoader)
+        viewBinding.loading.load(R.drawable.ic_loading, CoilUtils.getImageLoaderGif(this))
 
 
         // recycler view adapter and item click

@@ -4,7 +4,7 @@ import io.kikiriki.sgmovie.data.model.domain.Movie
 import io.kikiriki.sgmovie.data.model.domain.toLocal
 import io.kikiriki.sgmovie.data.model.local.toDomain
 import io.kikiriki.sgmovie.data.model.remote.toDomain
-import io.kikiriki.sgmovie.utils.Repository
+import io.kikiriki.sgmovie.utils.Constants.Repository
 import javax.inject.Inject
 
 class MovieRepositoryImpl @Inject constructor(

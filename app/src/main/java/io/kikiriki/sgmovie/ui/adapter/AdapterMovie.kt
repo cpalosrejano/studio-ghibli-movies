@@ -6,11 +6,12 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
-import coil.transform.CircleCropTransformation
 import coil.transform.RoundedCornersTransformation
 import io.kikiriki.sgmovie.R
 import io.kikiriki.sgmovie.data.model.domain.Movie
 import io.kikiriki.sgmovie.databinding.ItemMovieBinding
+import io.kikiriki.sgmovie.utils.Constants.Coil.CROSSFADE
+import io.kikiriki.sgmovie.utils.Constants.Coil.ROUNDED_CORNERS
 import io.kikiriki.sgmovie.utils.extension.setEllipsizeWithDynamicHeight
 
 class AdapterMovie : ListAdapter<Movie, AdapterMovie.ViewHolderNote>(diffUtil) {
@@ -34,8 +35,8 @@ class AdapterMovie : ListAdapter<Movie, AdapterMovie.ViewHolderNote>(diffUtil) {
         holder.viewBinding.lblDirector.text = item.director
         holder.viewBinding.lblScore.text = context.getString(R.string.movie_list_lbl_score, item.rtScore)
         holder.viewBinding.imgImage.load(item.image) {
-            crossfade(600)
-            transformations(RoundedCornersTransformation(16f))
+            transformations(RoundedCornersTransformation(ROUNDED_CORNERS))
+            crossfade(CROSSFADE)
         }
         holder.viewBinding.imgSave.load(
             if (item.favourite) R.drawable.ic_saved else R.drawable.ic_save
