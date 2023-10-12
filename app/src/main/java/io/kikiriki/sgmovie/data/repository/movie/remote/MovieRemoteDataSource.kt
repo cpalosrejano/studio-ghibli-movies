@@ -8,11 +8,10 @@ import retrofit2.HttpException
 import javax.inject.Inject
 
 class MovieRemoteDataSource @Inject constructor(
-    //private val movieEndpoints: MovieEndpoints
+    private val movieEndpoints: MovieEndpoints
 )  : MovieRepository.RemoteDataSource {
 
     override suspend fun getDetail(movieId: String): Result<MovieRemote> {
-        /*
         val fields = "id,title,original_title_romanised,image,movie_banner,description,director,producer,release_date,running_time,rt_score"
         val limit = 1
         return try {
@@ -22,16 +21,9 @@ class MovieRemoteDataSource @Inject constructor(
             val exception = handleException(failure)
             Result.failure(exception)
         }
-        */
-        return Result.failure(RemoteDataSourceException(
-            code = ExceptionManager.Code.NOT_IMPLEMENTED_YET,
-            message = "Feature not implemented yet",
-            httpCode = null
-        ))
     }
 
     override suspend fun getAll(): Result<List<MovieRemote>> {
-        /*
         val fields = "id,title,original_title_romanised,image,description,director,rt_score"
         val limit = 250
         return try {
@@ -41,12 +33,6 @@ class MovieRemoteDataSource @Inject constructor(
             val exception = handleException(failure)
             Result.failure(exception)
         }
-        */
-        return Result.failure(RemoteDataSourceException(
-            code = ExceptionManager.Code.NOT_IMPLEMENTED_YET,
-            message = "Feature not implemented yet",
-            httpCode = null
-        ))
     }
 
 

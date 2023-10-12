@@ -9,6 +9,7 @@ import coil.load
 import io.kikiriki.sgmovie.R
 import io.kikiriki.sgmovie.data.model.domain.Movie
 import io.kikiriki.sgmovie.databinding.ItemMovieBinding
+import io.kikiriki.sgmovie.utils.extension.setEllipsizeWithDynamicHeight
 
 class AdapterMovie : ListAdapter<Movie, AdapterMovie.ViewHolderNote>(diffUtil) {
 
@@ -26,7 +27,7 @@ class AdapterMovie : ListAdapter<Movie, AdapterMovie.ViewHolderNote>(diffUtil) {
 
         holder.viewBinding.lblTitle.text = item.title
         holder.viewBinding.lblDescription.text = item.description
-        //holder.viewBinding.lblDescription.setEllipsizeWithDynamicHeight()
+        holder.viewBinding.lblDescription.setEllipsizeWithDynamicHeight()
         holder.viewBinding.lblDirector.text = item.director
         holder.viewBinding.lblScore.text = context.getString(R.string.movie_list_lbl_score, item.rtScore)
         holder.viewBinding.imgImage.load(item.image)

@@ -9,7 +9,7 @@ interface MovieEndpoints {
     @Headers(
         "Accept: application/json",
         "Content-Type: application/json")
-    @GET("films?limit=250")
+    @GET("films")
     suspend fun getMovies (
         @Query("limit") limit: Int,
         @Query("fields") fields: String

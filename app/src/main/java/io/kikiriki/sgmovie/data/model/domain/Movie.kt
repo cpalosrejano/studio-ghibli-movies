@@ -13,7 +13,8 @@ data class Movie(
     val producer: String? = null,
     val releaseDate: String? = null,
     val runningTime: String? = null,
-    val rtScore: String
+    val rtScore: String,
+    val favourite: Boolean = false
 )
 
 fun Movie.toLocal() = MovieLocal(

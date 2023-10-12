@@ -9,8 +9,8 @@ fun TextView?.setEllipsizeWithDynamicHeight() {
     val textView = this
     textView.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
         override fun onGlobalLayout() {
-            textView.ellipsize = TextUtils.TruncateAt.END
             textView.maxLines = (textView.height / textView.lineHeight)
+            textView.ellipsize = TextUtils.TruncateAt.END
             textView.viewTreeObserver.removeOnGlobalLayoutListener(this)
         }
     })
