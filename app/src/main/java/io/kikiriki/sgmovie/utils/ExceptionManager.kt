@@ -8,7 +8,15 @@ import io.kikiriki.sgmovie.utils.ExceptionManager.Code.Companion.NOT_IMPLEMENTED
 class ExceptionManager {
 
     class Code { companion object {
-        const val NOT_IMPLEMENTED_YET = 0
+        const val NOT_IMPLEMENTED_YET = -1
+        const val DEFAULT_ERROR = 0
+
+        const val NETWORK_UNAUTHORIZED = 1
+        const val NETWORK_NOT_FOUND = 2
+
+        const val BBDD_CANNOT_GET_FAVORITES = 3
+        const val BBDD_CANNOT_ADD_FAVORITE = 4
+        const val BBDD_CANNOT_DELETE_FAVORITE = 5
     }}
 
     companion object {
@@ -23,6 +31,7 @@ class ExceptionManager {
 
             return when (code) {
 
+                // TODO: declare new error strings for each Code declared above
                 NOT_IMPLEMENTED_YET -> R.string.error_feature_not_implemented
 
                 else -> {
