@@ -1,33 +1,39 @@
 package io.kikiriki.sgmovie.data.model.local
 
+import android.os.Parcelable
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import io.kikiriki.sgmovie.data.model.domain.Movie
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
+@Entity
 data class MovieLocal(
-    val id: String,
+    @PrimaryKey val id: String,
     val title: String,
-    val originalTitleRomanised: String,
+    val original_title_romanised: String,
     val image: String,
-    val movieBanner: String? = null,
+    val movie_banner: String? = null,
     val description: String,
     val director: String,
     val producer: String? = null,
-    val releaseDate: String? = null,
-    val runningTime: String? = null,
-    val rtScore: String
-)
+    val release_date: String? = null,
+    val running_time: String? = null,
+    val rt_score: String
+): Parcelable
 
 fun MovieLocal.toDomain() = Movie(
     id = id,
     title = title,
-    originalTitleRomanised = originalTitleRomanised,
+    originalTitleRomanised = original_title_romanised,
     image = image,
-    movieBanner = movieBanner,
+    movieBanner = movie_banner,
     description = description,
     director = director,
     producer = producer,
-    releaseDate = releaseDate,
-    runningTime = runningTime,
-    rtScore = rtScore
+    releaseDate = release_date,
+    runningTime = running_time,
+    rtScore = rt_score
 )
 
 fun List<MovieLocal>.toDomain() : List<Movie> {

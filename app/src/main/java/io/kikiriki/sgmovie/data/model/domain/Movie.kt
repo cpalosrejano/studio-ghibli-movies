@@ -14,20 +14,20 @@ data class Movie(
     val releaseDate: String? = null,
     val runningTime: String? = null,
     val rtScore: String,
-    val favourite: Boolean = false
+    var favourite: Boolean = false
 )
 
 fun Movie.toLocal() = MovieLocal(
     id = id,
     title = title,
-    originalTitleRomanised = originalTitleRomanised,
+    original_title_romanised = originalTitleRomanised,
     image = image,
-    movieBanner = movieBanner,
+    movie_banner = movieBanner,
     description = description,
     director = director,
     producer = producer,
-    releaseDate = releaseDate,
-    runningTime = runningTime,
-    rtScore = rtScore
+    release_date = releaseDate,
+    running_time = runningTime,
+    rt_score = rtScore
 )
 

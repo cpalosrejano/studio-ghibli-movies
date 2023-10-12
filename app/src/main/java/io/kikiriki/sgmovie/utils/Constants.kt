@@ -5,3 +5,4 @@ object Repository {
     const val MOCK = false
     const val URL = "https://ghibliapi.vercel.app/"
 }
+
