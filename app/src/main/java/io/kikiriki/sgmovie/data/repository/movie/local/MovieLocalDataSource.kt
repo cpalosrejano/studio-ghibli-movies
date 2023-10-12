@@ -7,11 +7,10 @@ import io.kikiriki.sgmovie.utils.ExceptionManager
 import javax.inject.Inject
 
 class MovieLocalDataSource @Inject constructor(
-    //private val movieDao: MovieDao
+    private val movieDao: MovieDao
 )  : MovieRepository.LocalDataSource {
 
     override suspend fun getFavorites(): Result<List<MovieLocal>> {
-        /*
         return try {
             val data = movieDao.getFavorites()
             Result.success(data)
@@ -21,15 +20,9 @@ class MovieLocalDataSource @Inject constructor(
                 message = failure.localizedMessage.orEmpty()
             ))
         }
-        */
-        return Result.failure(LocalDataSourceException(
-            code = ExceptionManager.Code.NOT_IMPLEMENTED_YET,
-            message = "Feature not implemented yet"
-        ))
     }
 
     override suspend fun addFavorite(movie: MovieLocal): Result<Boolean> {
-        /*
         return try {
             movieDao.addFavorite(movie)
             Result.success(true)
@@ -39,15 +32,9 @@ class MovieLocalDataSource @Inject constructor(
                 message = failure.localizedMessage.orEmpty()
             ))
         }
-        */
-        return Result.failure(LocalDataSourceException(
-            code = ExceptionManager.Code.NOT_IMPLEMENTED_YET,
-            message = "Feature not implemented yet"
-        ))
     }
 
     override suspend fun deleteFavorite(movie: MovieLocal): Result<Boolean> {
-        /*
         return try {
             val rowsAffected = movieDao.deleteFavorite(movie)
             Result.success((rowsAffected == 1))
@@ -57,11 +44,6 @@ class MovieLocalDataSource @Inject constructor(
                 message = failure.localizedMessage.orEmpty()
             ))
         }
-        */
-        return Result.failure(LocalDataSourceException(
-            code = ExceptionManager.Code.NOT_IMPLEMENTED_YET,
-            message = "Feature not implemented yet"
-        ))
     }
 
 }

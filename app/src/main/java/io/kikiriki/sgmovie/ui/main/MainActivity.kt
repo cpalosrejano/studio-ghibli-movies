@@ -7,8 +7,11 @@ import coil.ImageLoader
 import coil.decode.GifDecoder
 import coil.decode.ImageDecoderDecoder
 import coil.load
+import coil.request.ImageRequest
+import coil.transform.RoundedCornersTransformation
 import dagger.hilt.android.AndroidEntryPoint
 import io.kikiriki.sgmovie.R
+import io.kikiriki.sgmovie.data.model.domain.Movie
 import io.kikiriki.sgmovie.databinding.ActivityMainBinding
 import io.kikiriki.sgmovie.ui.BaseActivity
 import io.kikiriki.sgmovie.ui.adapter.AdapterMovie
@@ -29,7 +32,7 @@ class MainActivity : BaseActivity() {
         setupObservers()
         setupView()
 
-        viewModel.getNotes()
+        viewModel.getMovies()
     }
 
     private fun setupView() {
@@ -44,28 +47,37 @@ class MainActivity : BaseActivity() {
                 }
             }
             .build()
-        viewBinding.loading.load(R.drawable.ic_error, imageLoader)
+        viewBinding.loading.load(R.drawable.ic_loading, imageLoader)
 
-        // click try again
-        viewBinding.btnTryAgain.setOnClickListener { viewModel.getNotes() }
 
         // recycler view adapter and item click
         viewBinding.recyclerView.adapter = adapter
         adapter.onItemClick = { shortToast(R.string.app_name) }
+        adapter.onItemSaveClick = { position, movie -> onMovieSaveClick(position, movie) }
     }
 
     private fun setupObservers() = viewModel.uiState.observe(this) { uiState ->
 
-        // loading
-        viewBinding.loading.isVisible = uiState.isLoading
+        when(uiState) {
+            // when movies has been fetched from API
+            is MainUIState.OnMoviesReady -> {
+                adapter.submitList(uiState.items)
+                viewBinding.recyclerView.isVisible = uiState.items.isNotEmpty()
+            }
+            // when movie has been updated in our database
+            is MainUIState.OnMovieUpdated -> {
+                adapter.notifyItemChanged(uiState.position)
+            }
+        }
 
-        // items
-        viewBinding.recyclerView.isVisible = !uiState.isLoading
-        adapter.submitList(uiState.items)
-
-        // error
+        // error and loading
         uiState.error?.let { toast(it) }
+        viewBinding.loading.isVisible = uiState.isLoading
+    }
 
+    private fun onMovieSaveClick(listPosition: Int, movie: Movie) {
+        movie.favourite = !movie.favourite
+        viewModel.updateMovieFavourite(listPosition, movie)
     }
 
 

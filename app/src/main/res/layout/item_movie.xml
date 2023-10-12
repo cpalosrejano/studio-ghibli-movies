@@ -26,6 +26,18 @@
             tools:src="@drawable/img_title"
             android:contentDescription="@string/app_name" />
 
+        <ImageView
+            android:id="@+id/img_save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/app_name"
+            android:paddingStart="8dp"
+            android:paddingBottom="4dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:src="@drawable/ic_save"
+            tools:ignore="RtlSymmetry" />
+
         <TextView
             android:id="@+id/lbl_title"
             android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
@@ -33,7 +45,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintStart_toEndOf="@id/img_image"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/img_save"
             android:layout_marginStart="12dp"
             tools:text="Gake no ue no Ponyo"/>
 

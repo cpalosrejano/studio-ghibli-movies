@@ -6,6 +6,8 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
+import coil.transform.CircleCropTransformation
+import coil.transform.RoundedCornersTransformation
 import io.kikiriki.sgmovie.R
 import io.kikiriki.sgmovie.data.model.domain.Movie
 import io.kikiriki.sgmovie.databinding.ItemMovieBinding
@@ -14,6 +16,7 @@ import io.kikiriki.sgmovie.utils.extension.setEllipsizeWithDynamicHeight
 class AdapterMovie : ListAdapter<Movie, AdapterMovie.ViewHolderNote>(diffUtil) {
 
     var onItemClick: ((Movie) -> Unit)? = null
+    var onItemSaveClick: ((Int, Movie) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) : ViewHolderNote {
         val inflater = LayoutInflater.from(parent.context)
@@ -30,8 +33,15 @@ class AdapterMovie : ListAdapter<Movie, AdapterMovie.ViewHolderNote>(diffUtil) {
         holder.viewBinding.lblDescription.setEllipsizeWithDynamicHeight()
         holder.viewBinding.lblDirector.text = item.director
         holder.viewBinding.lblScore.text = context.getString(R.string.movie_list_lbl_score, item.rtScore)
-        holder.viewBinding.imgImage.load(item.image)
+        holder.viewBinding.imgImage.load(item.image) {
+            crossfade(600)
+            transformations(RoundedCornersTransformation(16f))
+        }
+        holder.viewBinding.imgSave.load(
+            if (item.favourite) R.drawable.ic_saved else R.drawable.ic_save
+        )
 
+        holder.viewBinding.imgSave.setOnClickListener { onItemSaveClick?.invoke(position, item) }
         holder.viewBinding.root.setOnClickListener { onItemClick?.invoke(item) }
     }
 
