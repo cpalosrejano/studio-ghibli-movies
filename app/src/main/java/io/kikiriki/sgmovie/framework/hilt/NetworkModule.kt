@@ -6,7 +6,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import io.kikiriki.sgmovie.data.repository.movie.remote.MovieEndpoints
-import io.kikiriki.sgmovie.utils.Repository
+import io.kikiriki.sgmovie.utils.Constants.Repository.URL
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -37,7 +37,7 @@ object NetworkModule {
     fun provideProductEndpoints(okHttp: OkHttpClient) : MovieEndpoints {
         return Retrofit.Builder()
             .addConverterFactory(MoshiConverterFactory.create().asLenient())
-            .baseUrl(Repository.URL)
+            .baseUrl(URL)
             .client(okHttp).build()
             .create(MovieEndpoints::class.java)
     }
