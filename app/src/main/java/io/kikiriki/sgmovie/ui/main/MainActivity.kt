@@ -11,7 +11,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import io.kikiriki.sgmovie.R
 import io.kikiriki.sgmovie.databinding.ActivityMainBinding
 import io.kikiriki.sgmovie.ui.BaseActivity
-import io.kikiriki.sgmovie.ui.adapter.AdapterNote
+import io.kikiriki.sgmovie.ui.adapter.AdapterMovie
 import io.kikiriki.sgmovie.utils.extension.shortToast
 import io.kikiriki.sgmovie.utils.extension.toast
 import javax.inject.Inject
@@ -21,7 +21,7 @@ class MainActivity : BaseActivity() {
 
     private val viewBinding by lazy { ActivityMainBinding.inflate(layoutInflater) }
     @Inject lateinit var viewModel: MainViewModel
-    private val adapter = AdapterNote()
+    private val adapter = AdapterMovie()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

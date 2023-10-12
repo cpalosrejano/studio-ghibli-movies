@@ -1,5 +1,7 @@
 <resources>
-    <string name="app_name">Blank Project Template</string>
+    <string name="app_name">Studio Ghibli Movies</string>
+
+    <string name="movie_list_lbl_score">Score %1$s</string>
 
     <string name="default_error">Ops, something went wrong. Please try again.</string>
     <string name="default_remote_error">Error connecting with our servers. Please try again.</string>
