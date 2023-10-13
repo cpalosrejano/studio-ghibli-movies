@@ -3,9 +3,13 @@
 
     <string name="movie_list_lbl_score">Score %1$s</string>
 
-    <string name="default_error">Ops, something went wrong. Please try again.</string>
-    <string name="default_remote_error">Error connecting with our servers. Please try again.</string>
-    <string name="default_local_error">Error connecting with our database. Please try again.</string>
+    <string name="view_empty_lbl_empty">There is nothing here</string>
+    <string name="view_loading_lbl_loading">Loading, please wait</string>
+    <string name="view_error_btn_try_again">Try again</string>
+
+    <string name="default_error">Ops, something went wrong</string>
+    <string name="default_remote_error">Error connecting with our servers</string>
+    <string name="default_local_error">Error connecting with our database</string>
     <string name="error_feature_not_implemented">Feature not implemented yet</string>
 
 </resources>

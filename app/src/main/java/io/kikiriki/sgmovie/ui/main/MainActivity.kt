@@ -1,6 +1,7 @@
 package io.kikiriki.sgmovie.ui.main
 
 import android.os.Bundle
+import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import coil.load
 import dagger.hilt.android.AndroidEntryPoint
@@ -27,14 +28,19 @@ class MainActivity : BaseActivity() {
         setupObservers()
         setupView()
 
-        viewModel.getMovies()
+        requestMovies()
     }
 
     private fun setupView() {
 
-        // custom image loader to load gif images
-        viewBinding.loading.load(R.drawable.ic_loading, CoilUtils.getImageLoaderGif(this))
+        // load default animation for error, loading, or empty state
+        val imageLoaderGif = CoilUtils.getImageLoaderGif(this)
+        viewBinding.loadingView.imgLoading.load(R.drawable.gif_loading, imageLoaderGif)
+        viewBinding.emptyView.imgEmpty.load(R.drawable.gif_empty, imageLoaderGif)
+        viewBinding.errorView.imgError.load(R.drawable.gif_error, imageLoaderGif)
 
+        // retry request on fails
+        viewBinding.errorView.btnRetry.setOnClickListener { requestMovies() }
 
         // recycler view adapter and item click
         viewBinding.recyclerView.adapter = adapter
@@ -49,6 +55,7 @@ class MainActivity : BaseActivity() {
             is MainUIState.OnMoviesReady -> {
                 adapter.submitList(uiState.items)
                 viewBinding.recyclerView.isVisible = uiState.items.isNotEmpty()
+                viewBinding.emptyView.root.isGone = uiState.items.isNotEmpty()
             }
             // when movie has been updated in our database
             is MainUIState.OnMovieUpdated -> {
@@ -56,9 +63,16 @@ class MainActivity : BaseActivity() {
             }
         }
 
-        // error and loading
-        uiState.error?.let { toast(it) }
-        viewBinding.loading.isVisible = uiState.isLoading
+        // error view
+        viewBinding.errorView.root.isGone = uiState.error == null
+        uiState.error?.let { viewBinding.errorView.lblMessage.setText(uiState.error) }
+
+        // loading view
+        viewBinding.loadingView.root.isVisible = uiState.isLoading
+    }
+
+    private fun requestMovies() {
+        viewModel.getMovies()
     }
 
     private fun onMovieSaveClick(listPosition: Int, movie: Movie) {
