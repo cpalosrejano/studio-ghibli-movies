@@ -1,7 +1,10 @@
 package io.kikiriki.sgmovie.data.model.domain
 
+import android.os.Parcelable
 import io.kikiriki.sgmovie.data.model.local.MovieLocal
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class Movie(
     val id: String,
     val title: String,
@@ -15,7 +18,7 @@ data class Movie(
     val runningTime: String? = null,
     val rtScore: String,
     var favourite: Boolean = false
-)
+) : Parcelable
 
 fun Movie.toLocal() = MovieLocal(
     id = id,

@@ -1,9 +1,12 @@
 package io.kikiriki.sgmovie.ui.main
 
 import android.os.Bundle
+import android.view.View
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import coil.load
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import dagger.hilt.android.AndroidEntryPoint
 import io.kikiriki.sgmovie.R
 import io.kikiriki.sgmovie.data.model.domain.Movie
@@ -11,8 +14,7 @@ import io.kikiriki.sgmovie.databinding.ActivityMainBinding
 import io.kikiriki.sgmovie.framework.coil.CoilUtils
 import io.kikiriki.sgmovie.ui.BaseActivity
 import io.kikiriki.sgmovie.ui.adapter.AdapterMovie
-import io.kikiriki.sgmovie.utils.extension.shortToast
-import io.kikiriki.sgmovie.utils.extension.toast
+import io.kikiriki.sgmovie.ui.movie_detail.MovieDetailFragment
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -44,7 +46,7 @@ class MainActivity : BaseActivity() {
 
         // recycler view adapter and item click
         viewBinding.recyclerView.adapter = adapter
-        adapter.onItemClick = { shortToast(R.string.app_name) }
+        adapter.onItemClick = { position, movie -> openMovieDetail(position, movie) }
         adapter.onItemSaveClick = { position, movie -> onMovieSaveClick(position, movie) }
     }
 
@@ -78,6 +80,13 @@ class MainActivity : BaseActivity() {
     private fun onMovieSaveClick(listPosition: Int, movie: Movie) {
         movie.favourite = !movie.favourite
         viewModel.updateMovieFavourite(listPosition, movie)
+    }
+
+    private fun openMovieDetail(listPosition: Int, movie: Movie) {
+        val dialog = MovieDetailFragment.newInstance(listPosition, movie)
+        dialog.show(supportFragmentManager, MovieDetailFragment::class.simpleName)
+        dialog.onMovieFavouriteClick = { onMovieSaveClick(listPosition, movie) }
+
     }
 
 

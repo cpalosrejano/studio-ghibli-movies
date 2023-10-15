@@ -12,11 +12,10 @@ import io.kikiriki.sgmovie.data.model.domain.Movie
 import io.kikiriki.sgmovie.databinding.ItemMovieBinding
 import io.kikiriki.sgmovie.utils.Constants.Coil.CROSSFADE
 import io.kikiriki.sgmovie.utils.Constants.Coil.ROUNDED_CORNERS
-import io.kikiriki.sgmovie.utils.extension.setEllipsizeWithDynamicHeight
 
 class AdapterMovie : ListAdapter<Movie, AdapterMovie.ViewHolderNote>(diffUtil) {
 
-    var onItemClick: ((Movie) -> Unit)? = null
+    var onItemClick: ((Int, Movie) -> Unit)? = null
     var onItemSaveClick: ((Int, Movie) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) : ViewHolderNote {
@@ -26,12 +25,10 @@ class AdapterMovie : ListAdapter<Movie, AdapterMovie.ViewHolderNote>(diffUtil) {
     }
 
     override fun onBindViewHolder(holder: ViewHolderNote, position: Int) {
-        val context = holder.viewBinding.root.context
         val item = getItem(position)
 
         holder.viewBinding.lblTitle.text = item.title
         holder.viewBinding.lblDescription.text = item.description
-        holder.viewBinding.lblScore.text = context.getString(R.string.movie_list_lbl_score, item.rtScore)
         holder.viewBinding.imgImage.load(item.image) {
             transformations(RoundedCornersTransformation(ROUNDED_CORNERS))
             crossfade(CROSSFADE)
@@ -41,7 +38,7 @@ class AdapterMovie : ListAdapter<Movie, AdapterMovie.ViewHolderNote>(diffUtil) {
         )
 
         holder.viewBinding.imgSave.setOnClickListener { onItemSaveClick?.invoke(position, item) }
-        holder.viewBinding.root.setOnClickListener { onItemClick?.invoke(item) }
+        holder.viewBinding.root.setOnClickListener { onItemClick?.invoke(position, item) }
     }
 
     class ViewHolderNote(val viewBinding: ItemMovieBinding) : RecyclerView.ViewHolder(viewBinding.root)

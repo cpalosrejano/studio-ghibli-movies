@@ -24,7 +24,7 @@ class MovieRemoteDataSource @Inject constructor(
     }
 
     override suspend fun getAll(): Result<List<MovieRemote>> {
-        val fields = "id,title,original_title_romanised,image,description,director,rt_score"
+        val fields = "id,title,original_title_romanised,image,movie_banner,description,director,producer,release_date,running_time,rt_score"
         val limit = 250
         return try {
             val result = movieEndpoints.getMovies(limit = limit, fields = fields)
