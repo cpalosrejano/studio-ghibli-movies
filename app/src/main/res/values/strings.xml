@@ -1,7 +1,9 @@
 <resources>
     <string name="app_name">Studio Ghibli Movies</string>
 
-    <string name="movie_list_lbl_score">Score %1$s</string>
+    <string name="movie_detail_lbl_score">%1$s %%</string>
+    <string name="movie_detail_lbl_running_time">%1$s min</string>
+    <string name="movie_detail_lbl_favourite">Favourite</string>
 
     <string name="view_empty_lbl_empty">There is nothing here</string>
     <string name="view_loading_lbl_loading">Loading, please wait</string>
