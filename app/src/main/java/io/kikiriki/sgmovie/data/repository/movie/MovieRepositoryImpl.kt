@@ -5,6 +5,11 @@ import io.kikiriki.sgmovie.data.model.domain.toLocal
 import io.kikiriki.sgmovie.data.model.local.toDomain
 import io.kikiriki.sgmovie.data.model.remote.toDomain
 import io.kikiriki.sgmovie.utils.Constants.Repository
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 class MovieRepositoryImpl @Inject constructor(
@@ -27,17 +32,22 @@ class MovieRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getDetail(movieId: String): Result<Movie> {
+    override fun getFavoritesFlow(): Flow<Result<List<Movie>>> = flow {
         if (Repository.MOCK) {
-            return mock.getDetail(movieId)
-        }
+            mock.getFavoritesFlow()
+                .onEach { value ->  emit(value)}
+                .catch { exception -> emit(Result.failure(exception))}
+                .collect()
 
-        return try {
-            val result = remote.getDetail(movieId).getOrThrow()
-            val data = result.toDomain()
-            Result.success(data)
-        } catch (failure: Exception) {
-            Result.failure(failure)
+        } else {
+            local.getFavoritesFlow()
+                .onEach { value ->
+                    val localResult = value.getOrThrow()
+                    val data = localResult.toDomain()
+                    emit(Result.success(data))
+                }
+                .catch { exception -> emit(Result.failure(exception)) }
+                .collect()
         }
     }
 

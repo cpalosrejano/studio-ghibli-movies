@@ -1,6 +1,5 @@
 package io.kikiriki.sgmovie.domain.movie
 
-import androidx.constraintlayout.utils.widget.MockView
 import io.kikiriki.sgmovie.data.model.domain.Movie
 import io.kikiriki.sgmovie.data.repository.movie.MovieRepository
 import javax.inject.Inject

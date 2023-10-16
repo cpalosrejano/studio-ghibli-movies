@@ -1,10 +1,10 @@
 package io.kikiriki.sgmovie.data.repository.movie.mock
 
 import io.kikiriki.sgmovie.data.model.domain.Movie
-import io.kikiriki.sgmovie.data.model.remote.RemoteDataSourceException
 import io.kikiriki.sgmovie.data.repository.movie.MovieRepository
-import io.kikiriki.sgmovie.utils.ExceptionManager
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 import javax.inject.Inject
 
 class MovieMockDataSource @Inject constructor()  : MovieRepository.MockDataSource {
@@ -69,21 +69,8 @@ class MovieMockDataSource @Inject constructor()  : MovieRepository.MockDataSourc
         return Result.success(movies)
     }
 
-    override suspend fun getDetail(movieId: String): Result<Movie> {
-        delay(1100)
-
-        val movie = movies.find { it.id == movieId }
-        return if (movie != null) {
-            Result.success(movie)
-        } else {
-            Result.failure(
-                RemoteDataSourceException(
-                    code = ExceptionManager.Code.NETWORK_NOT_FOUND,
-                    message = "Resource not found",
-                    httpCode = 404
-                )
-            )
-        }
+    override fun getFavoritesFlow(): Flow<Result<List<Movie>>> {
+        return flowOf(Result.success(favorites))
     }
 
     override suspend fun getFavorites(): Result<List<Movie>> {

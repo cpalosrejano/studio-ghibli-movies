@@ -4,7 +4,7 @@ import io.kikiriki.sgmovie.data.model.domain.Movie
 import io.kikiriki.sgmovie.data.repository.movie.MovieRepository
 import javax.inject.Inject
 
-class UpdateMovieFavouriteUseCase @Inject constructor(
+class UpdateMovieUseCase @Inject constructor(
     private val movieRepository: MovieRepository
 ) {
 

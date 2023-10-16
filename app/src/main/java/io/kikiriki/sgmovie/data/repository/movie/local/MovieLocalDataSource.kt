@@ -4,11 +4,32 @@ import io.kikiriki.sgmovie.data.model.local.LocalDataSourceException
 import io.kikiriki.sgmovie.data.model.local.MovieLocal
 import io.kikiriki.sgmovie.data.repository.movie.MovieRepository
 import io.kikiriki.sgmovie.utils.ExceptionManager
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 class MovieLocalDataSource @Inject constructor(
     private val movieDao: MovieDao
 )  : MovieRepository.LocalDataSource {
+
+    override fun getFavoritesFlow(): Flow<Result<List<MovieLocal>>> = flow {
+        try {
+            movieDao.getFavoritesFlow()
+                .onEach { value -> emit(Result.success(value)) }
+                .catch { e -> emit(Result.failure(e)) }
+                .collect()
+        } catch (failure: Exception) {
+            emit(
+                Result.failure(LocalDataSourceException(
+                    code = ExceptionManager.Code.BBDD_CANNOT_GET_FAVORITES,
+                    message = failure.localizedMessage.orEmpty()
+                ))
+            )
+        }
+    }
 
     override suspend fun getFavorites(): Result<List<MovieLocal>> {
         return try {
