@@ -1,6 +1,8 @@
 package io.kikiriki.sgmovie.ui.main
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import androidx.core.view.isVisible
 import coil.load
 import dagger.hilt.android.AndroidEntryPoint
@@ -29,7 +31,22 @@ class MainActivity : BaseActivity() {
         viewModel.getMovies()
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.main, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.action_sort) {
+            openSortDialog()
+            return true
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
     private fun setupView() {
+
+        setSupportActionBar(viewBinding.toolbar)
 
         // load default animation for error, loading, or empty state
         val imageLoaderGif = CoilUtils.getImageLoaderGif(this)
@@ -73,6 +90,10 @@ class MainActivity : BaseActivity() {
         MovieDetailFragment
             .newInstance(movie)
             .show(supportFragmentManager, MovieDetailFragment::class.simpleName)
+    }
+
+    private fun openSortDialog() {
+        // TODO:
     }
 
 }
