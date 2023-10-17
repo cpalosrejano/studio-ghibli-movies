@@ -15,53 +15,44 @@ class MovieLocalDataSource @Inject constructor(
     private val movieDao: MovieDao
 )  : MovieRepository.LocalDataSource {
 
-    override fun getFavoritesFlow(): Flow<Result<List<MovieLocal>>> = flow {
-        try {
-            movieDao.getFavoritesFlow()
-                .onEach { value -> emit(Result.success(value)) }
-                .catch { e -> emit(Result.failure(e)) }
-                .collect()
-        } catch (failure: Exception) {
-            emit(
-                Result.failure(LocalDataSourceException(
-                    code = ExceptionManager.Code.BBDD_CANNOT_GET_FAVORITES,
-                    message = failure.localizedMessage.orEmpty()
-                ))
-            )
-        }
+    override fun get(): Flow<List<MovieLocal>> = flow {
+        movieDao.getAll()
+            .onEach { emit(it) }
+            .catch {
+                throw LocalDataSourceException(
+                    ExceptionManager.Code.BBDD_CANNOT_GET_MOVIES,
+                    "BBDD_CANNOT_GET_MOVIES"
+                )
+            }
+            .collect()
     }
 
-    override suspend fun getFavorites(): Result<List<MovieLocal>> {
+    override suspend fun insert(movies: List<MovieLocal>): Result<Boolean> {
         return try {
-            val data = movieDao.getFavorites()
-            Result.success(data)
-        } catch (failure: Exception) {
-            Result.failure(LocalDataSourceException(
-                code = ExceptionManager.Code.BBDD_CANNOT_GET_FAVORITES,
-                message = failure.localizedMessage.orEmpty()
-            ))
-        }
-    }
-
-    override suspend fun addFavorite(movie: MovieLocal): Result<Boolean> {
-        return try {
-            movieDao.addFavorite(movie)
+            // get favourites and set to new list
+            val favourites = movieDao.getFavourites()
+            movies.forEach { newMovie ->
+                newMovie.favourite = favourites.find { it.id == newMovie.id }?.favourite ?: false
+            }
+            // insert new data with old favourites movies
+            movieDao.insert(movies)
             Result.success(true)
+
         } catch (failure: Exception) {
             Result.failure(LocalDataSourceException(
-                code = ExceptionManager.Code.BBDD_CANNOT_ADD_FAVORITE,
+                code = ExceptionManager.Code.BBDD_CANNOT_INSERT_MOVIES,
                 message = failure.localizedMessage.orEmpty()
             ))
         }
     }
 
-    override suspend fun deleteFavorite(movie: MovieLocal): Result<Boolean> {
+    override suspend fun update(movie: MovieLocal): Result<Boolean> {
         return try {
-            val rowsAffected = movieDao.deleteFavorite(movie)
-            Result.success((rowsAffected == 1))
+            val value = movieDao.updateFavourite(movie) == 1
+            Result.success(value)
         } catch (failure: Exception) {
             Result.failure(LocalDataSourceException(
-                code = ExceptionManager.Code.BBDD_CANNOT_DELETE_FAVORITE,
+                code = ExceptionManager.Code.BBDD_CANNOT_UPDATE_MOVIE,
                 message = failure.localizedMessage.orEmpty()
             ))
         }

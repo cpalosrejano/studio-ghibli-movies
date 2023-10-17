@@ -8,40 +8,38 @@ import io.kikiriki.sgmovie.data.model.domain.Movie
 import io.kikiriki.sgmovie.domain.movie.GetMoviesUseCase
 import io.kikiriki.sgmovie.domain.movie.UpdateMovieUseCase
 import io.kikiriki.sgmovie.utils.ExceptionManager
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class MainViewModel @Inject constructor(
     private val getMoviesUseCase: GetMoviesUseCase,
-    private val updateMovieUseCase: UpdateMovieUseCase
+    private val updateMovieUseCase: UpdateMovieUseCase,
 ) : ViewModel() {
 
     private val _uiState: MutableLiveData<MainUIState> = MutableLiveData(MainUIState())
     val uiState: LiveData<MainUIState> = _uiState
 
     fun getMovies() = viewModelScope.launch {
-        _uiState.value = MainUIState(isLoading = true)
+        _uiState.postValue(MainUIState(isLoading = true))
 
-        try {
-            // get the result and send to the UI
-            val result = getMoviesUseCase().getOrThrow()
-            _uiState.value = MainUIState.OnMoviesReady(items = result)
-
-        } catch (e: Exception) {
-            // get the exception and send to the UI
-            val error = ExceptionManager.getMessage(e)
-            _uiState.value = MainUIState(error = error)
-        }
-
-
+        getMoviesUseCase()
+            .onEach {
+                _uiState.value = (MainUIState(items = it))
+            }
+            .catch {
+                val error = ExceptionManager.getMessage(it)
+                _uiState.value = MainUIState(error = error)
+            }
+            .collect()
     }
 
-    fun updateMovieFavourite(position: Int, movie: Movie) = viewModelScope.launch {
+    fun updateMovie(movie: Movie) = viewModelScope.launch {
         try {
-            // get the result and send to the UI
-            val result = updateMovieUseCase(movie).getOrThrow()
-            _uiState.value = MainUIState.OnMovieUpdated(position, movie)
-
+            val newMovieStatus = movie.copy(favourite = !movie.favourite)
+            updateMovieUseCase(newMovieStatus).getOrThrow()
         } catch (e: Exception) {
             // get the exception and send to the UI
             val error = ExceptionManager.getMessage(e)

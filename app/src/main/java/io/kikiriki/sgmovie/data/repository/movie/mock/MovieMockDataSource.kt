@@ -8,7 +8,6 @@ import kotlinx.coroutines.flow.flowOf
 import javax.inject.Inject
 
 class MovieMockDataSource @Inject constructor()  : MovieRepository.MockDataSource {
-    private val favorites = mutableListOf<Movie>()
     private val movies = mutableListOf(
         Movie(
             id = "dc2e6bd1-8156-4886-adff-b39e6043af0c",
@@ -21,7 +20,8 @@ class MovieMockDataSource @Inject constructor()  : MovieRepository.MockDataSourc
             producer =  "Toshio Suzuki",
             releaseDate =  "2001",
             runningTime =  "124",
-            rtScore =  "97"
+            rtScore =  "97",
+            favourite = true
         ),
         Movie(
             id =  "0440483e-ca0e-4120-8c50-4c8cd9b965d6",
@@ -34,7 +34,8 @@ class MovieMockDataSource @Inject constructor()  : MovieRepository.MockDataSourc
             producer =  "Toshio Suzuki",
             releaseDate =  "1997",
             runningTime =  "134",
-            rtScore =  "92"
+            rtScore =  "92",
+            favourite = true
         ),
         Movie(
             id =  "58611129-2dbc-4a81-a72f-77ddfc1b1b49",
@@ -47,7 +48,8 @@ class MovieMockDataSource @Inject constructor()  : MovieRepository.MockDataSourc
             producer =  "Hayao Miyazaki",
             releaseDate =  "1988",
             runningTime =  "86",
-            rtScore =  "93"
+            rtScore =  "93",
+            favourite = false
         ),
         Movie(
             id =  "758bf02e-3122-46e0-884e-67cf83df1786",
@@ -60,32 +62,22 @@ class MovieMockDataSource @Inject constructor()  : MovieRepository.MockDataSourc
             producer =  "Toshio Suzuki",
             releaseDate =  "2008",
             runningTime =  "100",
-            rtScore =  "92"
+            rtScore =  "92",
+            favourite = true
         )
     )
 
-    override suspend fun getAll(): Result<List<Movie>> {
-        delay(1600)
-        return Result.success(movies)
+    override suspend fun get(): Flow<List<Movie>> {
+        delay(1000)
+        return flowOf(movies)
     }
 
-    override fun getFavoritesFlow(): Flow<Result<List<Movie>>> {
-        return flowOf(Result.success(favorites))
-    }
-
-    override suspend fun getFavorites(): Result<List<Movie>> {
-        delay(700)
-        return Result.success(favorites)
-    }
-
-    override suspend fun addFavorite(movie: Movie): Result<Boolean> {
-        delay(700)
-        return Result.success(favorites.add(movie))
-    }
-
-    override suspend fun deleteFavorite(movie: Movie): Result<Boolean> {
-        delay(700)
-        return Result.success(favorites.remove(movie))
+    override suspend fun update(movie: Movie): Result<Boolean> {
+        delay(1000)
+        val index = movies.indexOf(movie)
+        movies.remove(movie)
+        movies.add(index, movie)
+        return Result.success(true)
     }
 
 }

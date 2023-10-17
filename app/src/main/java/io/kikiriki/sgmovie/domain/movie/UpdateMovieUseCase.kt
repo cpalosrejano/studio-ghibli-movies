@@ -9,11 +9,7 @@ class UpdateMovieUseCase @Inject constructor(
 ) {
 
     suspend operator fun invoke(movie: Movie) : Result<Boolean> {
-        return if (movie.favourite) {
-            movieRepository.addFavorite(movie)
-        } else {
-            movieRepository.deleteFavorite(movie)
-        }
+        return movieRepository.update(movie)
     }
 
 }

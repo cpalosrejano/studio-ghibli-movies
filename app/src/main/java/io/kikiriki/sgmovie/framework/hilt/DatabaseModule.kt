@@ -14,9 +14,14 @@ import io.kikiriki.sgmovie.framework.room.AppDatabase
 @InstallIn(SingletonComponent::class)
 object DatabaseModule {
 
+    private lateinit var database: AppDatabase
+
     @Provides
     fun provideDatabase(@ApplicationContext context: Context) : AppDatabase {
-        return Room.databaseBuilder(context, AppDatabase::class.java, "sgmovie-database").build()
+        if (! this::database.isInitialized) {
+            database = Room.databaseBuilder(context, AppDatabase::class.java, "sgmovie-database").build()
+        }
+        return database
     }
 
     @Provides
