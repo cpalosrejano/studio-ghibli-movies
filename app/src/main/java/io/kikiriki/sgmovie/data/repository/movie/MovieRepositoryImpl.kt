@@ -5,6 +5,11 @@ import io.kikiriki.sgmovie.data.model.domain.toLocal
 import io.kikiriki.sgmovie.data.model.local.toDomain
 import io.kikiriki.sgmovie.data.model.remote.toDomain
 import io.kikiriki.sgmovie.utils.Constants.Repository
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 class MovieRepositoryImpl @Inject constructor(
@@ -13,70 +18,35 @@ class MovieRepositoryImpl @Inject constructor(
     private val mock: MovieRepository.MockDataSource
 ) : MovieRepository {
 
-    override suspend fun getAll(): Result<List<Movie>> {
+    override suspend fun get(): Flow<List<Movie>> = flow {
         if (Repository.MOCK) {
-            return mock.getAll()
-        }
+           mock.get()
+               .onEach { emit(it) }
+               .catch { throw it }
+               .collect()
 
-        return try {
-            val result = remote.getAll().getOrThrow()
-            val data = result.toDomain()
-            Result.success(data)
-        } catch (failure: Exception) {
-            Result.failure(failure)
+        } else {
+
+            // update or insert data from internet into our database
+            val remoteData = remote.get().getOrThrow().toDomain().toLocal()
+            local.insert(remoteData)
+
+            // start to listen changes in database
+            local.get()
+                .onEach { emit(it.toDomain()) }
+                .catch { throw it }
+                .collect()
         }
     }
 
-    override suspend fun getDetail(movieId: String): Result<Movie> {
+    override suspend fun update(movie: Movie): Result<Boolean> {
         if (Repository.MOCK) {
-            return mock.getDetail(movieId)
-        }
-
-        return try {
-            val result = remote.getDetail(movieId).getOrThrow()
-            val data = result.toDomain()
-            Result.success(data)
-        } catch (failure: Exception) {
-            Result.failure(failure)
-        }
-    }
-
-    override suspend fun getFavorites(): Result<List<Movie>> {
-        if (Repository.MOCK) {
-            return mock.getFavorites()
-        }
-
-        return try {
-            val result = local.getFavorites().getOrThrow()
-            val data = result.toDomain()
-            Result.success(data)
-        } catch (failure: Exception) {
-            Result.failure(failure)
-        }
-    }
-
-    override suspend fun addFavorite(movie: Movie): Result<Boolean> {
-        if (Repository.MOCK) {
-            return mock.addFavorite(movie)
+            return mock.update(movie)
         }
 
         return try {
             val localMovie = movie.toLocal()
-            val result = local.addFavorite(localMovie).getOrThrow()
-            Result.success(result)
-        } catch (failure: Exception) {
-            Result.failure(failure)
-        }
-    }
-
-    override suspend fun deleteFavorite(movie: Movie): Result<Boolean> {
-        if (Repository.MOCK) {
-            return mock.deleteFavorite(movie)
-        }
-
-        return try {
-            val localMovie = movie.toLocal()
-            val result = local.deleteFavorite(localMovie).getOrThrow()
+            val result = local.update(localMovie).getOrThrow()
             Result.success(result)
         } catch (failure: Exception) {
             Result.failure(failure)

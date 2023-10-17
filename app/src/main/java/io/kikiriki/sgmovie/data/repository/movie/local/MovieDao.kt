@@ -1,21 +1,26 @@
 package io.kikiriki.sgmovie.data.repository.movie.local
 
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 import io.kikiriki.sgmovie.data.model.local.MovieLocal
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface MovieDao {
 
     @Query("SELECT * FROM MovieLocal")
-    suspend fun getFavorites(): List<MovieLocal>
+    fun getAll(): Flow<List<MovieLocal>>
 
-    @Insert
-    suspend fun addFavorite(movie: MovieLocal)
+    @Query("SELECT * FROM MovieLocal where favourite == 1")
+    suspend fun getFavourites(): List<MovieLocal>
 
-    @Delete
-    suspend fun deleteFavorite(movie: MovieLocal) : Int
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insert(movies: List<MovieLocal>)
+
+    @Update()
+    suspend fun updateFavourite(movie: MovieLocal): Int
 
 }

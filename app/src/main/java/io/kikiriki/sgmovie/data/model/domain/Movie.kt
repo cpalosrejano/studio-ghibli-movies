@@ -17,7 +17,7 @@ data class Movie(
     val releaseDate: String? = null,
     val runningTime: String? = null,
     val rtScore: String,
-    var favourite: Boolean = false
+    val favourite: Boolean = false
 ) : Parcelable
 
 fun Movie.toLocal() = MovieLocal(
@@ -31,6 +31,11 @@ fun Movie.toLocal() = MovieLocal(
     producer = producer,
     release_date = releaseDate,
     running_time = runningTime,
-    rt_score = rtScore
+    rt_score = rtScore,
+    favourite = favourite
 )
+
+fun List<Movie>.toLocal() : List<MovieLocal> {
+    return this.map { it.toLocal() }
+}
 

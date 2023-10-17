@@ -11,19 +11,7 @@ class MovieRemoteDataSource @Inject constructor(
     private val movieEndpoints: MovieEndpoints
 )  : MovieRepository.RemoteDataSource {
 
-    override suspend fun getDetail(movieId: String): Result<MovieRemote> {
-        val fields = "id,title,original_title_romanised,image,movie_banner,description,director,producer,release_date,running_time,rt_score"
-        val limit = 1
-        return try {
-            val result = movieEndpoints.getMovies(limit = limit, fields = fields)
-            Result.success(result.first())
-        } catch (failure: Exception) {
-            val exception = handleException(failure)
-            Result.failure(exception)
-        }
-    }
-
-    override suspend fun getAll(): Result<List<MovieRemote>> {
+    override suspend fun get(): Result<List<MovieRemote>> {
         val fields = "id,title,original_title_romanised,image,movie_banner,description,director,producer,release_date,running_time,rt_score"
         val limit = 250
         return try {

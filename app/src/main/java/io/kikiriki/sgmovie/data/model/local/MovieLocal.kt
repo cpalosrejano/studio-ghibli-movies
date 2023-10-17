@@ -19,7 +19,8 @@ data class MovieLocal(
     val producer: String? = null,
     val release_date: String? = null,
     val running_time: String? = null,
-    val rt_score: String
+    val rt_score: String,
+    var favourite: Boolean = false
 ): Parcelable
 
 fun MovieLocal.toDomain() = Movie(
@@ -33,7 +34,8 @@ fun MovieLocal.toDomain() = Movie(
     producer = producer,
     releaseDate = release_date,
     runningTime = running_time,
-    rtScore = rt_score
+    rtScore = rt_score,
+    favourite = favourite
 )
 
 fun List<MovieLocal>.toDomain() : List<Movie> {
