@@ -14,9 +14,9 @@ data class Movie(
     val description: String,
     val director: String,
     val producer: String? = null,
-    val releaseDate: String? = null,
+    val releaseDate: Int,
     val runningTime: String? = null,
-    val rtScore: String,
+    val rtScore: Int,
     val favourite: Boolean = false
 ) : Parcelable
 
@@ -29,9 +29,9 @@ fun Movie.toLocal() = MovieLocal(
     description = description,
     director = director,
     producer = producer,
-    release_date = releaseDate,
+    release_date = releaseDate.toString(),
     running_time = runningTime,
-    rt_score = rtScore,
+    rt_score = rtScore.toString(),
     favourite = favourite
 )
 

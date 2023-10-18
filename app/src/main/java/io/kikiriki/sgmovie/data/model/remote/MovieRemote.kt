@@ -11,9 +11,9 @@ data class MovieRemote(
     val description: String,
     val director: String? = null,
     val producer: String? = null,
-    val release_date: String? = null,
+    val release_date: String,
     val running_time: String? = null,
-    val rt_score: String? = null,
+    val rt_score: String,
 )
 
 fun MovieRemote.toDomain() = Movie(
@@ -25,9 +25,9 @@ fun MovieRemote.toDomain() = Movie(
     description = description,
     director = director.toString(),
     producer = producer,
-    releaseDate = release_date,
+    releaseDate = release_date.toInt(),
     runningTime = running_time,
-    rtScore = rt_score.toString()
+    rtScore = rt_score.toInt()
 )
 
 fun List<MovieRemote>.toDomain() : List<Movie> {

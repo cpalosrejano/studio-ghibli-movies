@@ -2,7 +2,7 @@
     <string name="app_name">Studio Ghibli Movies</string>
 
     <!-- MAIN ACTIVITY -->
-    <string name="main_menu_lbl_sort">Sort by</string>
+    <string name="main_menu_lbl_sort">Sort movies</string>
 
     <!-- DETAIL FRAGMENT -->
     <string name="movie_detail_lbl_score">%1$s %%</string>
@@ -16,8 +16,9 @@
     <string name="view_error_btn_try_again">Try again</string>
 
     <!-- SORT DIALOG -->
+    <string name="dialog_sort_by_lbl_title">Sort by…</string>
+    <string name="dialog_sort_by_lbl_name">Name - Default</string>
     <string name="dialog_sort_by_lbl_favourites">Favourites</string>
-    <string name="dialog_sort_by_lbl_alphabetical">Alphabetical</string>
     <string name="dialog_sort_by_lbl_score">Score</string>
     <string name="dialog_sort_by_lbl_director">Director</string>
     <string name="dialog_sort_by_lbl_year">Year</string>

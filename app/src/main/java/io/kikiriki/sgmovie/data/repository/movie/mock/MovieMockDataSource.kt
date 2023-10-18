@@ -18,9 +18,9 @@ class MovieMockDataSource @Inject constructor()  : MovieRepository.MockDataSourc
             description =  "Spirited Away is an Oscar winning Japanese animated film about a ten year old girl who wanders away from her parents along a path that leads to a world ruled by strange and unusual monster-like animals. Her parents have been changed into pigs along with others inside a bathhouse full of these creatures. Will she ever see the world how it once was?",
             director =  "Hayao Miyazaki",
             producer =  "Toshio Suzuki",
-            releaseDate =  "2001",
+            releaseDate =  2001,
             runningTime =  "124",
-            rtScore =  "97",
+            rtScore =  97,
             favourite = true
         ),
         Movie(
@@ -32,9 +32,9 @@ class MovieMockDataSource @Inject constructor()  : MovieRepository.MockDataSourc
             description =  "Ashitaka, a prince of the disappearing Ainu tribe, is cursed by a demonized boar god and must journey to the west to find a cure. Along the way, he encounters San, a young human woman fighting to protect the forest, and Lady Eboshi, who is trying to destroy it. Ashitaka must find a way to bring balance to this conflict.",
             director =  "Hayao Miyazaki",
             producer =  "Toshio Suzuki",
-            releaseDate =  "1997",
+            releaseDate =  1997,
             runningTime =  "134",
-            rtScore =  "92",
+            rtScore =  92,
             favourite = true
         ),
         Movie(
@@ -46,9 +46,9 @@ class MovieMockDataSource @Inject constructor()  : MovieRepository.MockDataSourc
             description =  "Two sisters move to the country with their father in order to be closer to their hospitalized mother, and discover the surrounding trees are inhabited by Totoros, magical spirits of the forest. When the youngest runs away from home, the older sister seeks help from the spirits to find her.",
             director = "Hayao Miyazaki",
             producer =  "Hayao Miyazaki",
-            releaseDate =  "1988",
+            releaseDate =  1988,
             runningTime =  "86",
-            rtScore =  "93",
+            rtScore =  93,
             favourite = false
         ),
         Movie(
@@ -60,9 +60,9 @@ class MovieMockDataSource @Inject constructor()  : MovieRepository.MockDataSourc
             description =  "The son of a sailor, 5-year old Sosuke lives a quiet life on an oceanside cliff with his mother Lisa. One fateful day, he finds a beautiful goldfish trapped in a bottle on the beach and upon rescuing her, names her Ponyo. But she is no ordinary goldfish. The daughter of a masterful wizard and a sea goddess, Ponyo uses her father's magic to transform herself into a young girl and quickly falls in love with Sosuke, but the use of such powerful sorcery causes a dangerous imbalance in the world. As the moon steadily draws nearer to the earth and Ponyo's father sends the ocean's mighty waves to find his daughter, the two children embark on an adventure of a lifetime to save the world and fulfill Ponyo's dreams of becoming human.",
             director =  "Hayao Miyazaki",
             producer =  "Toshio Suzuki",
-            releaseDate =  "2008",
+            releaseDate =  2008,
             runningTime =  "100",
-            rtScore =  "92",
+            rtScore =  92,
             favourite = true
         )
     )

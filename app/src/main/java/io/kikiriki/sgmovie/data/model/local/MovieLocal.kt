@@ -17,7 +17,7 @@ data class MovieLocal(
     val description: String,
     val director: String,
     val producer: String? = null,
-    val release_date: String? = null,
+    val release_date: String,
     val running_time: String? = null,
     val rt_score: String,
     var favourite: Boolean = false
@@ -32,9 +32,9 @@ fun MovieLocal.toDomain() = Movie(
     description = description,
     director = director,
     producer = producer,
-    releaseDate = release_date,
+    releaseDate = release_date.toInt(),
     runningTime = running_time,
-    rtScore = rt_score,
+    rtScore = rt_score.toInt(),
     favourite = favourite
 )
 
