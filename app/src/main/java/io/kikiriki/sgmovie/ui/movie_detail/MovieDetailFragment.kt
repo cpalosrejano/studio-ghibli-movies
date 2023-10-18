@@ -49,7 +49,7 @@ class MovieDetailFragment private constructor() : BottomSheetDialogFragment() {
             }
             viewBinding.lblTitle.text = movie.title
             viewBinding.lblDirector.text = movie.director
-            viewBinding.lblYear.text = movie.releaseDate
+            viewBinding.lblYear.text = movie.releaseDate.toString()
             viewBinding.lblRunningTime.text = getString(R.string.movie_detail_lbl_running_time, movie.runningTime)
             viewBinding.lblScore.text = String.format(getString(R.string.movie_detail_lbl_score), movie.rtScore)
             viewBinding.lblDescription.text = movie.description

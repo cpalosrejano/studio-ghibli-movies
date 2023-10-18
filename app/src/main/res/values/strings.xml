@@ -1,24 +1,39 @@
 <resources>
     <string name="app_name">Studio Ghibli Movies</string>
 
+    <!-- MAIN ACTIVITY -->
+    <string name="main_menu_lbl_sort">Sort movies</string>
+
+    <!-- DETAIL FRAGMENT -->
     <string name="movie_detail_lbl_score">%1$s %%</string>
     <string name="movie_detail_lbl_running_time">%1$s min</string>
     <string name="movie_detail_lbl_favourite">Favourite</string>
     <string name="movie_detail_error_cannot_update_favourite">Cannot update favourite movie</string>
 
+    <!-- CUSTOM VIEWS -->
     <string name="view_empty_lbl_empty">There is nothing here</string>
     <string name="view_loading_lbl_loading">Loading, please wait</string>
     <string name="view_error_btn_try_again">Try again</string>
 
-    <string name="default_error">Ops, something went wrong</string>
-    <string name="default_remote_error">Error connecting with our servers</string>
-    <string name="default_local_error">Error connecting with our database</string>
+    <!-- SORT DIALOG -->
+    <string name="dialog_sort_by_lbl_title">Sort by…</string>
+    <string name="dialog_sort_by_lbl_name">Name - Default</string>
+    <string name="dialog_sort_by_lbl_favourites">Favourites</string>
+    <string name="dialog_sort_by_lbl_score">Score</string>
+    <string name="dialog_sort_by_lbl_director">Director</string>
+    <string name="dialog_sort_by_lbl_year">Year</string>
 
+    <!-- HANDLED ERROR  -->
     <string name="error_bbdd_get_movies">Cannot get movies from database</string>
     <string name="error_bbdd_insert_movies">Cannot save movies in database</string>
     <string name="error_bbdd_update_movie">Cannot update movie</string>
     <string name="error_network_unauthorized">You have not authorization to access to this resource</string>
     <string name="error_network_not_found">The resource not found</string>
     <string name="error_feature_not_implemented">Feature not implemented yet</string>
+
+    <!-- DEFAULT ERROR -->
+    <string name="default_error">Ops, something went wrong</string>
+    <string name="default_remote_error">Error connecting with our servers</string>
+    <string name="default_local_error">Error connecting with our database</string>
 
 </resources>

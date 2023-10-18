@@ -1,11 +1,18 @@
 package io.kikiriki.sgmovie.ui.main
 
+import android.annotation.SuppressLint
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import androidx.core.view.isVisible
 import coil.load
+import com.google.android.material.badge.BadgeDrawable
+import com.google.android.material.badge.BadgeUtils
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import io.kikiriki.sgmovie.R
 import io.kikiriki.sgmovie.data.model.domain.Movie
+import io.kikiriki.sgmovie.data.model.domain.Sort
 import io.kikiriki.sgmovie.databinding.ActivityMainBinding
 import io.kikiriki.sgmovie.framework.coil.CoilUtils
 import io.kikiriki.sgmovie.ui.BaseActivity
@@ -18,6 +25,8 @@ class MainActivity : BaseActivity() {
 
     private val viewBinding by lazy { ActivityMainBinding.inflate(layoutInflater) }
     @Inject lateinit var viewModel: MainViewModel
+
+    private var selectedSortType: Sort = Sort.NAME
     private val adapter = AdapterMovie()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,7 +38,22 @@ class MainActivity : BaseActivity() {
         viewModel.getMovies()
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.main, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.action_sort) {
+            openSortMoviesDialog()
+            return true
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
     private fun setupView() {
+
+        setSupportActionBar(viewBinding.toolbar)
 
         // load default animation for error, loading, or empty state
         val imageLoaderGif = CoilUtils.getImageLoaderGif(this)
@@ -38,9 +62,7 @@ class MainActivity : BaseActivity() {
         viewBinding.errorView.imgError.load(R.drawable.gif_error, imageLoaderGif)
 
         // retry request on fails
-        viewBinding.errorView.btnRetry.setOnClickListener {
-            viewModel.getMovies()
-        }
+        viewBinding.errorView.btnRetry.setOnClickListener { viewModel.getMovies() }
 
         // recycler view adapter and item click
         viewBinding.recyclerView.adapter = adapter
@@ -55,7 +77,7 @@ class MainActivity : BaseActivity() {
 
             // list items
             viewBinding.recyclerView.isVisible = (uiState.error == null && !uiState.isLoading)
-            adapter.submitList(uiState.items)
+            sortMovies(uiState.items)
 
             // error view
             viewBinding.errorView.root.isVisible = uiState.error != null
@@ -73,6 +95,64 @@ class MainActivity : BaseActivity() {
         MovieDetailFragment
             .newInstance(movie)
             .show(supportFragmentManager, MovieDetailFragment::class.simpleName)
+    }
+
+    private fun openSortMoviesDialog() {
+
+        // get all sorted options
+        val sortOptions: List<Sort> = Sort.getAll()
+        // find the index of selected sort type
+        val sortSelectedIndex = sortOptions.indexOf(selectedSortType)
+        // get the strings for each sorted option
+        val sortOptionsLabels = sortOptions.map { getString(it.title) }.toTypedArray()
+
+        // show dialog
+        MaterialAlertDialogBuilder(this)
+            .setTitle(R.string.dialog_sort_by_lbl_title)
+            .setIcon(R.drawable.ic_sort)
+            .setNegativeButton(android.R.string.cancel) { _, _ -> }
+            .setSingleChoiceItems(sortOptionsLabels, sortSelectedIndex) { dialog, which ->
+
+                // set the selected sorted options and update ui
+                sortOptions.getOrNull(which)?.let { newSortTypeSelected ->
+                    selectedSortType = newSortTypeSelected
+                    sortMovies(adapter.currentList)
+                    updateBadgeSortMenu()
+                }
+
+                // dismiss dialog
+                dialog.dismiss()
+            }
+            .show()
+    }
+
+    private fun sortMovies(items: List<Movie>) {
+        // we need to create a new mutable list
+        val newList = mutableListOf<Movie>().apply { addAll(items) }
+
+        when (selectedSortType.type) {
+            Sort.Type.FAVOURITE -> { newList.sortByDescending { it.favourite } }
+            Sort.Type.NAME -> { newList.sortBy { it.title } }
+            Sort.Type.SCORE -> { newList.sortByDescending { it.rtScore } }
+            Sort.Type.DIRECTOR -> { newList.sortBy { it.director } }
+            Sort.Type.YEAR -> { newList.sortByDescending { it.releaseDate} }
+        }
+
+        adapter.submitList(newList)
+    }
+
+    @SuppressLint("UnsafeOptInUsageError")
+    private fun updateBadgeSortMenu() {
+        // get the current badge and remove it
+        val badge: BadgeDrawable? = viewBinding.toolbar.tag as? BadgeDrawable
+        BadgeUtils.detachBadgeDrawable(badge, viewBinding.toolbar, R.id.action_sort)
+
+        // show badge if selected sort type is not name (Default)
+        if(selectedSortType != Sort.NAME) {
+            val newBadge = BadgeDrawable.create(this)
+            BadgeUtils.attachBadgeDrawable(newBadge, viewBinding.toolbar, R.id.action_sort)
+            viewBinding.toolbar.tag = newBadge
+        }
     }
 
 }
