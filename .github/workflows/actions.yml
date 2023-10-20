@@ -1,19 +1,20 @@
 name: Android CI
 
+# This action will be executed on every pull request to master branch
 on:
-  push:
-    branches: [ "feature/setup-github-actions" ]
   pull_request:
-    branches: [ "feature/setup-github-actions" ]
+    branches: [ "master" ]
 
 jobs:
-
+  # We will user MacOS environment to build and execute our app test
   build:
     runs-on: macos-latest
 
     steps:
+      # Checkout to our branch
       - uses: actions/checkout@v3
 
+      # Setup Java Development Kit 17
       - name: Setting up JDK 17
         uses: actions/setup-java@v3
         with:
@@ -21,18 +22,23 @@ jobs:
           distribution: 'temurin'
           cache: gradle
 
+      # Grant access to gradlew file to execute commands
       - name: Grant permission to gradlew file
         run: chmod +x gradlew
 
+      # Build project
       - name: Building project
         run: ./gradlew build
 
+      # Execute lint
       - name: Executing Lint
         run: ./gradlew lint
 
+      # Execute unit test
       - name: Executing Unit Test
         run: ./gradlew testDebugUnitTest
 
+      # Execute android test with the following configuration
       - name: Executing Android Test
         uses: ReactiveCircus/android-emulator-runner@v2
         with:
