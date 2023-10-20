@@ -19,6 +19,6 @@ class ExampleInstrumentedTest {
     fun useAppContext() {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-        assertEquals("io.kikiriki.notes", appContext.packageName)
+        assertEquals("io.kikiriki.sgmovie", appContext.packageName)
     }
 }
