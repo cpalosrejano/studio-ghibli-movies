@@ -1,5 +1,7 @@
 # Studio Ghibli Movies
 
+![Totoro image](./screenshots/icon.png)
+
 ## Index
 1. About this app
 2. Folder Structure
