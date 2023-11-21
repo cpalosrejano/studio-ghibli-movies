@@ -11,7 +11,6 @@
       <option name="taskNames">
         <list>
           <option value="testDebugUnitTest" />
-          <option value="--" />
         </list>
       </option>
       <option name="vmOptions" />
@@ -21,19 +20,35 @@
     <EXTENSION ID="com.intellij.execution.ExternalSystemRunConfigurationJavaExtension">
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="io.kikiriki.sgmovie.ui.main.MainViewModel" />
+          <option name="PATTERN" value="io.kikiriki.sgmovie.ui.main.MainActivity" />
+          <option name="ENABLED" value="true" />
+          <option name="INCLUDE" value="false" />
+        </pattern>
+        <pattern>
+          <option name="PATTERN" value="io.kikiriki.sgmovie.ui.movie_detail.MovieDetailFragment" />
+          <option name="ENABLED" value="true" />
+          <option name="INCLUDE" value="false" />
+        </pattern>
+        <pattern>
+          <option name="PATTERN" value="io.kikiriki.sgmovie.ui.main.Hilt_MainActivity" />
+          <option name="ENABLED" value="true" />
+          <option name="INCLUDE" value="false" />
+        </pattern>
+        <pattern>
+          <option name="PATTERN" value="io.kikiriki.sgmovie.ui.movie_detail.Hilt_MovieDetailFragment" />
+          <option name="ENABLED" value="true" />
+          <option name="INCLUDE" value="false" />
+        </pattern>
+        <pattern>
+          <option name="PATTERN" value="io.kikiriki.sgmovie.ui.main.*" />
           <option name="ENABLED" value="true" />
         </pattern>
         <pattern>
-          <option name="PATTERN" value="io.kikiriki.sgmovie.ui.movie_detail.MovieDetailViewModel" />
+          <option name="PATTERN" value="io.kikiriki.sgmovie.ui.movie_detail.*" />
           <option name="ENABLED" value="true" />
         </pattern>
         <pattern>
-          <option name="PATTERN" value="io.kikiriki.sgmovie.ui.main.MainUIState" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-        <pattern>
-          <option name="PATTERN" value="io.kikiriki.sgmovie.ui.movie_detail.MovieDetailUIState" />
+          <option name="PATTERN" value="io.kikiriki.sgmovie.domain.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
