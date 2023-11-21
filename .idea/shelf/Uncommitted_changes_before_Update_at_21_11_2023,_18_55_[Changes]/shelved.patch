@@ -1,0 +1,315 @@
+Index: app/src/main/java/io/kikiriki/sgmovie/framework/hilt/UserRepositoryModule.kt
+===================================================================
+diff --git a/app/src/main/java/io/kikiriki/sgmovie/framework/hilt/UserRepositoryModule.kt b/app/src/main/java/io/kikiriki/sgmovie/framework/hilt/UserRepositoryModule.kt
+deleted file mode 100644
+--- a/app/src/main/java/io/kikiriki/sgmovie/framework/hilt/UserRepositoryModule.kt	(revision c19ed5bbfbd9cddec5af1d6aaf7dfc594b739c6d)
++++ /dev/null	(revision c19ed5bbfbd9cddec5af1d6aaf7dfc594b739c6d)
+@@ -1,28 +0,0 @@
+-package io.kikiriki.sgmovie.framework.hilt
+-
+-import dagger.Binds
+-import dagger.Module
+-import dagger.hilt.InstallIn
+-import dagger.hilt.android.components.ActivityComponent
+-import io.kikiriki.sgmovie.data.repository.user.UserRepository
+-import io.kikiriki.sgmovie.data.repository.user.UserRepositoryImpl
+-import io.kikiriki.sgmovie.data.repository.user.local.UserLocalDataSource
+-import io.kikiriki.sgmovie.data.repository.user.mock.UserMockDataSource
+-import io.kikiriki.sgmovie.data.repository.user.remote.UserRemoteDataSource
+-
+-@Module
+-@InstallIn(ActivityComponent::class)
+-abstract class UserRepositoryModule {
+-
+-    @Binds
+-    abstract fun bindNoteRemoteDataSource(implementation: UserRemoteDataSource) : UserRepository.RemoteDataSource
+-
+-    @Binds
+-    abstract fun bindNoteLocalDataSource(implementation: UserLocalDataSource) : UserRepository.LocalDataSource
+-
+-    @Binds
+-    abstract fun bindNoteMockDataSource(implementation: UserMockDataSource) : UserRepository.MockDataSource
+-
+-    @Binds
+-    abstract fun bindNoteRepository(implementation: UserRepositoryImpl) : UserRepository
+-}
+\ No newline at end of file
+Index: app/src/main/java/io/kikiriki/sgmovie/data/repository/user/remote/UserRemoteDataSource.kt
+===================================================================
+diff --git a/app/src/main/java/io/kikiriki/sgmovie/data/repository/user/remote/UserRemoteDataSource.kt b/app/src/main/java/io/kikiriki/sgmovie/data/repository/user/remote/UserRemoteDataSource.kt
+deleted file mode 100644
+--- a/app/src/main/java/io/kikiriki/sgmovie/data/repository/user/remote/UserRemoteDataSource.kt	(revision c19ed5bbfbd9cddec5af1d6aaf7dfc594b739c6d)
++++ /dev/null	(revision c19ed5bbfbd9cddec5af1d6aaf7dfc594b739c6d)
+@@ -1,27 +0,0 @@
+-package io.kikiriki.sgmovie.data.repository.user.remote
+-
+-import io.kikiriki.sgmovie.data.model.remote.RemoteDataSourceException
+-import io.kikiriki.sgmovie.data.model.remote.UserRemote
+-import io.kikiriki.sgmovie.data.repository.user.UserRepository
+-import io.kikiriki.sgmovie.utils.ExceptionManager
+-import javax.inject.Inject
+-
+-class UserRemoteDataSource @Inject constructor(
+-    // val endpoints: UserEndpoints
+-    // val firebaseDatabase: Firebase.database
+-)  : UserRepository.RemoteDataSource {
+-
+-    override suspend fun getUser(token: String): Result<UserRemote> {
+-        /*
+-            TODO: not implemented yet
+-             check if our servers returns an http code
+-             and add to ExceptionManager.Code
+-         */
+-        return Result.failure(RemoteDataSourceException(
+-            code = ExceptionManager.Code.NOT_IMPLEMENTED_YET,
+-            message = "Feature not implemented yet",
+-            httpCode = 404
+-        ))
+-    }
+-
+-}
+\ No newline at end of file
+Index: app/src/main/java/io/kikiriki/sgmovie/data/model/local/UserLocal.kt
+===================================================================
+diff --git a/app/src/main/java/io/kikiriki/sgmovie/data/model/local/UserLocal.kt b/app/src/main/java/io/kikiriki/sgmovie/data/model/local/UserLocal.kt
+deleted file mode 100644
+--- a/app/src/main/java/io/kikiriki/sgmovie/data/model/local/UserLocal.kt	(revision c19ed5bbfbd9cddec5af1d6aaf7dfc594b739c6d)
++++ /dev/null	(revision c19ed5bbfbd9cddec5af1d6aaf7dfc594b739c6d)
+@@ -1,22 +0,0 @@
+-package io.kikiriki.sgmovie.data.model.local
+-
+-import io.kikiriki.sgmovie.data.model.domain.User
+-import io.kikiriki.sgmovie.utils.extension.toDate
+-
+-data class UserLocal(
+-    val id: Long?,
+-    val name: String?,
+-    val email: String?,
+-    val birthDate: String?,
+-    val avatar: String?
+-)
+-
+-fun UserLocal.toDomain() : User {
+-    return User(
+-        id = id,
+-        name = name,
+-        email = email,
+-        birthDate = birthDate.toDate(),
+-        avatar = avatar
+-    )
+-}
+\ No newline at end of file
+Index: app/src/main/java/io/kikiriki/sgmovie/data/repository/user/UserRepositoryImpl.kt
+===================================================================
+diff --git a/app/src/main/java/io/kikiriki/sgmovie/data/repository/user/UserRepositoryImpl.kt b/app/src/main/java/io/kikiriki/sgmovie/data/repository/user/UserRepositoryImpl.kt
+deleted file mode 100644
+--- a/app/src/main/java/io/kikiriki/sgmovie/data/repository/user/UserRepositoryImpl.kt	(revision c19ed5bbfbd9cddec5af1d6aaf7dfc594b739c6d)
++++ /dev/null	(revision c19ed5bbfbd9cddec5af1d6aaf7dfc594b739c6d)
+@@ -1,23 +0,0 @@
+-package io.kikiriki.sgmovie.data.repository.user
+-
+-import io.kikiriki.sgmovie.data.model.domain.User
+-import io.kikiriki.sgmovie.data.model.local.toDomain
+-import javax.inject.Inject
+-
+-class UserRepositoryImpl @Inject constructor(
+-    private val remote: UserRepository.RemoteDataSource,
+-    private val local: UserRepository.LocalDataSource,
+-    private val mock: UserRepository.MockDataSource
+-) : UserRepository {
+-
+-    override suspend fun getUser(token: String): Result<User> {
+-        return try {
+-            val remoteResult = local.getUser()
+-            val remoteData = remoteResult.getOrThrow()
+-            val data = remoteData.toDomain()
+-            Result.success(data)
+-        } catch (failure: Exception) {
+-            Result.failure(failure)
+-        }
+-    }
+-}
+\ No newline at end of file
+Index: app/src/main/java/io/kikiriki/sgmovie/data/repository/user/local/UserLocalDataSource.kt
+===================================================================
+diff --git a/app/src/main/java/io/kikiriki/sgmovie/data/repository/user/local/UserLocalDataSource.kt b/app/src/main/java/io/kikiriki/sgmovie/data/repository/user/local/UserLocalDataSource.kt
+deleted file mode 100644
+--- a/app/src/main/java/io/kikiriki/sgmovie/data/repository/user/local/UserLocalDataSource.kt	(revision c19ed5bbfbd9cddec5af1d6aaf7dfc594b739c6d)
++++ /dev/null	(revision c19ed5bbfbd9cddec5af1d6aaf7dfc594b739c6d)
+@@ -1,21 +0,0 @@
+-package io.kikiriki.sgmovie.data.repository.user.local
+-
+-import io.kikiriki.sgmovie.data.model.local.LocalDataSourceException
+-import io.kikiriki.sgmovie.data.model.local.UserLocal
+-import io.kikiriki.sgmovie.data.repository.user.UserRepository
+-import io.kikiriki.sgmovie.utils.ExceptionManager
+-import javax.inject.Inject
+-
+-class UserLocalDataSource @Inject constructor(
+-    // val room: UserDatabase
+-)  : UserRepository.LocalDataSource {
+-
+-    override suspend fun getUser(): Result<UserLocal> {
+-        // TODO: feature not implemented yet
+-        return Result.failure(LocalDataSourceException(
+-            code = ExceptionManager.Code.NOT_IMPLEMENTED_YET,
+-            message = "Feature not implemented yet"
+-        ))
+-    }
+-
+-}
+\ No newline at end of file
+Index: app/src/main/java/io/kikiriki/sgmovie/data/repository/user/UserRepository.kt
+===================================================================
+diff --git a/app/src/main/java/io/kikiriki/sgmovie/data/repository/user/UserRepository.kt b/app/src/main/java/io/kikiriki/sgmovie/data/repository/user/UserRepository.kt
+deleted file mode 100644
+--- a/app/src/main/java/io/kikiriki/sgmovie/data/repository/user/UserRepository.kt	(revision c19ed5bbfbd9cddec5af1d6aaf7dfc594b739c6d)
++++ /dev/null	(revision c19ed5bbfbd9cddec5af1d6aaf7dfc594b739c6d)
+@@ -1,20 +0,0 @@
+-package io.kikiriki.sgmovie.data.repository.user
+-
+-import io.kikiriki.sgmovie.data.model.domain.User
+-import io.kikiriki.sgmovie.data.model.local.UserLocal
+-import io.kikiriki.sgmovie.data.model.remote.UserRemote
+-
+-interface UserRepository {
+-
+-    suspend fun getUser(token: String) : Result<User>
+-
+-    interface RemoteDataSource {
+-        suspend fun getUser(token: String) : Result<UserRemote>
+-    }
+-
+-    interface LocalDataSource {
+-        suspend fun getUser() : Result<UserLocal>
+-    }
+-
+-    interface MockDataSource : UserRepository
+-}
+\ No newline at end of file
+Index: app/src/main/java/io/kikiriki/sgmovie/domain/user/GetUserUseCase.kt
+===================================================================
+diff --git a/app/src/main/java/io/kikiriki/sgmovie/domain/user/GetUserUseCase.kt b/app/src/main/java/io/kikiriki/sgmovie/domain/user/GetUserUseCase.kt
+deleted file mode 100644
+--- a/app/src/main/java/io/kikiriki/sgmovie/domain/user/GetUserUseCase.kt	(revision c19ed5bbfbd9cddec5af1d6aaf7dfc594b739c6d)
++++ /dev/null	(revision c19ed5bbfbd9cddec5af1d6aaf7dfc594b739c6d)
+@@ -1,15 +0,0 @@
+-package io.kikiriki.sgmovie.domain.user
+-
+-import io.kikiriki.sgmovie.data.model.domain.User
+-import io.kikiriki.sgmovie.data.repository.user.UserRepository
+-import javax.inject.Inject
+-
+-class GetUserUseCase @Inject constructor(
+-    private val userRepository: UserRepository
+-) {
+-
+-    suspend operator fun invoke() : Result<User> {
+-        return userRepository.getUser("null")
+-    }
+-
+-}
+\ No newline at end of file
+Index: app/src/main/java/io/kikiriki/sgmovie/data/model/domain/User.kt
+===================================================================
+diff --git a/app/src/main/java/io/kikiriki/sgmovie/data/model/domain/User.kt b/app/src/main/java/io/kikiriki/sgmovie/data/model/domain/User.kt
+deleted file mode 100644
+--- a/app/src/main/java/io/kikiriki/sgmovie/data/model/domain/User.kt	(revision c19ed5bbfbd9cddec5af1d6aaf7dfc594b739c6d)
++++ /dev/null	(revision c19ed5bbfbd9cddec5af1d6aaf7dfc594b739c6d)
+@@ -1,34 +0,0 @@
+-package io.kikiriki.sgmovie.data.model.domain
+-
+-import io.kikiriki.sgmovie.data.model.local.UserLocal
+-import io.kikiriki.sgmovie.data.model.remote.UserRemote
+-import io.kikiriki.sgmovie.utils.extension.format
+-import java.util.Date
+-
+-data class User (
+-    val id: Long?,
+-    val name: String?,
+-    val email: String?,
+-    val birthDate: Date?,
+-    val avatar: String?
+-)
+-
+-fun User.toRemote(): UserRemote {
+-    return UserRemote(
+-        id = id,
+-        name = name,
+-        email = email,
+-        birthDate = birthDate.format(),
+-        avatar = avatar
+-    )
+-}
+-
+-fun User.toLocal(): UserLocal {
+-    return UserLocal(
+-        id = id,
+-        name = name,
+-        email = email,
+-        birthDate = birthDate.format(),
+-        avatar = avatar
+-    )
+-}
+\ No newline at end of file
+Index: app/src/main/java/io/kikiriki/sgmovie/data/model/remote/UserRemote.kt
+===================================================================
+diff --git a/app/src/main/java/io/kikiriki/sgmovie/data/model/remote/UserRemote.kt b/app/src/main/java/io/kikiriki/sgmovie/data/model/remote/UserRemote.kt
+deleted file mode 100644
+--- a/app/src/main/java/io/kikiriki/sgmovie/data/model/remote/UserRemote.kt	(revision c19ed5bbfbd9cddec5af1d6aaf7dfc594b739c6d)
++++ /dev/null	(revision c19ed5bbfbd9cddec5af1d6aaf7dfc594b739c6d)
+@@ -1,22 +0,0 @@
+-package io.kikiriki.sgmovie.data.model.remote
+-
+-import io.kikiriki.sgmovie.data.model.domain.User
+-import io.kikiriki.sgmovie.utils.extension.toDate
+-
+-data class UserRemote(
+-    val id: Long?,
+-    val name: String?,
+-    val email: String?,
+-    val birthDate: String?,
+-    val avatar: String?
+-)
+-
+-fun UserRemote.toDomain() : User {
+-    return User(
+-        id = id,
+-        name = name,
+-        email = email,
+-        birthDate = birthDate.toDate(),
+-        avatar = avatar
+-    )
+-}
+\ No newline at end of file
+Index: app/src/main/java/io/kikiriki/sgmovie/data/repository/user/mock/UserMockDataSource.kt
+===================================================================
+diff --git a/app/src/main/java/io/kikiriki/sgmovie/data/repository/user/mock/UserMockDataSource.kt b/app/src/main/java/io/kikiriki/sgmovie/data/repository/user/mock/UserMockDataSource.kt
+deleted file mode 100644
+--- a/app/src/main/java/io/kikiriki/sgmovie/data/repository/user/mock/UserMockDataSource.kt	(revision c19ed5bbfbd9cddec5af1d6aaf7dfc594b739c6d)
++++ /dev/null	(revision c19ed5bbfbd9cddec5af1d6aaf7dfc594b739c6d)
+@@ -1,23 +0,0 @@
+-package io.kikiriki.sgmovie.data.repository.user.mock
+-
+-import io.kikiriki.sgmovie.data.model.domain.User
+-import io.kikiriki.sgmovie.data.repository.user.UserRepository
+-import kotlinx.coroutines.delay
+-import javax.inject.Inject
+-
+-class UserMockDataSource @Inject constructor() : UserRepository.MockDataSource {
+-
+-    override suspend fun getUser(token: String): Result<User> {
+-        delay(700)
+-        return Result.success(
+-            User(
+-                id = 0,
+-                name = "Cristian",
+-                email = "cpalosrejano@gmail.com",
+-                birthDate = null,
+-                avatar = null
+-            )
+-        )
+-    }
+-
+-}
+\ No newline at end of file
