@@ -17,7 +17,10 @@ android {
         versionCode 1
         versionName "1.0"
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        /* we will use the custom test runner which support hilt */
+        //testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "io.kikiriki.sgmovie.CustomTestRunner"
+
     }
 
     viewBinding {
@@ -76,14 +79,21 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     testImplementation 'io.mockk:mockk:1.13.8'
     testImplementation "io.mockk:mockk-android:1.13.8"
-    // testing: Dispatchers
-    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.1'
-    // testing: InstantTaskExecutorRule
-    testImplementation "androidx.arch.core:core-testing:2.2.0"
+    /* dispatchers */ testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.1'
+    /* InstantTaskExecutorRule */ testImplementation "androidx.arch.core:core-testing:2.2.0"
 
     // ui testing
+    /* To learn how to use hilt with ui testing to mock data repository, follow this guide:
+        https://mahendranv.github.io/posts/hilt-instrument/
+    */
+    androidTestImplementation 'androidx.test:core-ktx:1.5.0'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-intents:3.5.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.5.1'
+    androidTestImplementation 'com.google.dagger:hilt-android-testing:2.44'
+    kaptAndroidTest 'com.google.dagger:hilt-android-compiler:2.44'
+
 }
 
 // Hilt: Allow references to generated code
