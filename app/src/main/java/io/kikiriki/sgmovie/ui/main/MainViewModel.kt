@@ -27,11 +27,11 @@ class MainViewModel @Inject constructor(
 
         getMoviesUseCase()
             .onEach {
-                _uiState.value = (MainUIState(items = it))
+                _uiState.postValue(MainUIState(items = it))
             }
             .catch {
                 val error = ExceptionManager.getMessage(it)
-                _uiState.value = MainUIState(error = error)
+                _uiState.postValue(MainUIState(error = error))
             }
             .collect()
     }
@@ -43,7 +43,7 @@ class MainViewModel @Inject constructor(
         } catch (e: Exception) {
             // get the exception and send to the UI
             val error = ExceptionManager.getMessage(e)
-            _uiState.value = MainUIState(error = error)
+            _uiState.postValue(MainUIState(error = error))
         }
     }
 
