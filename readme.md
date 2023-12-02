@@ -49,6 +49,8 @@ This app is made with the following libraries:
 
 * **Coil:** image loader
 
+* **Room:** local database
+
 * **Retrofit + Moshi:** networking
 
 * **AndroidX lifecycle:** coroutines with lifecycle aware
