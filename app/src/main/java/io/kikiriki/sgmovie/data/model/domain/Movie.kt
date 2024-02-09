@@ -18,7 +18,20 @@ data class Movie(
     val runningTime: String? = null,
     val rtScore: Int,
     val favourite: Boolean = false
-) : Parcelable
+) : Parcelable {
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+        other as Movie
+        if (id != other.id) return false
+        return true
+    }
+
+    override fun hashCode(): Int {
+        return id.hashCode()
+    }
+}
 
 fun Movie.toLocal() = MovieLocal(
     id = id,

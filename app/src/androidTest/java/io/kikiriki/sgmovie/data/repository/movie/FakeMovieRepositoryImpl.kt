@@ -1,13 +1,10 @@
 package io.kikiriki.sgmovie.data.repository.movie
 
 import android.util.Log
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.asFlow
 import io.kikiriki.sgmovie.data.model.domain.Movie
-import io.kikiriki.sgmovie.utils.EspressoIdleResource
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
@@ -71,34 +68,56 @@ class FakeMovieRepositoryImpl @Inject constructor() : MovieRepository {
             favourite = false
         )
     )
-    private val dataFlow: Flow<MutableList<Movie>> = flowOf(movies)
+    //private val dataFlow: Flow<MutableList<Movie>> = flowOf(movies)
+    //override suspend fun get(): Flow<List<Movie>> = dataFlow
 
-    override suspend fun get(): Flow<List<Movie>> = flow {
+
+
+    private val liveDataMovies: MutableLiveData<MutableList<Movie>> = MutableLiveData()
+
+    override suspend fun get(): Flow<List<Movie>> {
+        Log.e("Fake", "get")
+        liveDataMovies.value = movies
+        return liveDataMovies.asFlow()
+            .onEach {
+                Log.e("Fake", "onEach -> " + it)
+            }
+    }
+
+
+
+        /* =flow {
         EspressoIdleResource.increment()
+
         dataFlow
             .onEach {
                 emit(it)
-                Log.e("FAKE", "emit($it)")
                 EspressoIdleResource.decrement()
             }
             .catch {
-
-                Log.e("FAKE", "catch -> ${it.message}")
                 EspressoIdleResource.decrement()
                 throw it
             }
             .collect()
     }
 
+    */
+
+
     override suspend fun update(movie: Movie): Result<Boolean> {
-        EspressoIdleResource.increment()
         return try {
-            val index = movies.indexOf(movie)
+
+            val index = movies.indexOfFirst { it.id == movie.id}
             movies.remove(movie)
             movies.add(index, movie)
+
+
+            liveDataMovies.value = movies.toMutableList()
+            Log.e("Fake", "update")
             Result.success(true)
         } catch (e:Exception) {
             Result.failure(e)
+
         }
 
     }
