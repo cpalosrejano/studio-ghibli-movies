@@ -2,13 +2,18 @@ package io.kikiriki.sgmovie.data.repository.movie.mock
 
 import io.kikiriki.sgmovie.data.model.domain.Movie
 import io.kikiriki.sgmovie.data.repository.movie.MovieRepository
+import io.kikiriki.sgmovie.framework.hilt.IODispatcher
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class MovieMockDataSource @Inject constructor()  : MovieRepository.MockDataSource {
-    private val movies = mutableListOf(
+class MovieMockDataSource @Inject constructor(
+    @IODispatcher private val dispatcher: CoroutineDispatcher
+)  : MovieRepository.MockDataSource {
+    private var movies = listOf(
         Movie(
             id = "dc2e6bd1-8156-4886-adff-b39e6043af0c",
             title = "Spirited Away",
@@ -68,16 +73,20 @@ class MovieMockDataSource @Inject constructor()  : MovieRepository.MockDataSourc
     )
 
     override suspend fun get(): Flow<List<Movie>> {
-        delay(1000)
+        delay(2000)
         return flowOf(movies)
     }
 
-    override suspend fun update(movie: Movie): Result<Boolean> {
+    override suspend fun update(movie: Movie): Result<Boolean> = withContext(dispatcher) {
         delay(1000)
-        val index = movies.indexOf(movie)
-        movies.remove(movie)
-        movies.add(index, movie)
-        return Result.success(true)
+        movies = movies.map {
+            if (it.id == movie.id) {
+                movie.copy()
+            } else {
+                it
+            }
+        }
+        return@withContext Result.success(true)
     }
 
 }

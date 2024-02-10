@@ -8,6 +8,7 @@ import io.kikiriki.sgmovie.data.repository.movie.MovieRepository
 import io.kikiriki.sgmovie.utils.ExceptionManager
 import io.mockk.coEvery
 import io.mockk.impl.annotations.RelaxedMockK
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.catch
@@ -26,7 +27,7 @@ class GetMoviesUseCaseTest : BaseTest() {
 
     override fun onStart() {
         super.onStart()
-        getMoviesUseCase = GetMoviesUseCase(movieRepository)
+        getMoviesUseCase = GetMoviesUseCase(movieRepository, Dispatchers.IO)
     }
 
     @Test
