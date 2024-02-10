@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface MovieRepository {
 
-    suspend fun get() : Flow<List<Movie>>
+    fun get() : Flow<List<Movie>>
     suspend fun update(movie: Movie) : Result<Boolean>
 
     interface RemoteDataSource {

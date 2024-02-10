@@ -13,6 +13,7 @@ import javax.inject.Inject
 class MovieMockDataSource @Inject constructor(
     @IODispatcher private val dispatcher: CoroutineDispatcher
 )  : MovieRepository.MockDataSource {
+
     private var movies = listOf(
         Movie(
             id = "dc2e6bd1-8156-4886-adff-b39e6043af0c",
@@ -72,10 +73,7 @@ class MovieMockDataSource @Inject constructor(
         )
     )
 
-    override suspend fun get(): Flow<List<Movie>> {
-        delay(2000)
-        return flowOf(movies)
-    }
+    override fun get(): Flow<List<Movie>> = flowOf(movies)
 
     override suspend fun update(movie: Movie): Result<Boolean> = withContext(dispatcher) {
         delay(1000)
