@@ -23,7 +23,7 @@ class MovieRepositoryImpl @Inject constructor(
     @IODispatcher private val dispatcher: CoroutineDispatcher
 ) : MovieRepository {
 
-    override suspend fun get(): Flow<List<Movie>> = flow {
+    override fun get(): Flow<List<Movie>> = flow {
         if (Repository.MOCK) {
            mock.get()
                .flowOn(dispatcher)
