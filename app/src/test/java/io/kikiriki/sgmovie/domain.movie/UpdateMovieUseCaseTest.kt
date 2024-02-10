@@ -7,6 +7,7 @@ import io.kikiriki.sgmovie.data.repository.movie.MovieRepository
 import io.kikiriki.sgmovie.utils.ExceptionManager
 import io.mockk.coEvery
 import io.mockk.impl.annotations.RelaxedMockK
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
@@ -19,7 +20,7 @@ class UpdateMovieUseCaseTest : BaseTest() {
 
     override fun onStart() {
         super.onStart()
-        updateMovieUseCase = UpdateMovieUseCase(movieRepository)
+        updateMovieUseCase = UpdateMovieUseCase(movieRepository, Dispatchers.IO)
     }
 
     @Test
