@@ -1,7 +1,6 @@
 package io.kikiriki.sgmovie.data.repository.movie.mock
 
-import io.kikiriki.sgmovie.data.model.domain.Movie
-import io.kikiriki.sgmovie.data.repository.movie.MovieRepository
+import io.kikiriki.sgmovie.data.model.MovieRepository
 import io.kikiriki.sgmovie.framework.hilt.IODispatcher
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.delay
@@ -12,10 +11,10 @@ import javax.inject.Inject
 
 class MovieMockDataSource @Inject constructor(
     @IODispatcher private val dispatcher: CoroutineDispatcher
-)  : MovieRepository.MockDataSource {
+)  : io.kikiriki.sgmovie.data.repository.movie.MovieRepository.MockDataSource {
 
     private var movies = listOf(
-        Movie(
+        MovieRepository(
             id = "dc2e6bd1-8156-4886-adff-b39e6043af0c",
             title = "Spirited Away",
             originalTitleRomanised =  "Sen to Chihiro no kamikakushi",
@@ -29,7 +28,7 @@ class MovieMockDataSource @Inject constructor(
             rtScore =  97,
             favourite = true
         ),
-        Movie(
+        MovieRepository(
             id =  "0440483e-ca0e-4120-8c50-4c8cd9b965d6",
             title =  "Princess Mononoke",
             originalTitleRomanised =  "Mononoke hime",
@@ -43,7 +42,7 @@ class MovieMockDataSource @Inject constructor(
             rtScore =  92,
             favourite = true
         ),
-        Movie(
+        MovieRepository(
             id =  "58611129-2dbc-4a81-a72f-77ddfc1b1b49",
             title =  "My Neighbor Totoro",
             originalTitleRomanised =  "Tonari no Totoro",
@@ -57,7 +56,7 @@ class MovieMockDataSource @Inject constructor(
             rtScore =  93,
             favourite = false
         ),
-        Movie(
+        MovieRepository(
             id =  "758bf02e-3122-46e0-884e-67cf83df1786",
             title =  "Ponyo",
             originalTitleRomanised =  "Gake no ue no Ponyo",
@@ -73,9 +72,9 @@ class MovieMockDataSource @Inject constructor(
         )
     )
 
-    override fun get(): Flow<List<Movie>> = flowOf(movies)
+    override fun get(): Flow<List<MovieRepository>> = flowOf(movies)
 
-    override suspend fun update(movie: Movie): Result<Boolean> = withContext(dispatcher) {
+    override suspend fun update(movie: MovieRepository): Result<Boolean> = withContext(dispatcher) {
         delay(1000)
         movies = movies.map {
             if (it.id == movie.id) {

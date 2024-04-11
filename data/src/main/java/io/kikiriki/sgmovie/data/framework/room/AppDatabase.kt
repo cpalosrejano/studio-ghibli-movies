@@ -1,4 +1,4 @@
-package io.kikiriki.sgmovie.framework.room
+package io.kikiriki.sgmovie.data.framework.room
 
 import androidx.room.Database
 import androidx.room.RoomDatabase

@@ -1,11 +1,9 @@
 package io.kikiriki.sgmovie.data.repository.movie
 
-import io.kikiriki.sgmovie.data.model.domain.Movie
-import io.kikiriki.sgmovie.data.model.domain.toLocal
-import io.kikiriki.sgmovie.data.model.local.toDomain
-import io.kikiriki.sgmovie.data.model.remote.toDomain
+import io.kikiriki.sgmovie.data.model.toLocal
+import io.kikiriki.sgmovie.data.model.toRepository
+import io.kikiriki.sgmovie.data.utils.Constants.Repository
 import io.kikiriki.sgmovie.framework.hilt.IODispatcher
-import io.kikiriki.sgmovie.utils.Constants.Repository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -23,7 +21,7 @@ class MovieRepositoryImpl @Inject constructor(
     @IODispatcher private val dispatcher: CoroutineDispatcher
 ) : MovieRepository {
 
-    override fun get(): Flow<List<Movie>> = flow {
+    override fun get(): Flow<List<io.kikiriki.sgmovie.data.model.MovieRepository>> = flow {
         if (Repository.MOCK) {
            mock.get()
                .flowOn(dispatcher)
@@ -34,19 +32,20 @@ class MovieRepositoryImpl @Inject constructor(
         } else {
 
             // update or insert data from internet into our database
-            val remoteData = remote.get().getOrThrow().toDomain().toLocal()
+            val remoteData = remote.get().getOrThrow().toRepository().toLocal()
+
             local.insert(remoteData)
 
             // start to listen changes in database
             local.get()
                 .flowOn(dispatcher)
-                .onEach { emit(it.toDomain()) }
+                .onEach { emit(it.toRepository()) }
                 .catch { throw it }
                 .collect()
         }
     }
 
-    override suspend fun update(movie: Movie): Result<Boolean> = withContext(dispatcher) {
+    override suspend fun update(movie: io.kikiriki.sgmovie.data.model.MovieRepository): Result<Boolean> = withContext(dispatcher) {
         if (Repository.MOCK) {
             return@withContext mock.update(movie)
         }

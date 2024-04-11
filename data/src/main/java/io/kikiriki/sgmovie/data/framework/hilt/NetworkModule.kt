@@ -1,4 +1,4 @@
-package io.kikiriki.sgmovie.framework.hilt
+package io.kikiriki.sgmovie.data.framework.hilt
 
 import androidx.annotation.Keep
 import dagger.Module
@@ -6,7 +6,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import io.kikiriki.sgmovie.data.repository.movie.remote.MovieEndpoints
-import io.kikiriki.sgmovie.utils.Constants.Repository.URL
+import io.kikiriki.sgmovie.data.utils.Constants.Repository.URL
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit

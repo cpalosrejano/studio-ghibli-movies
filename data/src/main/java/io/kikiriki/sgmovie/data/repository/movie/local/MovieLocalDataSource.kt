@@ -1,10 +1,9 @@
 package io.kikiriki.sgmovie.data.repository.movie.local
 
-import io.kikiriki.sgmovie.data.model.local.LocalDataSourceException
-import io.kikiriki.sgmovie.data.model.local.MovieLocal
+import io.kikiriki.sgmovie.data.repository.LocalDataSourceException
+import io.kikiriki.sgmovie.data.repository.LocalDataSourceException.Code
 import io.kikiriki.sgmovie.data.repository.movie.MovieRepository
 import io.kikiriki.sgmovie.framework.hilt.IODispatcher
-import io.kikiriki.sgmovie.utils.ExceptionManager
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -20,20 +19,20 @@ class MovieLocalDataSource @Inject constructor(
     @IODispatcher private val dispatcher: CoroutineDispatcher
 )  : MovieRepository.LocalDataSource {
 
-    override fun get(): Flow<List<MovieLocal>> = flow {
+    override fun get(): Flow<List<io.kikiriki.sgmovie.data.model.local.MovieLocal>> = flow {
         movieDao.getAll()
             .flowOn(dispatcher)
             .onEach { emit(it) }
             .catch {
                 throw LocalDataSourceException(
-                    ExceptionManager.Code.BBDD_CANNOT_GET_MOVIES,
-                    "BBDD_CANNOT_GET_MOVIES"
+                    code = Code.CANNOT_GET_MOVIES,
+                    message = it.message.orEmpty()
                 )
             }
             .collect()
     }
 
-    override suspend fun insert(movies: List<MovieLocal>): Result<Boolean> = withContext(dispatcher) {
+    override suspend fun insert(movies: List<io.kikiriki.sgmovie.data.model.local.MovieLocal>): Result<Boolean> = withContext(dispatcher) {
         return@withContext try {
             // get favourites and set to new list
             val favourites = movieDao.getFavourites()
@@ -45,22 +44,26 @@ class MovieLocalDataSource @Inject constructor(
             Result.success(true)
 
         } catch (failure: Exception) {
-            Result.failure(LocalDataSourceException(
-                code = ExceptionManager.Code.BBDD_CANNOT_INSERT_MOVIES,
-                message = failure.localizedMessage.orEmpty()
-            ))
+            Result.failure(
+                LocalDataSourceException(
+                    code = Code.CANNOT_INSERT_MOVIES,
+                    message = failure.localizedMessage.orEmpty()
+                )
+            )
         }
     }
 
-    override suspend fun update(movie: MovieLocal): Result<Boolean> = withContext(dispatcher) {
+    override suspend fun update(movie: io.kikiriki.sgmovie.data.model.local.MovieLocal): Result<Boolean> = withContext(dispatcher) {
         return@withContext try {
             val value = movieDao.updateFavourite(movie) == 1
             Result.success(value)
         } catch (failure: Exception) {
-            Result.failure(LocalDataSourceException(
-                code = ExceptionManager.Code.BBDD_CANNOT_UPDATE_MOVIE,
-                message = failure.localizedMessage.orEmpty()
-            ))
+            Result.failure(
+                LocalDataSourceException(
+                    code = Code.CANNOT_UPDATE_MOVIE,
+                    message = failure.localizedMessage.orEmpty()
+                )
+            )
         }
     }
 

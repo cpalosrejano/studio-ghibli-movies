@@ -1,10 +1,9 @@
 package io.kikiriki.sgmovie.data.repository.movie.remote
 
 import io.kikiriki.sgmovie.data.model.remote.MovieRemote
-import io.kikiriki.sgmovie.data.model.remote.RemoteDataSourceException
+import io.kikiriki.sgmovie.data.repository.RemoteDataSourceException
 import io.kikiriki.sgmovie.data.repository.movie.MovieRepository
 import io.kikiriki.sgmovie.framework.hilt.IODispatcher
-import io.kikiriki.sgmovie.utils.ExceptionManager
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
@@ -27,24 +26,21 @@ class MovieRemoteDataSource @Inject constructor(
         }
     }
 
-    private fun handleException(exception: Exception) : Exception {
+    private fun handleException(exception: Exception) : RemoteDataSourceException {
         if (exception is HttpException) {
-            val code = when (exception.code()) {
-                401 -> { ExceptionManager.Code.NETWORK_UNAUTHORIZED }
-                404 -> { ExceptionManager.Code.NETWORK_NOT_FOUND }
-                else -> { ExceptionManager.Code.DEFAULT_ERROR }
-            }
             return RemoteDataSourceException(
-                code = code,
-                message = exception.localizedMessage.orEmpty(),
-                httpCode = exception.code()
+                code = when (exception.code()) {
+                    401 -> { RemoteDataSourceException.Code.UNAUTHORIZED }
+                    404 -> { RemoteDataSourceException.Code.RESOURCE_NOT_FOUND }
+                    else -> { RemoteDataSourceException.Code.HTTP_UNKNOWN }
+                },
+                message = exception.message.orEmpty()
             )
 
         } else {
             return RemoteDataSourceException(
-                code = ExceptionManager.Code.DEFAULT_ERROR,
-                message = exception.message.orEmpty(),
-                httpCode = null
+                code = RemoteDataSourceException.Code.DEFAULT,
+                message = exception.message.orEmpty()
             )
         }
     }

@@ -1,14 +1,15 @@
 package io.kikiriki.sgmovie.data.repository.movie
 
-import io.kikiriki.sgmovie.data.model.domain.Movie
 import io.kikiriki.sgmovie.data.model.local.MovieLocal
 import io.kikiriki.sgmovie.data.model.remote.MovieRemote
 import kotlinx.coroutines.flow.Flow
 
 interface MovieRepository {
 
-    fun get() : Flow<List<Movie>>
-    suspend fun update(movie: Movie) : Result<Boolean>
+    fun get() : Flow<List<io.kikiriki.sgmovie.data.model.MovieRepository>>
+
+    //fun refreshMovies() : Flow<List<io.kikiriki.sgmovie.data.model.MovieRepository>>
+    suspend fun update(movie: io.kikiriki.sgmovie.data.model.MovieRepository) : Result<Boolean>
 
     interface RemoteDataSource {
         suspend fun get() : Result<List<MovieRemote>>
