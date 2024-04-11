@@ -1,4 +1,4 @@
-package io.kikiriki.sgmovie.framework.hilt
+package io.kikiriki.sgmovie.common.di.dispatchers
 
 import dagger.Module
 import dagger.Provides
