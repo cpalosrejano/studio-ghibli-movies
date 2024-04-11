@@ -1,9 +1,9 @@
 package io.kikiriki.sgmovie.data.repository.movie
 
+import io.kikiriki.sgmovie.common.di.dispatchers.IODispatcher
 import io.kikiriki.sgmovie.data.model.toLocal
 import io.kikiriki.sgmovie.data.model.toRepository
 import io.kikiriki.sgmovie.data.utils.Constants.Repository
-import io.kikiriki.sgmovie.framework.hilt.IODispatcher
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch

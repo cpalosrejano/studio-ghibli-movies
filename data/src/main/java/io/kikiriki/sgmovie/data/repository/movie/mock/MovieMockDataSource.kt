@@ -1,7 +1,7 @@
 package io.kikiriki.sgmovie.data.repository.movie.mock
 
+import io.kikiriki.sgmovie.common.di.dispatchers.IODispatcher
 import io.kikiriki.sgmovie.data.model.MovieRepository
-import io.kikiriki.sgmovie.framework.hilt.IODispatcher
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
