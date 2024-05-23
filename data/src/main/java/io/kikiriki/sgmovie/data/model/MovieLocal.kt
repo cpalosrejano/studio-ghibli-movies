@@ -1,7 +1,11 @@
-package io.kikiriki.sgmovie.data.model.remote
+package io.kikiriki.sgmovie.data.model
 
-data class MovieRemote(
-    val id: String,
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity
+data class MovieLocal(
+    @PrimaryKey val id: String,
     val title: String,
     val original_title_romanised: String? = null,
     val image: String,
@@ -12,4 +16,5 @@ data class MovieRemote(
     val release_date: String,
     val running_time: String? = null,
     val rt_score: String,
+    var favourite: Boolean = false
 )

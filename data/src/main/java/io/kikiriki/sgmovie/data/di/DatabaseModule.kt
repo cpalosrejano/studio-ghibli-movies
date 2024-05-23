@@ -1,4 +1,4 @@
-package io.kikiriki.sgmovie.data.framework.hilt
+package io.kikiriki.sgmovie.data.di
 
 import android.content.Context
 import androidx.room.Room
@@ -7,7 +7,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import io.kikiriki.sgmovie.data.framework.room.AppDatabase
+import io.kikiriki.sgmovie.data.AppDatabase
 import io.kikiriki.sgmovie.data.repository.movie.local.MovieDao
 
 @Module

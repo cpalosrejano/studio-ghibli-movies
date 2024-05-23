@@ -1,9 +1,10 @@
 package io.kikiriki.sgmovie.data.repository.movie.local
 
-import io.kikiriki.sgmovie.common.di.dispatchers.IODispatcher
-import io.kikiriki.sgmovie.data.repository.LocalDataSourceException
-import io.kikiriki.sgmovie.data.repository.LocalDataSourceException.Code
-import io.kikiriki.sgmovie.data.repository.movie.MovieRepository
+import io.kikiriki.sgmovie.core.coroutines.di.IODispatcher
+import io.kikiriki.sgmovie.data.model.MovieLocal
+import io.kikiriki.sgmovie.data.repository.movie.MovieLocalDataSource
+import io.kikiriki.sgmovie.data.utils.LocalDataSourceException
+import io.kikiriki.sgmovie.data.utils.LocalDataSourceException.Code
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -14,12 +15,12 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class MovieLocalDataSource @Inject constructor(
+class MovieLocalDataSourceImpl @Inject constructor(
     private val movieDao: MovieDao,
     @IODispatcher private val dispatcher: CoroutineDispatcher
-)  : MovieRepository.LocalDataSource {
+)  : MovieLocalDataSource {
 
-    override fun get(): Flow<List<io.kikiriki.sgmovie.data.model.local.MovieLocal>> = flow {
+    override fun get(): Flow<List<MovieLocal>> = flow {
         movieDao.getAll()
             .flowOn(dispatcher)
             .onEach { emit(it) }
@@ -32,7 +33,7 @@ class MovieLocalDataSource @Inject constructor(
             .collect()
     }
 
-    override suspend fun insert(movies: List<io.kikiriki.sgmovie.data.model.local.MovieLocal>): Result<Boolean> = withContext(dispatcher) {
+    override suspend fun insert(movies: List<MovieLocal>): Result<Boolean> = withContext(dispatcher) {
         return@withContext try {
             // get favourites and set to new list
             val favourites = movieDao.getFavourites()
@@ -53,7 +54,7 @@ class MovieLocalDataSource @Inject constructor(
         }
     }
 
-    override suspend fun update(movie: io.kikiriki.sgmovie.data.model.local.MovieLocal): Result<Boolean> = withContext(dispatcher) {
+    override suspend fun update(movie: MovieLocal): Result<Boolean> = withContext(dispatcher) {
         return@withContext try {
             val value = movieDao.updateFavourite(movie) == 1
             Result.success(value)

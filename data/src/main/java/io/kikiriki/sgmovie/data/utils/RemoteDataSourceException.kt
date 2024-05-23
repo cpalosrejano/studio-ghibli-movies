@@ -1,4 +1,4 @@
-package io.kikiriki.sgmovie.data.repository
+package io.kikiriki.sgmovie.data.utils
 
 class RemoteDataSourceException(
     val code: Code,

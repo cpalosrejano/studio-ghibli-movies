@@ -1,18 +1,18 @@
 package io.kikiriki.sgmovie.data.repository.movie.remote
 
-import io.kikiriki.sgmovie.common.di.dispatchers.IODispatcher
-import io.kikiriki.sgmovie.data.model.remote.MovieRemote
-import io.kikiriki.sgmovie.data.repository.RemoteDataSourceException
-import io.kikiriki.sgmovie.data.repository.movie.MovieRepository
+import io.kikiriki.sgmovie.core.coroutines.di.IODispatcher
+import io.kikiriki.sgmovie.data.model.MovieRemote
+import io.kikiriki.sgmovie.data.repository.movie.MovieRemoteDataSource
+import io.kikiriki.sgmovie.data.utils.RemoteDataSourceException
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import javax.inject.Inject
 
-class MovieRemoteDataSource @Inject constructor(
+class MovieRemoteDataSourceImpl @Inject constructor(
     private val movieEndpoints: MovieEndpoints,
     @IODispatcher private val dispatcher: CoroutineDispatcher
-)  : MovieRepository.RemoteDataSource {
+)  : MovieRemoteDataSource {
 
     override suspend fun get(): Result<List<MovieRemote>> = withContext(dispatcher) {
         val fields = "id,title,original_title_romanised,image,movie_banner,description,director,producer,release_date,running_time,rt_score"

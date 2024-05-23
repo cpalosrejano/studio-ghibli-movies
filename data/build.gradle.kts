@@ -1,6 +1,6 @@
 plugins {
-    id("kotlin-kapt")
     id("com.android.library")
+    id("kotlin-kapt")
     id("org.jetbrains.kotlin.android")
 }
 
@@ -35,8 +35,8 @@ android {
 
 dependencies {
 
-    // common module
-    implementation(project(":common"))
+    implementation(project(":core:coroutines"))
+    implementation(project(":domain"))
 
     // hilt - dependency injector
     implementation("com.google.dagger:hilt-android:2.44")

@@ -1,8 +1,8 @@
-package io.kikiriki.sgmovie.data.framework.room
+package io.kikiriki.sgmovie.data
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import io.kikiriki.sgmovie.data.model.local.MovieLocal
+import io.kikiriki.sgmovie.data.model.MovieLocal
 import io.kikiriki.sgmovie.data.repository.movie.local.MovieDao
 
 @Database(
