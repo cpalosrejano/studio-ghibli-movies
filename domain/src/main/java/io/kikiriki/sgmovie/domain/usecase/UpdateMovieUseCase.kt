@@ -1,8 +1,8 @@
-package io.kikiriki.sgmovie.domain.movie
+package io.kikiriki.sgmovie.domain.usecase
 
-import io.kikiriki.sgmovie.data.model.domain.Movie
-import io.kikiriki.sgmovie.data.repository.movie.MovieRepository
-import io.kikiriki.sgmovie.framework.hilt.IODispatcher
+import io.kikiriki.sgmovie.core.coroutines.di.IODispatcher
+import io.kikiriki.sgmovie.domain.model.Movie
+import io.kikiriki.sgmovie.domain.repository.MovieRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
