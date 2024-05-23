@@ -1,4 +1,4 @@
-package io.kikiriki.sgmovie.common
+package io.kikiriki.sgmovie.core.coroutines.di
 
 import org.junit.Assert.assertEquals
 import org.junit.Test

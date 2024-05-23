@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "io.kikiriki.sgmovie.common"
+    namespace = "io.kikiriki.sgmovie.core.coroutines.di"
     compileSdk = 34
 
     defaultConfig {
