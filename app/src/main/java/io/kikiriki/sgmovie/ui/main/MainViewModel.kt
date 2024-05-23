@@ -4,9 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import io.kikiriki.sgmovie.data.model.domain.Movie
-import io.kikiriki.sgmovie.domain.movie.GetMoviesUseCase
-import io.kikiriki.sgmovie.domain.movie.UpdateMovieUseCase
+import io.kikiriki.sgmovie.domain.model.Movie
+import io.kikiriki.sgmovie.domain.usecase.GetMoviesUseCase
+import io.kikiriki.sgmovie.domain.usecase.UpdateMovieUseCase
 import io.kikiriki.sgmovie.utils.ExceptionManager
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect

@@ -15,4 +15,5 @@ dependencyResolutionManagement {
 rootProject.name = "studio-ghibli-movies"
 include ':app'
 include ':data'
-include ':common'
+include ':domain'
+include ':core:coroutines'

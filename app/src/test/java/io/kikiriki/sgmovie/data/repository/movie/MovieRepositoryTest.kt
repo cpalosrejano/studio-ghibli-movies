@@ -1,14 +1,11 @@
 package io.kikiriki.sgmovie.data.repository.movie
 
+import io.kikiriki.sgmovie.data.local.dao.MovieDao
 import io.kikiriki.sgmovie.data.model.domain.toLocal
-import io.kikiriki.sgmovie.data.model.local.LocalDataSourceException
 import io.kikiriki.sgmovie.data.model.local.toDomain
-import io.kikiriki.sgmovie.data.model.remote.RemoteDataSourceException
-import io.kikiriki.sgmovie.data.repository.movie.local.MovieDao
-import io.kikiriki.sgmovie.data.repository.movie.local.MovieLocalDataSource
-import io.kikiriki.sgmovie.data.repository.movie.mock.MovieMockDataSource
-import io.kikiriki.sgmovie.data.repository.movie.remote.MovieEndpoints
-import io.kikiriki.sgmovie.data.repository.movie.remote.MovieRemoteDataSource
+import io.kikiriki.sgmovie.data.remote.movie.MovieEndpoints
+import io.kikiriki.sgmovie.data.repository.LocalDataSourceException
+import io.kikiriki.sgmovie.data.repository.RemoteDataSourceException
 import io.kikiriki.sgmovie.util.DataMock
 import io.kikiriki.sgmovie.utils.ExceptionManager
 import io.mockk.MockKAnnotations
@@ -28,10 +25,10 @@ import retrofit2.Response
 
 class MovieRepositoryTest {
 
-    @RelaxedMockK private lateinit var endpoints: MovieEndpoints
-    @RelaxedMockK private lateinit var dao: MovieDao
+    @RelaxedMockK private lateinit var endpoints: io.kikiriki.sgmovie.data.remote.movie.MovieEndpoints
+    @RelaxedMockK private lateinit var dao: io.kikiriki.sgmovie.data.local.dao.MovieDao
 
-    private lateinit var repository: MovieRepository
+    private lateinit var repository: io.kikiriki.sgmovie.data.repository.movie.MovieRepository
 
     private val fields = "id,title,original_title_romanised,image,movie_banner,description,director,producer,release_date,running_time,rt_score"
     private val limit = 250
@@ -41,7 +38,7 @@ class MovieRepositoryTest {
         MockKAnnotations.init(this)
 
         // build repository
-        repository = MovieRepositoryImpl(
+        repository = io.kikiriki.sgmovie.data.repository.movie.MovieRepositoryImpl(
             remote = MovieRemoteDataSource(endpoints, Dispatchers.Unconfined),
             local = MovieLocalDataSource(dao, Dispatchers.Unconfined),
             mock = MovieMockDataSource(Dispatchers.Unconfined),
@@ -77,8 +74,8 @@ class MovieRepositoryTest {
         }
 
         // then
-        assert( exception is RemoteDataSourceException )
-        assert( (exception as? RemoteDataSourceException)?.code == ExceptionManager.Code.NETWORK_UNAUTHORIZED )
+        assert( exception is io.kikiriki.sgmovie.data.repository.RemoteDataSourceException)
+        assert( (exception as? io.kikiriki.sgmovie.data.repository.RemoteDataSourceException)?.code == ExceptionManager.Code.NETWORK_UNAUTHORIZED )
     }
 
     @Test
@@ -96,8 +93,8 @@ class MovieRepositoryTest {
         }
 
         // then
-        assert( exception is RemoteDataSourceException )
-        assert( (exception as? RemoteDataSourceException)?.code == ExceptionManager.Code.NETWORK_NOT_FOUND )
+        assert( exception is io.kikiriki.sgmovie.data.repository.RemoteDataSourceException)
+        assert( (exception as? io.kikiriki.sgmovie.data.repository.RemoteDataSourceException)?.code == ExceptionManager.Code.NETWORK_NOT_FOUND )
 
     }
 
@@ -116,15 +113,18 @@ class MovieRepositoryTest {
         }
 
         // then
-        assert( exception is RemoteDataSourceException )
-        assert( (exception as? RemoteDataSourceException)?.code == ExceptionManager.Code.DEFAULT_ERROR )
+        assert( exception is io.kikiriki.sgmovie.data.repository.RemoteDataSourceException)
+        assert( (exception as? io.kikiriki.sgmovie.data.repository.RemoteDataSourceException)?.code == ExceptionManager.Code.DEFAULT_ERROR )
 
     }
 
     @Test
     fun check_if_get_local_then_error_cannot_get_movies() = runBlocking {
         // given
-        val localException = LocalDataSourceException(ExceptionManager.Code.BBDD_CANNOT_GET_MOVIES, "BBDD_CANNOT_GET_MOVIES")
+        val localException = io.kikiriki.sgmovie.data.repository.LocalDataSourceException(
+            ExceptionManager.Code.BBDD_CANNOT_GET_MOVIES,
+            "BBDD_CANNOT_GET_MOVIES"
+        )
         coEvery { endpoints.getMovies(limit, fields) } returns DataMock.moviesRemote
         coEvery { dao.getAll() } throws localException
 
@@ -137,15 +137,18 @@ class MovieRepositoryTest {
         }
 
         // then
-        assert( exception is LocalDataSourceException )
-        assert( (exception as? LocalDataSourceException)?.code == ExceptionManager.Code.BBDD_CANNOT_GET_MOVIES )
+        assert( exception is io.kikiriki.sgmovie.data.repository.LocalDataSourceException)
+        assert( (exception as? io.kikiriki.sgmovie.data.repository.LocalDataSourceException)?.code == ExceptionManager.Code.BBDD_CANNOT_GET_MOVIES )
 
     }
 
     @Test
     fun check_if_get_local_then_error_cannot_insert_movies() = runBlocking {
         // given
-        val localException = LocalDataSourceException(ExceptionManager.Code.BBDD_CANNOT_INSERT_MOVIES, "BBDD_CANNOT_INSERT_MOVIES")
+        val localException = io.kikiriki.sgmovie.data.repository.LocalDataSourceException(
+            ExceptionManager.Code.BBDD_CANNOT_INSERT_MOVIES,
+            "BBDD_CANNOT_INSERT_MOVIES"
+        )
         coEvery { endpoints.getMovies(limit, fields) } returns DataMock.moviesRemote
         coEvery { dao.getAll() } throws localException
 
@@ -158,15 +161,18 @@ class MovieRepositoryTest {
         }
 
         // then
-        assert( exception is LocalDataSourceException )
-        assert( (exception as? LocalDataSourceException)?.code == ExceptionManager.Code.BBDD_CANNOT_INSERT_MOVIES )
+        assert( exception is io.kikiriki.sgmovie.data.repository.LocalDataSourceException)
+        assert( (exception as? io.kikiriki.sgmovie.data.repository.LocalDataSourceException)?.code == ExceptionManager.Code.BBDD_CANNOT_INSERT_MOVIES )
 
     }
 
     @Test
     fun check_if_get_local_then_error_cannot_update_movies() = runBlocking {
         // given
-        val localException = LocalDataSourceException(ExceptionManager.Code.BBDD_CANNOT_UPDATE_MOVIE, "BBDD_CANNOT_UPDATE_MOVIE")
+        val localException = io.kikiriki.sgmovie.data.repository.LocalDataSourceException(
+            ExceptionManager.Code.BBDD_CANNOT_UPDATE_MOVIE,
+            "BBDD_CANNOT_UPDATE_MOVIE"
+        )
         val movieLocal = DataMock.moviesLocal.first()
         coEvery { dao.updateFavourite(movieLocal) } throws localException
 
@@ -175,8 +181,8 @@ class MovieRepositoryTest {
 
         // then
         assert( result.isFailure )
-        assert( result.exceptionOrNull() is LocalDataSourceException )
-        assert( (result.exceptionOrNull() as? LocalDataSourceException)?.code == ExceptionManager.Code.BBDD_CANNOT_UPDATE_MOVIE )
+        assert( result.exceptionOrNull() is io.kikiriki.sgmovie.data.repository.LocalDataSourceException)
+        assert( (result.exceptionOrNull() as? io.kikiriki.sgmovie.data.repository.LocalDataSourceException)?.code == ExceptionManager.Code.BBDD_CANNOT_UPDATE_MOVIE )
 
     }
 

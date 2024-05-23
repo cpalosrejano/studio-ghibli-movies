@@ -8,8 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import coil.transform.RoundedCornersTransformation
 import io.kikiriki.sgmovie.R
-import io.kikiriki.sgmovie.data.model.domain.Movie
 import io.kikiriki.sgmovie.databinding.ItemMovieBinding
+import io.kikiriki.sgmovie.domain.model.Movie
 import io.kikiriki.sgmovie.utils.Constants.Coil.CROSSFADE
 import io.kikiriki.sgmovie.utils.Constants.Coil.ROUNDED_CORNERS
 

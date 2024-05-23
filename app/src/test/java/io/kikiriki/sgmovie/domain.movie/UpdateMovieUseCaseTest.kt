@@ -1,9 +1,6 @@
 package io.kikiriki.sgmovie.domain.movie
 
 import io.kikiriki.sgmovie.BaseTest
-import io.kikiriki.sgmovie.data.model.domain.Movie
-import io.kikiriki.sgmovie.data.model.local.LocalDataSourceException
-import io.kikiriki.sgmovie.data.repository.movie.MovieRepository
 import io.kikiriki.sgmovie.utils.ExceptionManager
 import io.mockk.coEvery
 import io.mockk.impl.annotations.RelaxedMockK
@@ -15,18 +12,19 @@ import org.junit.Test
 @ExperimentalCoroutinesApi
 class UpdateMovieUseCaseTest : BaseTest() {
 
-    @RelaxedMockK private lateinit var movieRepository: MovieRepository
-    private lateinit var updateMovieUseCase: UpdateMovieUseCase
+    @RelaxedMockK private lateinit var movieRepository: io.kikiriki.sgmovie.data.repository.movie.MovieRepository
+    private lateinit var updateMovieUseCase: io.kikiriki.sgmovie.domain.usecase.UpdateMovieUseCase
 
     override fun onStart() {
         super.onStart()
-        updateMovieUseCase = UpdateMovieUseCase(movieRepository, Dispatchers.IO)
+        updateMovieUseCase =
+            io.kikiriki.sgmovie.domain.usecase.UpdateMovieUseCase(movieRepository, Dispatchers.IO)
     }
 
     @Test
     fun update_movie_test_error_database_cannot_update() = runBlocking {
         // given
-        val movie = Movie(
+        val movie = io.kikiriki.sgmovie.domain.model.Movie(
             id = "dc2e6bd1-8156-4886-adff-b39e6043af0c",
             title = "Spirited Away",
             originalTitleRomanised = "Sen to Chihiro no kamikakushi",
@@ -40,7 +38,7 @@ class UpdateMovieUseCaseTest : BaseTest() {
             rtScore = 97,
             favourite = true
         )
-        val exception = LocalDataSourceException(
+        val exception = io.kikiriki.sgmovie.data.repository.LocalDataSourceException(
             code = ExceptionManager.Code.BBDD_CANNOT_UPDATE_MOVIE,
             message = "random exception message"
         )
@@ -51,14 +49,14 @@ class UpdateMovieUseCaseTest : BaseTest() {
 
         // then
         assert( result.isFailure )
-        assert( result.exceptionOrNull() is LocalDataSourceException )
+        assert( result.exceptionOrNull() is io.kikiriki.sgmovie.data.repository.LocalDataSourceException)
 
     }
 
     @Test
     fun update_movie_test_success() = runBlocking {
         // given
-        val movie = Movie(
+        val movie = io.kikiriki.sgmovie.domain.model.Movie(
             id = "dc2e6bd1-8156-4886-adff-b39e6043af0c",
             title = "Spirited Away",
             originalTitleRomanised = "Sen to Chihiro no kamikakushi",

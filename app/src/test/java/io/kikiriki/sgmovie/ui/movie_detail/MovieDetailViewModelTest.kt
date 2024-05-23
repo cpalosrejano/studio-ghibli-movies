@@ -2,9 +2,6 @@ package io.kikiriki.sgmovie.ui.movie_detail
 
 import io.kikiriki.sgmovie.BaseTest
 import io.kikiriki.sgmovie.R
-import io.kikiriki.sgmovie.data.model.domain.Movie
-import io.kikiriki.sgmovie.data.model.local.LocalDataSourceException
-import io.kikiriki.sgmovie.domain.movie.UpdateMovieUseCase
 import io.kikiriki.sgmovie.utils.ExceptionManager
 import io.mockk.coEvery
 import io.mockk.impl.annotations.RelaxedMockK
@@ -15,7 +12,7 @@ import org.junit.Test
 @ExperimentalCoroutinesApi
 class MovieDetailViewModelTest : BaseTest() {
 
-    @RelaxedMockK private lateinit var updateMovieUseCase: UpdateMovieUseCase
+    @RelaxedMockK private lateinit var updateMovieUseCase: io.kikiriki.sgmovie.domain.usecase.UpdateMovieUseCase
     private lateinit var movieDetailViewModel: MovieDetailViewModel
 
     override fun onStart() {
@@ -26,7 +23,7 @@ class MovieDetailViewModelTest : BaseTest() {
     @Test
     fun update_movie_test_error_database_cannot_update() = runBlocking {
         // given
-        val movie = Movie(
+        val movie = io.kikiriki.sgmovie.domain.model.Movie(
             id = "dc2e6bd1-8156-4886-adff-b39e6043af0c",
             title = "Spirited Away",
             originalTitleRomanised = "Sen to Chihiro no kamikakushi",
@@ -40,7 +37,7 @@ class MovieDetailViewModelTest : BaseTest() {
             rtScore = 97,
             favourite = true
         )
-        val exception = LocalDataSourceException(
+        val exception = io.kikiriki.sgmovie.data.repository.LocalDataSourceException(
             code = ExceptionManager.Code.BBDD_CANNOT_UPDATE_MOVIE,
             message = "random exception message"
         )
@@ -56,7 +53,7 @@ class MovieDetailViewModelTest : BaseTest() {
     @Test
     fun update_movie_test_success() = runBlocking {
         // given
-        val movie = Movie(
+        val movie = io.kikiriki.sgmovie.domain.model.Movie(
             id = "dc2e6bd1-8156-4886-adff-b39e6043af0c",
             title = "Spirited Away",
             originalTitleRomanised = "Sen to Chihiro no kamikakushi",

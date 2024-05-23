@@ -1,4 +1,4 @@
-package io.kikiriki.sgmovie.data.model.domain
+package io.kikiriki.sgmovie.model
 
 import androidx.annotation.StringRes
 import io.kikiriki.sgmovie.R

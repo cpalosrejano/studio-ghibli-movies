@@ -10,8 +10,8 @@ import coil.transform.RoundedCornersTransformation
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import io.kikiriki.sgmovie.R
-import io.kikiriki.sgmovie.data.model.domain.Movie
 import io.kikiriki.sgmovie.databinding.FragmentMovieDetailBinding
+import io.kikiriki.sgmovie.domain.model.Movie
 import io.kikiriki.sgmovie.utils.Constants.Coil.CROSSFADE
 import io.kikiriki.sgmovie.utils.Constants.Coil.ROUNDED_CORNERS
 import io.kikiriki.sgmovie.utils.Constants.Coil.ROUNDED_CORNERS_XL
