@@ -1,4 +1,4 @@
-package io.kikiriki.sgmovie
+package io.kikiriki.sgmovie.core.test
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import io.mockk.MockKAnnotations
