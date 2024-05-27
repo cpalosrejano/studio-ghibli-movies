@@ -1,9 +1,13 @@
-package io.kikiriki.sgmovie.util
+package io.kikiriki.sgmovie.data.repository.movie.util
+
+import io.kikiriki.sgmovie.data.model.MovieLocal
+import io.kikiriki.sgmovie.data.model.MovieRemote
+import io.kikiriki.sgmovie.domain.model.Movie
 
 object DataMock {
 
-    val moviesRemote = listOf<io.kikiriki.sgmovie.data.remote.model.MovieRemote>(
-        io.kikiriki.sgmovie.data.remote.model.MovieRemote(
+    val moviesRemote = listOf<MovieRemote>(
+        MovieRemote(
             id = "dc2e6bd1-8156-4886-adff-b39e6043af0c",
             title = "Spirited Away",
             original_title_romanised = "Sen to Chihiro no kamikakushi",
@@ -16,7 +20,7 @@ object DataMock {
             running_time = "124",
             rt_score = "97"
         ),
-        io.kikiriki.sgmovie.data.remote.model.MovieRemote(
+        MovieRemote(
             id = "0440483e-ca0e-4120-8c50-4c8cd9b965d6",
             title = "Princess Mononoke",
             original_title_romanised = "Mononoke hime",
@@ -29,7 +33,7 @@ object DataMock {
             running_time = "134",
             rt_score = "92"
         ),
-        io.kikiriki.sgmovie.data.remote.model.MovieRemote(
+        MovieRemote(
             id = "58611129-2dbc-4a81-a72f-77ddfc1b1b49",
             title = "My Neighbor Totoro",
             original_title_romanised = "Tonari no Totoro",
@@ -42,7 +46,7 @@ object DataMock {
             running_time = "86",
             rt_score = "93"
         ),
-        io.kikiriki.sgmovie.data.remote.model.MovieRemote(
+        MovieRemote(
             id = "758bf02e-3122-46e0-884e-67cf83df1786",
             title = "Ponyo",
             original_title_romanised = "Gake no ue no Ponyo",
@@ -57,8 +61,8 @@ object DataMock {
         )
     )
 
-    val moviesLocal = listOf<io.kikiriki.sgmovie.data.local.model.MovieLocal>(
-        io.kikiriki.sgmovie.data.local.model.MovieLocal(
+    val moviesLocal = listOf<MovieLocal>(
+        MovieLocal(
             id = "dc2e6bd1-8156-4886-adff-b39e6043af0c",
             title = "Spirited Away",
             original_title_romanised = "Sen to Chihiro no kamikakushi",
@@ -71,7 +75,7 @@ object DataMock {
             running_time = "124",
             rt_score = "97"
         ),
-        io.kikiriki.sgmovie.data.local.model.MovieLocal(
+        MovieLocal(
             id = "0440483e-ca0e-4120-8c50-4c8cd9b965d6",
             title = "Princess Mononoke",
             original_title_romanised = "Mononoke hime",
@@ -84,7 +88,7 @@ object DataMock {
             running_time = "134",
             rt_score = "92"
         ),
-        io.kikiriki.sgmovie.data.local.model.MovieLocal(
+        MovieLocal(
             id = "58611129-2dbc-4a81-a72f-77ddfc1b1b49",
             title = "My Neighbor Totoro",
             original_title_romanised = "Tonari no Totoro",
@@ -97,7 +101,7 @@ object DataMock {
             running_time = "86",
             rt_score = "93"
         ),
-        io.kikiriki.sgmovie.data.local.model.MovieLocal(
+        MovieLocal(
             id = "758bf02e-3122-46e0-884e-67cf83df1786",
             title = "Ponyo",
             original_title_romanised = "Gake no ue no Ponyo",
@@ -112,8 +116,8 @@ object DataMock {
         )
     )
 
-    val movies = listOf<io.kikiriki.sgmovie.domain.model.Movie>(
-        io.kikiriki.sgmovie.domain.model.Movie(
+    val movies = listOf<Movie>(
+        Movie(
             id = "dc2e6bd1-8156-4886-adff-b39e6043af0c",
             title = "Spirited Away",
             originalTitleRomanised = "Sen to Chihiro no kamikakushi",
@@ -127,7 +131,7 @@ object DataMock {
             rtScore = 97,
             favourite = true
         ),
-        io.kikiriki.sgmovie.domain.model.Movie(
+        Movie(
             id = "0440483e-ca0e-4120-8c50-4c8cd9b965d6",
             title = "Princess Mononoke",
             originalTitleRomanised = "Mononoke hime",
@@ -141,7 +145,7 @@ object DataMock {
             rtScore = 92,
             favourite = true
         ),
-        io.kikiriki.sgmovie.domain.model.Movie(
+        Movie(
             id = "58611129-2dbc-4a81-a72f-77ddfc1b1b49",
             title = "My Neighbor Totoro",
             originalTitleRomanised = "Tonari no Totoro",
@@ -155,7 +159,7 @@ object DataMock {
             rtScore = 93,
             favourite = false
         ),
-        io.kikiriki.sgmovie.domain.model.Movie(
+        Movie(
             id = "758bf02e-3122-46e0-884e-67cf83df1786",
             title = "Ponyo",
             originalTitleRomanised = "Gake no ue no Ponyo",

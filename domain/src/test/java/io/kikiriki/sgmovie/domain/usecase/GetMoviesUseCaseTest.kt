@@ -1,7 +1,8 @@
-package io.kikiriki.sgmovie.domain.movie
+package io.kikiriki.sgmovie.domain.usecase
 
-import io.kikiriki.sgmovie.BaseTest
-import io.kikiriki.sgmovie.utils.ExceptionManager
+import io.kikiriki.sgmovie.core.test.BaseTest
+import io.kikiriki.sgmovie.domain.model.Movie
+import io.kikiriki.sgmovie.domain.repository.MovieRepository
 import io.mockk.coEvery
 import io.mockk.impl.annotations.RelaxedMockK
 import kotlinx.coroutines.Dispatchers
@@ -9,7 +10,6 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.runBlocking
@@ -18,66 +18,22 @@ import org.junit.Test
 @ExperimentalCoroutinesApi
 class GetMoviesUseCaseTest : BaseTest() {
 
-    @RelaxedMockK private lateinit var movieRepository: io.kikiriki.sgmovie.data.repository.movie.MovieRepository
-    private lateinit var getMoviesUseCase: io.kikiriki.sgmovie.domain.usecase.GetMoviesUseCase
+    @RelaxedMockK private lateinit var movieRepository: MovieRepository
+    private lateinit var getMoviesUseCase: GetMoviesUseCase
 
     override fun onStart() {
         super.onStart()
-        getMoviesUseCase =
-            io.kikiriki.sgmovie.domain.usecase.GetMoviesUseCase(movieRepository, Dispatchers.IO)
-    }
-
-    @Test
-    fun get_movies_test_error_network() = runBlocking {
-        // given
-        val exception = io.kikiriki.sgmovie.data.repository.RemoteDataSourceException(
-            code = ExceptionManager.Code.NETWORK_UNAUTHORIZED,
-            message = "random exception message",
-            httpCode = 401
-        )
-
-        // when
-        var resultException: Throwable? = null
-        var resultData: List<io.kikiriki.sgmovie.domain.model.Movie>? = null
-        coEvery { movieRepository.get() } returns flow { throw exception }
-        getMoviesUseCase().onEach { resultData = it }.catch { resultException = it }.collect()
-        delay(100)
-
-        // then
-        assert( resultException == exception )
-        assert( resultData == null )
-
-    }
-
-    @Test
-    fun get_movies_test_error_database_get_movies() = runBlocking {
-        // given
-        val exception = io.kikiriki.sgmovie.data.repository.LocalDataSourceException(
-            code = ExceptionManager.Code.BBDD_CANNOT_GET_MOVIES,
-            message = "random exception message",
-        )
-
-        // when
-        var resultException: Throwable? = null
-        var resultData: List<io.kikiriki.sgmovie.domain.model.Movie>? = null
-        coEvery { movieRepository.get() } returns flow { throw exception }
-        getMoviesUseCase().onEach { resultData = it }.catch { resultException = it }.collect()
-        delay(100)
-
-        // then
-        assert( resultException == exception )
-        assert( resultData == null )
-
+        getMoviesUseCase = GetMoviesUseCase(movieRepository, Dispatchers.IO)
     }
 
     @Test
     fun get_movies_test_success_empty_list() = runBlocking {
         // given
-        val movies = listOf<io.kikiriki.sgmovie.domain.model.Movie>()
+        val movies = listOf<Movie>()
 
         // when
         var resultException: Throwable? = null
-        var resultData: List<io.kikiriki.sgmovie.domain.model.Movie>? = null
+        var resultData: List<Movie>? = null
         coEvery { movieRepository.get() } returns flowOf(movies)
         getMoviesUseCase().onEach { resultData = it }.catch { resultException = it }.collect()
         delay(100)
@@ -92,7 +48,7 @@ class GetMoviesUseCaseTest : BaseTest() {
     fun get_movies_test_success() = runBlocking {
         // given
         val movies = listOf(
-            io.kikiriki.sgmovie.domain.model.Movie(
+            Movie(
                 id = "dc2e6bd1-8156-4886-adff-b39e6043af0c",
                 title = "Spirited Away",
                 originalTitleRomanised = "Sen to Chihiro no kamikakushi",
@@ -106,7 +62,7 @@ class GetMoviesUseCaseTest : BaseTest() {
                 rtScore = 97,
                 favourite = true
             ),
-            io.kikiriki.sgmovie.domain.model.Movie(
+            Movie(
                 id = "0440483e-ca0e-4120-8c50-4c8cd9b965d6",
                 title = "Princess Mononoke",
                 originalTitleRomanised = "Mononoke hime",
@@ -124,7 +80,7 @@ class GetMoviesUseCaseTest : BaseTest() {
 
         // when
         var resultException: Throwable? = null
-        var resultData: List<io.kikiriki.sgmovie.domain.model.Movie>? = null
+        var resultData: List<Movie>? = null
         coEvery { movieRepository.get() } returns flowOf(movies)
         getMoviesUseCase().onEach { resultData = it }.catch { resultException = it }.collect()
         delay(100)

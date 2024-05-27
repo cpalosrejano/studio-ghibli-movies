@@ -62,28 +62,28 @@ object MovieMapper {
             rt_score = movieRepository.rtScore.toString()
         )
     }
-    fun dataToRemote(moviesRepository: List<Movie>) : List<MovieRemote> {
-        return moviesRepository.map { dataToRemote(it) }
+    fun dataToRemote(movies: List<Movie>) : List<MovieRemote> {
+        return movies.map { dataToRemote(it) }
     }
 
-    fun dataToLocal(movieRepository: Movie) : MovieLocal {
+    fun dataToLocal(movie: Movie) : MovieLocal {
         return MovieLocal(
-            id = movieRepository.id,
-            title = movieRepository.title,
-            original_title_romanised = movieRepository.originalTitleRomanised,
-            image = movieRepository.image,
-            movie_banner = movieRepository.movieBanner,
-            description = movieRepository.description,
-            director = movieRepository.director,
-            producer = movieRepository.producer,
-            release_date = movieRepository.releaseDate.toString(),
-            running_time = movieRepository.runningTime,
-            rt_score = movieRepository.rtScore.toString(),
-            favourite = movieRepository.favourite
+            id = movie.id,
+            title = movie.title,
+            original_title_romanised = movie.originalTitleRomanised,
+            image = movie.image,
+            movie_banner = movie.movieBanner,
+            description = movie.description,
+            director = movie.director,
+            producer = movie.producer,
+            release_date = movie.releaseDate.toString(),
+            running_time = movie.runningTime,
+            rt_score = movie.rtScore.toString(),
+            favourite = movie.favourite
         )
     }
-    fun dataToLocal(moviesRepository: List<Movie>) : List<MovieLocal> {
-        return moviesRepository.map { dataToLocal(it) }
+    fun dataToLocal(movies: List<Movie>) : List<MovieLocal> {
+        return movies.map { dataToLocal(it) }
     }
 
 }

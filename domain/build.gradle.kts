@@ -36,14 +36,20 @@ android {
 
 dependencies {
 
+    // common modules
     implementation(project(":core:coroutines"))
-    // common module
+    testImplementation(project(":core:test"))
 
     // hilt - dependency injector
     implementation("com.google.dagger:hilt-android:2.44")
     kapt("com.google.dagger:hilt-compiler:2.44")
 
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    // testing
+    implementation("junit:junit:4.13.2")
+    implementation("io.mockk:mockk:1.13.8")
+    implementation("io.mockk:mockk-android:1.13.8")
+    // testing: Dispatchers
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.1")
+    // testing: InstantTaskExecutorRule
+    implementation("androidx.arch.core:core-testing:2.2.0")
 }

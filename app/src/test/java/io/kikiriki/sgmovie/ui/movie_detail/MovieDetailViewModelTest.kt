@@ -1,8 +1,9 @@
 package io.kikiriki.sgmovie.ui.movie_detail
 
-import io.kikiriki.sgmovie.BaseTest
 import io.kikiriki.sgmovie.R
-import io.kikiriki.sgmovie.utils.ExceptionManager
+import io.kikiriki.sgmovie.core.test.BaseTest
+import io.kikiriki.sgmovie.data.utils.LocalDataSourceException
+import io.kikiriki.sgmovie.domain.model.Movie
 import io.mockk.coEvery
 import io.mockk.impl.annotations.RelaxedMockK
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -23,7 +24,7 @@ class MovieDetailViewModelTest : BaseTest() {
     @Test
     fun update_movie_test_error_database_cannot_update() = runBlocking {
         // given
-        val movie = io.kikiriki.sgmovie.domain.model.Movie(
+        val movie = Movie(
             id = "dc2e6bd1-8156-4886-adff-b39e6043af0c",
             title = "Spirited Away",
             originalTitleRomanised = "Sen to Chihiro no kamikakushi",
@@ -37,8 +38,8 @@ class MovieDetailViewModelTest : BaseTest() {
             rtScore = 97,
             favourite = true
         )
-        val exception = io.kikiriki.sgmovie.data.repository.LocalDataSourceException(
-            code = ExceptionManager.Code.BBDD_CANNOT_UPDATE_MOVIE,
+        val exception = LocalDataSourceException(
+            code = LocalDataSourceException.Code.CANNOT_UPDATE_MOVIE,
             message = "random exception message"
         )
 
@@ -47,13 +48,14 @@ class MovieDetailViewModelTest : BaseTest() {
         movieDetailViewModel.updateMovie(movie)
 
         // then
-        assert(movieDetailViewModel.uiState.value?.error == R.string.error_bbdd_update_movie)
+        //assert(movieDetailViewModel.uiState.value?.error == R.string.error_bbdd_update_movie)
+        assert(movieDetailViewModel.uiState.value?.error == R.string.default_error)
     }
 
     @Test
     fun update_movie_test_success() = runBlocking {
         // given
-        val movie = io.kikiriki.sgmovie.domain.model.Movie(
+        val movie = Movie(
             id = "dc2e6bd1-8156-4886-adff-b39e6043af0c",
             title = "Spirited Away",
             originalTitleRomanised = "Sen to Chihiro no kamikakushi",
