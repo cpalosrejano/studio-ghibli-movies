@@ -26,11 +26,11 @@ android {
 dependencies {
 
     // testing
-    implementation("junit:junit:4.13.2")
-    implementation("io.mockk:mockk:1.13.8")
-    implementation("io.mockk:mockk-android:1.13.8")
+    implementation(libs.test.junit)
+    implementation(libs.test.mockk)
+    implementation(libs.test.mockk.android)
     // testing: Dispatchers
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.1")
+    implementation(libs.test.kotlinx.coroutines)
     // testing: InstantTaskExecutorRule
-    implementation("androidx.arch.core:core-testing:2.2.0")
+    implementation(libs.androidx.arch.core.test)
 }
