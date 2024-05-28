@@ -41,15 +41,15 @@ dependencies {
     testImplementation(project(":core:test"))
 
     // hilt - dependency injector
-    implementation("com.google.dagger:hilt-android:2.44")
-    kapt("com.google.dagger:hilt-compiler:2.44")
+    implementation(libs.hilt)
+    kapt(libs.hilt.compiler)
 
     // testing
-    testImplementation("junit:junit:4.13.2")
-    testImplementation("io.mockk:mockk:1.13.8")
-    testImplementation("io.mockk:mockk-android:1.13.8")
+    implementation(libs.test.junit)
+    implementation(libs.test.mockk)
+    implementation(libs.test.mockk.android)
     // testing: Dispatchers
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.1")
+    implementation(libs.test.kotlinx.coroutines)
     // testing: InstantTaskExecutorRule
-    testImplementation("androidx.arch.core:core-testing:2.2.0")
+    implementation(libs.androidx.arch.core.test)
 }
