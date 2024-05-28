@@ -15,7 +15,7 @@ retrofit = "2.9.0"
 okhttp-logging-interceptor = "5.0.0-alpha.2"
 moshi-kotlin = "1.12.0"
 room = "2.6.0"
-android-gradle-plugin = "8.1.1"
+android-gradle-plugin = "8.4.0"
 kotlin = "1.8.20"
 hilt-plugin = "2.44"
 
