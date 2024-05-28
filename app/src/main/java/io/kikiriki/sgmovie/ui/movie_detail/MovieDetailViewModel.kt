@@ -5,8 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import io.kikiriki.sgmovie.R
-import io.kikiriki.sgmovie.data.model.domain.Movie
-import io.kikiriki.sgmovie.domain.movie.UpdateMovieUseCase
+import io.kikiriki.sgmovie.domain.model.Movie
+import io.kikiriki.sgmovie.domain.usecase.UpdateMovieUseCase
 import io.kikiriki.sgmovie.utils.ExceptionManager
 import kotlinx.coroutines.launch
 import javax.inject.Inject

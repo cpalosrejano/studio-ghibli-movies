@@ -11,6 +11,8 @@
       <option name="taskNames">
         <list>
           <option value="testDebugUnitTest" />
+          <option value=":domain:testDebugUnitTest" />
+          <option value=":data:testDebugUnitTest" />
         </list>
       </option>
       <option name="vmOptions" />
@@ -54,6 +56,7 @@
       </extension>
     </EXTENSION>
     <DebugAllEnabled>false</DebugAllEnabled>
+    <RunAsTest>true</RunAsTest>
     <method v="2" />
   </configuration>
 </component>

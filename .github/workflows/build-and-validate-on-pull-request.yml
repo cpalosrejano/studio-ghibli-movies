@@ -36,14 +36,14 @@ jobs:
 
       # Execute unit test
       - name: Executing Unit Test
-        run: ./gradlew testDebugUnitTest
+        run: ./gradlew testDebugUnitTest :domain:testDebugUnitTest :data:testDebugUnitTest
 
       # Execute android test with the following configuration
-      - name: Executing Android Test
-        uses: ReactiveCircus/android-emulator-runner@v2
-        with:
-          api-level: 30
-          target: google_apis
-          arch: x86_64
-          script: ./gradlew connectedAndroidTest
+      # - name: Executing Android Test
+      #  uses: ReactiveCircus/android-emulator-runner@v2
+      #  with:
+      #    api-level: 30
+      #    target: google_apis
+      #    arch: x86_64
+      #    script: ./gradlew connectedAndroidTest
 

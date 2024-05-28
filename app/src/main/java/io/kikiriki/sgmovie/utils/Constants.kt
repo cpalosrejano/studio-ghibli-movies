@@ -1,15 +1,8 @@
 package io.kikiriki.sgmovie.utils
 
-import io.kikiriki.sgmovie.utils.extension.dp
 import io.kikiriki.sgmovie.utils.extension.px
 
 object Constants {
-
-    // Data repository constants
-    object Repository {
-        const val MOCK = false
-        const val URL = "https://ghibliapi.vercel.app/"
-    }
 
     object Coil {
         const val CROSSFADE: Int = 600

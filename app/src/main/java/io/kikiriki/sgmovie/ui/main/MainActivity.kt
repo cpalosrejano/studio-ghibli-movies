@@ -11,13 +11,13 @@ import com.google.android.material.badge.BadgeUtils
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import io.kikiriki.sgmovie.R
-import io.kikiriki.sgmovie.data.model.domain.Movie
-import io.kikiriki.sgmovie.data.model.domain.Sort
 import io.kikiriki.sgmovie.databinding.ActivityMainBinding
-import io.kikiriki.sgmovie.framework.coil.CoilUtils
+import io.kikiriki.sgmovie.domain.model.Movie
+import io.kikiriki.sgmovie.model.Sort
 import io.kikiriki.sgmovie.ui.BaseActivity
 import io.kikiriki.sgmovie.ui.adapter.AdapterMovie
 import io.kikiriki.sgmovie.ui.movie_detail.MovieDetailFragment
+import io.kikiriki.sgmovie.utils.CoilUtils
 import javax.inject.Inject
 
 @AndroidEntryPoint

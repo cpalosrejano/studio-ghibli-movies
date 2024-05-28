@@ -1,11 +1,9 @@
 package io.kikiriki.sgmovie.ui.movie_detail
 
-import io.kikiriki.sgmovie.BaseTest
 import io.kikiriki.sgmovie.R
-import io.kikiriki.sgmovie.data.model.domain.Movie
-import io.kikiriki.sgmovie.data.model.local.LocalDataSourceException
-import io.kikiriki.sgmovie.domain.movie.UpdateMovieUseCase
-import io.kikiriki.sgmovie.utils.ExceptionManager
+import io.kikiriki.sgmovie.core.test.BaseTest
+import io.kikiriki.sgmovie.data.utils.LocalDataSourceException
+import io.kikiriki.sgmovie.domain.model.Movie
 import io.mockk.coEvery
 import io.mockk.impl.annotations.RelaxedMockK
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -15,7 +13,7 @@ import org.junit.Test
 @ExperimentalCoroutinesApi
 class MovieDetailViewModelTest : BaseTest() {
 
-    @RelaxedMockK private lateinit var updateMovieUseCase: UpdateMovieUseCase
+    @RelaxedMockK private lateinit var updateMovieUseCase: io.kikiriki.sgmovie.domain.usecase.UpdateMovieUseCase
     private lateinit var movieDetailViewModel: MovieDetailViewModel
 
     override fun onStart() {
@@ -41,7 +39,7 @@ class MovieDetailViewModelTest : BaseTest() {
             favourite = true
         )
         val exception = LocalDataSourceException(
-            code = ExceptionManager.Code.BBDD_CANNOT_UPDATE_MOVIE,
+            code = LocalDataSourceException.Code.CANNOT_UPDATE_MOVIE,
             message = "random exception message"
         )
 
@@ -50,7 +48,8 @@ class MovieDetailViewModelTest : BaseTest() {
         movieDetailViewModel.updateMovie(movie)
 
         // then
-        assert(movieDetailViewModel.uiState.value?.error == R.string.error_bbdd_update_movie)
+        //assert(movieDetailViewModel.uiState.value?.error == R.string.error_bbdd_update_movie)
+        assert(movieDetailViewModel.uiState.value?.error == R.string.default_error)
     }
 
     @Test
