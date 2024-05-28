@@ -51,5 +51,5 @@ android-library = { id = "com.android.library", version.ref = "android-gradle-pl
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
-kotlin-parcelize = { id = "org.jetbrains.kotlin.parcelize", version.ref = "kotlin" }
+kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
 google-hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt-plugin" }
