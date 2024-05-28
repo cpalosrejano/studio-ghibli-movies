@@ -45,37 +45,37 @@ dependencies {
     testImplementation project(':core:test')
 
     // android X: kotlin core
-    implementation 'androidx.core:core-ktx:1.12.0'
+    implementation libs.androidx.core.ktx
     // android X: constraint layout
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation libs.androidx.constraintlayout
     // android X: coroutines with lifecycle aware
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2'
-    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.6.2'
-    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.6.2'
+    implementation libs.androidx.lifecycle.viewmodel
+    implementation libs.androidx.lifecycle.livedata
+    implementation libs.androidx.lifecycle.runtime
 
     // google material
-    implementation 'com.google.android.material:material:1.10.0'
-
-    // hilt - dependency injector
-    implementation 'com.google.dagger:hilt-android:2.44'
-    kapt 'com.google.dagger:hilt-compiler:2.44'
+    implementation libs.google.material
 
     // image processing
-    implementation 'io.coil-kt:coil:2.4.0'
-    implementation 'io.coil-kt:coil-gif:2.4.0'
+    implementation libs.coil
+    implementation libs.coil.gif
+
+    // hilt - dependency injector
+    implementation libs.hilt
+    kapt libs.hilt.compiler
 
     // testing
-    testImplementation 'junit:junit:4.13.2'
-    testImplementation 'io.mockk:mockk:1.13.8'
-    testImplementation "io.mockk:mockk-android:1.13.8"
+    testImplementation libs.test.junit
+    testImplementation libs.test.mockk
+    testImplementation libs.test.mockk.android
     // testing: Dispatchers
-    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.1'
+    testImplementation libs.test.kotlinx.coroutines
     // testing: InstantTaskExecutorRule
-    testImplementation "androidx.arch.core:core-testing:2.2.0"
+    testImplementation libs.androidx.arch.core.test
 
     // ui testing
-    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    androidTestImplementation libs.androidx.test.junit
+    androidTestImplementation libs.androidx.test.espresso
 }
 
 // Hilt: Allow references to generated code
