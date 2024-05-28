@@ -45,11 +45,11 @@ dependencies {
     kapt(libs.hilt.compiler)
 
     // testing
-    implementation(libs.test.junit)
-    implementation(libs.test.mockk)
-    implementation(libs.test.mockk.android)
+    testImplementation(libs.test.junit)
+    testImplementation(libs.test.mockk)
+    testImplementation(libs.test.mockk.android)
     // testing: Dispatchers
-    implementation(libs.test.kotlinx.coroutines)
+    testImplementation(libs.test.kotlinx.coroutines)
     // testing: InstantTaskExecutorRule
-    implementation(libs.androidx.arch.core.test)
+    testImplementation(libs.androidx.arch.core.test)
 }
