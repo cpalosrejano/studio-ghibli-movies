@@ -10,36 +10,28 @@
 
 
 ## About this app
-This app is a simple Android application which consumes a public API to fetch all the Studio Ghibli movies. The main pruporse of this app is improve my very own skills in Android Development ecosystem.
+This app is a simple Android application which consumes a public API to fetch all the Studio Ghibli movies. The main pruporse of this app is improve my very own skills in Android Development ecosystem. The app is built following the  MVVM, repository pattern and multimodule architecture.
 
-## Folder Structure
-The app has the following folder structure:
+
+## Modules
+The app is implemented with multi module architecture. The modules are the following:
 ```
-|- data
-|  |- model
-|  |- repository
-|- domain
-|- framework
-|- ui
-|- utils
-|- widget
+:app
+:data
+:domain
+:core:test
+:core:coroutines
 ```
 
-* **data:** Contains all the data of the application. It contains two sub-folders:
-    
-    * **model:** Contains the local, remote and domain model objects.
+* **:app** Contains all the UI (Activity and Fragment) including the ViewModel and UIStates.
 
-    * **repository:** Contains the repositories classes. Here is the logic to transfer data between local, remote, or mock data sources.
+* **:data** Contains all the clases responsables of handle data between datasources (local and remote)
 
-* **domain:** Contains all the use cases.
+* **:domain** Contains all the UseCases. Is the most separated layer of the app.
 
-* **framework:** Contains the configurations and managers used by the external frameworks / libraries.
+* **:core:test** Contains the common resources used to execute test.
 
-* **ui:** Contains all the UI (Activity and Fragment) including the ViewModel and UIStates.
-
-* **utils:** Contains tools to use with the app.
-
-* **widget:** Contains the custom view that we have created.
+* **:core:coroutines** Contains DI for CoroutineContext to inject in different classes.
 
 
 ## Libraries used to build this app
