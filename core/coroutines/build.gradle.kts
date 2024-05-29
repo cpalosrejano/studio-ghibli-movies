@@ -1,7 +1,7 @@
 plugins {
-    id("kotlin-kapt")
-    id("com.android.library")
-    id("org.jetbrains.kotlin.android")
+    alias(libs.plugins.kotlin.kapt)
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
 }
 
 android {
@@ -36,6 +36,6 @@ android {
 dependencies {
 
     // hilt - dependency injector
-    implementation("com.google.dagger:hilt-android:2.44")
-    kapt("com.google.dagger:hilt-compiler:2.44")
+    implementation(libs.hilt)
+    kapt(libs.hilt.compiler)
 }
