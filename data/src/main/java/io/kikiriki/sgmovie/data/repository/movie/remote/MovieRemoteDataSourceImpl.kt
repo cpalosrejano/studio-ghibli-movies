@@ -1,12 +1,14 @@
 package io.kikiriki.sgmovie.data.repository.movie.remote
 
 import io.kikiriki.sgmovie.core.coroutines.di.IODispatcher
+import io.kikiriki.sgmovie.data.exception.RemoteDataSourceException
 import io.kikiriki.sgmovie.data.model.MovieRemote
 import io.kikiriki.sgmovie.data.repository.movie.MovieRemoteDataSource
-import io.kikiriki.sgmovie.data.utils.RemoteDataSourceException
+import io.kikiriki.sgmovie.domain.model.base.GResult
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
+import java.net.UnknownHostException
 import javax.inject.Inject
 
 class MovieRemoteDataSourceImpl @Inject constructor(
@@ -14,34 +16,46 @@ class MovieRemoteDataSourceImpl @Inject constructor(
     @IODispatcher private val dispatcher: CoroutineDispatcher
 )  : MovieRemoteDataSource {
 
-    override suspend fun get(): Result<List<MovieRemote>> = withContext(dispatcher) {
+    override suspend fun get(): GResult<List<MovieRemote>, Throwable> = withContext(dispatcher) {
         val fields = "id,title,original_title_romanised,image,movie_banner,description,director,producer,release_date,running_time,rt_score"
         val limit = 250
         return@withContext try {
             val result = movieEndpoints.getMovies(limit = limit, fields = fields)
-            Result.success(result)
+            GResult.Success(result)
         } catch (failure: Exception) {
             val exception = handleException(failure)
-            Result.failure(exception)
+            GResult.Error(exception)
         }
     }
 
     private fun handleException(exception: Exception) : RemoteDataSourceException {
-        if (exception is HttpException) {
-            return RemoteDataSourceException(
-                code = when (exception.code()) {
-                    401 -> { RemoteDataSourceException.Code.UNAUTHORIZED }
-                    404 -> { RemoteDataSourceException.Code.RESOURCE_NOT_FOUND }
-                    else -> { RemoteDataSourceException.Code.HTTP_UNKNOWN }
-                },
-                message = exception.message.orEmpty()
-            )
+        return when (exception) {
 
-        } else {
-            return RemoteDataSourceException(
-                code = RemoteDataSourceException.Code.DEFAULT,
-                message = exception.message.orEmpty()
-            )
+            is HttpException -> {
+                RemoteDataSourceException(
+                    code = when (exception.code()) {
+                        401 -> { RemoteDataSourceException.Code.UNAUTHORIZED }
+                        404 -> { RemoteDataSourceException.Code.RESOURCE_NOT_FOUND }
+                        else -> { RemoteDataSourceException.Code.HTTP_UNKNOWN }
+                    },
+                    message = exception.message.orEmpty()
+                )
+            }
+
+            is UnknownHostException -> {
+                RemoteDataSourceException(
+                    code = RemoteDataSourceException.Code.NO_INTERNET_CONNECTION,
+                    message = exception.message.orEmpty()
+                )
+            }
+
+            else -> {
+                RemoteDataSourceException(
+                    code = RemoteDataSourceException.Code.DEFAULT,
+                    message = exception.message.orEmpty()
+                )
+            }
+
         }
     }
 

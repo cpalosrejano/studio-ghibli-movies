@@ -1,6 +1,8 @@
 package io.kikiriki.sgmovie.data.repository.movie
 
 import io.kikiriki.sgmovie.core.test.BaseTest
+import io.kikiriki.sgmovie.data.exception.LocalDataSourceException
+import io.kikiriki.sgmovie.data.exception.RemoteDataSourceException
 import io.kikiriki.sgmovie.data.model.mapper.MovieMapper
 import io.kikiriki.sgmovie.data.repository.movie.local.MovieDao
 import io.kikiriki.sgmovie.data.repository.movie.local.MovieLocalDataSourceImpl
@@ -8,15 +10,18 @@ import io.kikiriki.sgmovie.data.repository.movie.mock.MovieMockDataSourceImpl
 import io.kikiriki.sgmovie.data.repository.movie.remote.MovieEndpoints
 import io.kikiriki.sgmovie.data.repository.movie.remote.MovieRemoteDataSourceImpl
 import io.kikiriki.sgmovie.data.repository.movie.util.DataMock
-import io.kikiriki.sgmovie.data.utils.LocalDataSourceException
-import io.kikiriki.sgmovie.data.utils.RemoteDataSourceException
+import io.kikiriki.sgmovie.domain.model.Movie
+import io.kikiriki.sgmovie.domain.model.base.BaseCode
+import io.kikiriki.sgmovie.domain.model.base.GResult
 import io.kikiriki.sgmovie.domain.repository.MovieRepository
 import io.mockk.coEvery
 import io.mockk.impl.annotations.RelaxedMockK
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.runBlocking
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.ResponseBody
@@ -55,48 +60,62 @@ class MovieRepositoryTest : BaseTest() {
         coEvery { dao.getAll() } returns flowOf(DataMock.moviesLocal)
 
         // when
-        val movies = repository.get().first()
+        var result: GResult<List<Movie>, Throwable>? = null
+        repository.get(true).onEach {
+            result = it
+        }.collect()
 
         // then
-        assert( movies.isNotEmpty() )
+        assert( result is GResult.Success )
+        assert( (result as? GResult.Success)?.data?.isNotEmpty() == true )
     }
 
     @Test
     fun check_if_get_remote_then_error_unauthorized() = runBlocking {
         // given
         val httpException = HttpException(Response.error<ResponseBody>(401, "Un authorized".toResponseBody("plain/text".toMediaTypeOrNull())))
+        coEvery { dao.getAll() } returns flowOf(DataMock.moviesLocal)
         coEvery { endpoints.getMovies(limit, fields) } throws httpException
 
         // when
-        var exception: Exception? = null
-        try {
-            repository.get().first()
-        } catch (e: Exception) {
-            exception = e
-        }
+        var exception: Throwable? = null
+        repository.get(true).onEach {
+            when (it) {
+                is GResult.Success -> { it.data }
+                is GResult.Error -> { exception = it.error }
+                is GResult.SuccessWithError -> { exception = it.error }
+            }
+        }.catch {
+            exception = it
+        }.collect()
 
         // then
         assert( exception is RemoteDataSourceException)
-        assert( (exception as? RemoteDataSourceException)?.code == RemoteDataSourceException.Code.UNAUTHORIZED )
+        assert( (exception as? RemoteDataSourceException)?.code == BaseCode.REMOTE_UNAUTHORIZED )
     }
 
     @Test
     fun check_if_get_remote_then_error_resource_not_found() = runBlocking {
         // given
         val httpException = HttpException(Response.error<ResponseBody>(404, "Resource not found".toResponseBody("plain/text".toMediaTypeOrNull())))
+        coEvery { dao.getAll() } returns flowOf(DataMock.moviesLocal)
         coEvery { endpoints.getMovies(limit, fields) } throws httpException
 
         // when
-        var exception: Exception? = null
-        try {
-            repository.get().first()
-        } catch (e: Exception) {
-            exception = e
-        }
+        var exception: Throwable? = null
+        repository.get(true).onEach {
+            when (it) {
+                is GResult.Success -> { it.data }
+                is GResult.Error -> { exception = it.error }
+                is GResult.SuccessWithError -> { exception = it.error }
+            }
+        }.catch {
+            exception = it
+        }.collect()
 
         // then
         assert( exception is RemoteDataSourceException)
-        assert( (exception as? RemoteDataSourceException)?.code == RemoteDataSourceException.Code.RESOURCE_NOT_FOUND )
+        assert( (exception as? RemoteDataSourceException)?.code == BaseCode.REMOTE_RESOURCE_NOT_FOUND )
 
     }
 
@@ -105,18 +124,23 @@ class MovieRepositoryTest : BaseTest() {
         // given
         val httpException = HttpException(Response.error<ResponseBody>(501, "Not implemented".toResponseBody("plain/text".toMediaTypeOrNull())))
         coEvery { endpoints.getMovies(limit, fields) } throws httpException
+        coEvery { dao.getAll() } returns flowOf(DataMock.moviesLocal)
 
         // when
-        var exception: Exception? = null
-        try {
-            repository.get().first()
-        } catch (e: Exception) {
-            exception = e
-        }
+        var exception: Throwable? = null
+        repository.get(true).onEach {
+            when (it) {
+                is GResult.Success -> { it.data }
+                is GResult.Error -> { exception = it.error }
+                is GResult.SuccessWithError -> { exception = it.error }
+            }
+        }.catch {
+            exception = it
+        }.collect()
 
         // then
         assert( exception is RemoteDataSourceException)
-        assert( (exception as? RemoteDataSourceException)?.code == RemoteDataSourceException.Code.HTTP_UNKNOWN )
+        assert( (exception as? RemoteDataSourceException)?.code == BaseCode.REMOTE_HTTP_UNKNOWN )
 
     }
 
@@ -131,16 +155,20 @@ class MovieRepositoryTest : BaseTest() {
         coEvery { dao.getAll() } throws localException
 
         // when
-        var exception: Exception? = null
-        try {
-            repository.get().first()
-        } catch (e: Exception) {
-            exception = e
-        }
+        var exception: Throwable? = null
+        repository.get(true).onEach {
+            when (it) {
+                is GResult.Success -> { it.data }
+                is GResult.Error -> { exception = it.error }
+                is GResult.SuccessWithError -> { exception = it.error }
+            }
+        }.catch {
+            exception = it
+        }.collect()
 
         // then
         assert( exception is LocalDataSourceException)
-        assert( (exception as? LocalDataSourceException)?.code == LocalDataSourceException.Code.CANNOT_GET_MOVIES )
+        assert( (exception as? LocalDataSourceException)?.code == BaseCode.LOCAL_CANNOT_GET_MOVIES )
 
     }
 
@@ -155,16 +183,20 @@ class MovieRepositoryTest : BaseTest() {
         coEvery { dao.getAll() } throws localException
 
         // when
-        var exception: Exception? = null
-        try {
-            repository.get().first()
-        } catch (e: Exception) {
-            exception = e
-        }
+        var exception: Throwable? = null
+        repository.get(true).onEach {
+            when (it) {
+                is GResult.Success -> { it.data }
+                is GResult.Error -> { exception = it.error }
+                is GResult.SuccessWithError -> { exception = it.error }
+            }
+        }.catch {
+            exception = it
+        }.collect()
 
         // then
         assert( exception is LocalDataSourceException)
-        assert( (exception as? LocalDataSourceException)?.code == LocalDataSourceException.Code.CANNOT_INSERT_MOVIES )
+        assert( (exception as? LocalDataSourceException)?.code == BaseCode.LOCAL_CANNOT_INSERT_MOVIES )
 
     }
 
@@ -183,10 +215,9 @@ class MovieRepositoryTest : BaseTest() {
         val result = repository.update(domainMovie)
 
         // then
-        assert( result.isFailure )
-        assert( result.exceptionOrNull() is LocalDataSourceException)
-        assert( (result.exceptionOrNull() as? LocalDataSourceException)?.code == LocalDataSourceException.Code.CANNOT_UPDATE_MOVIE )
-
+        assert( result is GResult.Error )
+        assert( (result as? GResult.Error)?.error is LocalDataSourceException )
+        assert( ((result as? GResult.Error)?.error as? LocalDataSourceException)?.code == BaseCode.LOCAL_CANNOT_UPDATE_MOVIE  )
     }
 
     @Test
@@ -200,9 +231,11 @@ class MovieRepositoryTest : BaseTest() {
         val result = repository.update(movie)
 
         // then
-        assert( result.isSuccess )
-        assert( result.getOrNull() is Boolean )
-        assert( result.getOrNull() == true)
+        assert( result is GResult.Success )
+        assert( (result as? GResult.Success)?.data is Boolean )
+        assert( (result as? GResult.Success)?.data == true)
+
+
     }
 
 }

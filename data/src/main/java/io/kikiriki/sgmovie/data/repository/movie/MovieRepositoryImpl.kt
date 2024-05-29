@@ -4,6 +4,7 @@ import io.kikiriki.sgmovie.core.coroutines.di.IODispatcher
 import io.kikiriki.sgmovie.data.model.mapper.MovieMapper
 import io.kikiriki.sgmovie.data.utils.Constants
 import io.kikiriki.sgmovie.domain.model.Movie
+import io.kikiriki.sgmovie.domain.model.base.GResult
 import io.kikiriki.sgmovie.domain.repository.MovieRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
@@ -22,7 +23,7 @@ class MovieRepositoryImpl @Inject constructor(
     @IODispatcher private val dispatcher: CoroutineDispatcher
 ) : MovieRepository {
 
-    override fun get(): Flow<List<Movie>> = flow {
+    override fun get(forceRefresh: Boolean): Flow<GResult<List<Movie>, Throwable>> = flow {
         if (Constants.Repository.MOCK) {
            mock.get()
                .flowOn(dispatcher)
@@ -32,32 +33,68 @@ class MovieRepositoryImpl @Inject constructor(
 
         } else {
 
-            // update or insert data from internet into our database
-            val remoteData = remote.get().getOrThrow()
-            val localData = MovieMapper.dataToLocal(MovieMapper.remoteToData(remoteData))
-
-            local.insert(localData)
-
-            // start to listen changes in database
+            // start to listen database
             local.get()
                 .flowOn(dispatcher)
-                .onEach { emit( MovieMapper.localToData(it) ) }
-                .catch { throw it }
+                .onEach {
+
+                    // if list is empty or force refresh is true, fetch movies from API
+                    var fetchResult: GResult<*, Throwable>? = null
+                    if (it.isEmpty() || forceRefresh) {
+                        fetchResult = fetchAPIMovies()
+                    }
+
+                    // map result from database to emit to listeners
+                    val listMovie = MovieMapper.localToData(it)
+
+                    if (fetchResult is GResult.Error) {
+                        // success with errors
+                        emit( GResult.SuccessWithError(listMovie, fetchResult.error) )
+                    } else {
+                        // success
+                        emit( GResult.Success(listMovie) )
+                    }
+
+                }
+                .catch {
+                    emit(GResult.Error(it) )
+                }
                 .collect()
         }
     }
 
-    override suspend fun update(movie: Movie): Result<Boolean> = withContext(dispatcher) {
+    private suspend fun fetchAPIMovies() : GResult<Boolean, Throwable> {
+        // try to fetch movies from API
+        return when (val result = remote.get()) {
+
+            is GResult.SuccessWithError -> {
+                val domainMovies = MovieMapper.remoteToData(result.data)
+                val localMovies = MovieMapper.dataToLocal(domainMovies)
+                local.insert(localMovies)
+                GResult.Success(true)
+            }
+            is GResult.Success -> {
+                val domainMovies = MovieMapper.remoteToData(result.data)
+                val localMovies = MovieMapper.dataToLocal(domainMovies)
+                local.insert(localMovies)
+                GResult.Success(true)
+            }
+            is GResult.Error -> {
+                GResult.Error(result.error)
+            }
+        }
+    }
+
+    override suspend fun update(movie: Movie): GResult<Boolean, Throwable> = withContext(dispatcher) {
         if (Constants.Repository.MOCK) {
             return@withContext mock.update(movie)
         }
 
         return@withContext try {
             val localMovie = MovieMapper.dataToLocal(movie)
-            val result = local.update(localMovie).getOrThrow()
-            Result.success(result)
+            local.update(localMovie)
         } catch (failure: Exception) {
-            Result.failure(failure)
+            GResult.Error(failure)
         }
     }
 

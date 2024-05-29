@@ -2,9 +2,10 @@ package io.kikiriki.sgmovie.ui.main
 
 import io.kikiriki.sgmovie.R
 import io.kikiriki.sgmovie.core.test.BaseTest
-import io.kikiriki.sgmovie.data.utils.LocalDataSourceException
-import io.kikiriki.sgmovie.data.utils.RemoteDataSourceException
+import io.kikiriki.sgmovie.data.exception.LocalDataSourceException
+import io.kikiriki.sgmovie.data.exception.RemoteDataSourceException
 import io.kikiriki.sgmovie.domain.model.Movie
+import io.kikiriki.sgmovie.domain.model.base.GResult
 import io.mockk.coEvery
 import io.mockk.impl.annotations.RelaxedMockK
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -43,8 +44,7 @@ class MainViewModelTest : BaseTest() {
         delay(100)
 
         // then
-        //assert(mainViewModel.uiState.value?.error == R.string.error_network_unauthorized)
-        assert(mainViewModel.uiState.value?.error == R.string.default_error)
+        assert(mainViewModel.uiState.value?.error == R.string.error_network_unauthorized)
         assert(mainViewModel.uiState.value?.isLoading == false)
         assert(mainViewModel.uiState.value?.items?.isEmpty() == true)
 
@@ -64,8 +64,7 @@ class MainViewModelTest : BaseTest() {
         delay(100)
 
         // then
-        //assert(mainViewModel.uiState.value?.error == R.string.error_network_not_found)
-        assert(mainViewModel.uiState.value?.error == R.string.default_error)
+        assert(mainViewModel.uiState.value?.error == R.string.error_network_not_found)
         assert(mainViewModel.uiState.value?.isLoading == false)
         assert(mainViewModel.uiState.value?.items?.isEmpty() == true)
 
@@ -85,8 +84,27 @@ class MainViewModelTest : BaseTest() {
         delay(100)
 
         // then
-        //assert(mainViewModel.uiState.value?.error == R.string.default_remote_error)
         assert(mainViewModel.uiState.value?.error == R.string.default_error)
+        assert(mainViewModel.uiState.value?.isLoading == false)
+        assert(mainViewModel.uiState.value?.items?.isEmpty() == true)
+
+    }
+
+    @Test
+    fun get_movies_test_error_no_internet_connection() = runBlocking {
+        // given
+        val exception = RemoteDataSourceException(
+            code = RemoteDataSourceException.Code.NO_INTERNET_CONNECTION,
+            message = "random exception message"
+        )
+
+        // when
+        coEvery { getMoviesUseCase() } returns flow { throw exception }
+        mainViewModel.getMovies()
+        delay(100)
+
+        // then
+        assert(mainViewModel.uiState.value?.error == R.string.error_network_no_connected)
         assert(mainViewModel.uiState.value?.isLoading == false)
         assert(mainViewModel.uiState.value?.items?.isEmpty() == true)
 
@@ -106,8 +124,7 @@ class MainViewModelTest : BaseTest() {
         delay(100)
 
         // then
-        //assert(mainViewModel.uiState.value?.error == R.string.error_bbdd_get_movies)
-        assert(mainViewModel.uiState.value?.error == R.string.default_error)
+        assert(mainViewModel.uiState.value?.error == R.string.error_bbdd_get_movies)
         assert(mainViewModel.uiState.value?.isLoading == false)
         assert(mainViewModel.uiState.value?.items?.isEmpty() == true)
 
@@ -127,8 +144,7 @@ class MainViewModelTest : BaseTest() {
         delay(100)
 
         // then
-        //assert(mainViewModel.uiState.value?.error == R.string.error_bbdd_insert_movies)
-        assert(mainViewModel.uiState.value?.error == R.string.default_error)
+        assert(mainViewModel.uiState.value?.error == R.string.error_bbdd_insert_movies)
         assert(mainViewModel.uiState.value?.isLoading == false)
         assert(mainViewModel.uiState.value?.items?.isEmpty() == true)
 
@@ -140,7 +156,7 @@ class MainViewModelTest : BaseTest() {
         val result = listOf<Movie>()
 
         // when
-        coEvery { getMoviesUseCase() } returns flowOf(result)
+        coEvery { getMoviesUseCase() } returns flowOf(GResult.Success(result))
         mainViewModel.getMovies()
         delay(100)
 
@@ -186,7 +202,7 @@ class MainViewModelTest : BaseTest() {
         )
 
         // when
-        coEvery { getMoviesUseCase() } returns flowOf(movies)
+        coEvery { getMoviesUseCase() } returns flowOf(GResult.Success(movies))
         mainViewModel.getMovies()
         delay(100)
 
@@ -221,14 +237,11 @@ class MainViewModelTest : BaseTest() {
         )
 
         // when
-        coEvery { updateMovieUseCase(movie.copy(favourite = !movie.favourite)) } returns Result.failure(
-            exception
-        )
+        coEvery { updateMovieUseCase(movie.copy(favourite = !movie.favourite)) } returns GResult.Error(exception)
         mainViewModel.updateMovie(movie)
 
         // then
-        //assert(mainViewModel.uiState.value?.error == R.string.error_bbdd_update_movie)
-        assert(mainViewModel.uiState.value?.error == R.string.default_error)
+        assert(mainViewModel.uiState.value?.error == R.string.error_bbdd_update_movie)
         assert(mainViewModel.uiState.value?.isLoading == false)
 
     }
@@ -252,7 +265,7 @@ class MainViewModelTest : BaseTest() {
         )
 
         // when
-        coEvery { updateMovieUseCase(movie.copy(favourite = !movie.favourite)) } returns Result.success(true)
+        coEvery { updateMovieUseCase(movie.copy(favourite = !movie.favourite)) } returns GResult.Success(true)
         mainViewModel.updateMovie(movie)
 
         // then

@@ -2,8 +2,9 @@ package io.kikiriki.sgmovie.ui.movie_detail
 
 import io.kikiriki.sgmovie.R
 import io.kikiriki.sgmovie.core.test.BaseTest
-import io.kikiriki.sgmovie.data.utils.LocalDataSourceException
+import io.kikiriki.sgmovie.data.exception.LocalDataSourceException
 import io.kikiriki.sgmovie.domain.model.Movie
+import io.kikiriki.sgmovie.domain.model.base.GResult
 import io.mockk.coEvery
 import io.mockk.impl.annotations.RelaxedMockK
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -44,12 +45,11 @@ class MovieDetailViewModelTest : BaseTest() {
         )
 
         // when
-        coEvery { updateMovieUseCase(movie.copy(favourite = !movie.favourite)) } returns Result.failure(exception)
+        coEvery { updateMovieUseCase(movie.copy(favourite = !movie.favourite)) } returns GResult.Error(exception)
         movieDetailViewModel.updateMovie(movie)
 
         // then
-        //assert(movieDetailViewModel.uiState.value?.error == R.string.error_bbdd_update_movie)
-        assert(movieDetailViewModel.uiState.value?.error == R.string.default_error)
+        assert(movieDetailViewModel.uiState.value?.error == R.string.error_bbdd_update_movie)
     }
 
     @Test
@@ -71,7 +71,7 @@ class MovieDetailViewModelTest : BaseTest() {
         )
 
         // when
-        coEvery { updateMovieUseCase(movie.copy(favourite = !movie.favourite)) } returns Result.success(true)
+        coEvery { updateMovieUseCase(movie.copy(favourite = !movie.favourite)) } returns GResult.Success(true)
         movieDetailViewModel.updateMovie(movie)
 
         // then
