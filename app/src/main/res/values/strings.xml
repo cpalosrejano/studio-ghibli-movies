@@ -36,4 +36,7 @@
     <!-- DEFAULT ERROR -->
     <string name="default_error">Ops, something went wrong</string>
 
+    <!-- DEFAULT TEXT -->
+    <string name="retry">Retry</string>
+
 </resources>
