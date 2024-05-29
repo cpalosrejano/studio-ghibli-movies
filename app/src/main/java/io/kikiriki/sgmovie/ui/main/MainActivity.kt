@@ -9,6 +9,7 @@ import coil.load
 import com.google.android.material.badge.BadgeDrawable
 import com.google.android.material.badge.BadgeUtils
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import io.kikiriki.sgmovie.R
 import io.kikiriki.sgmovie.databinding.ActivityMainBinding
@@ -82,6 +83,13 @@ class MainActivity : BaseActivity() {
             // error view
             viewBinding.errorView.root.isVisible = uiState.error != null
             uiState.error?.let { viewBinding.errorView.lblMessage.setText(uiState.error) }
+
+            // message view
+            uiState.message?.let {
+                val snackBar = Snackbar.make(viewBinding.root, it, Snackbar.LENGTH_INDEFINITE)
+                snackBar.setAction(R.string.retry) { viewModel.getMovies() }
+                snackBar.show()
+            }
 
             // loading view
             viewBinding.loadingView.root.isVisible = uiState.isLoading

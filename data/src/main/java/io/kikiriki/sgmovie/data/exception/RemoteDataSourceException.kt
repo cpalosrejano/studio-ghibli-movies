@@ -1,7 +1,7 @@
 package io.kikiriki.sgmovie.data.exception
 
-import io.kikiriki.sgmovie.domain.exception.BaseCode
-import io.kikiriki.sgmovie.domain.exception.BaseException
+import io.kikiriki.sgmovie.domain.model.base.BaseCode
+import io.kikiriki.sgmovie.domain.model.base.BaseException
 
 class RemoteDataSourceException(
     code: Code,

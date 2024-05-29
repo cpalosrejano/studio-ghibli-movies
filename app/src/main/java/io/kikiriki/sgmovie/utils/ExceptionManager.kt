@@ -1,8 +1,8 @@
 package io.kikiriki.sgmovie.utils
 
 import io.kikiriki.sgmovie.R
-import io.kikiriki.sgmovie.domain.exception.BaseCode
-import io.kikiriki.sgmovie.domain.exception.BaseException
+import io.kikiriki.sgmovie.domain.model.base.BaseCode
+import io.kikiriki.sgmovie.domain.model.base.BaseException
 
 class ExceptionManager {
 

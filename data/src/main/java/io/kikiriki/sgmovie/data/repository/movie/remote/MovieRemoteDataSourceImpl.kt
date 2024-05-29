@@ -4,6 +4,7 @@ import io.kikiriki.sgmovie.core.coroutines.di.IODispatcher
 import io.kikiriki.sgmovie.data.exception.RemoteDataSourceException
 import io.kikiriki.sgmovie.data.model.MovieRemote
 import io.kikiriki.sgmovie.data.repository.movie.MovieRemoteDataSource
+import io.kikiriki.sgmovie.domain.model.base.GResult
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
@@ -15,15 +16,15 @@ class MovieRemoteDataSourceImpl @Inject constructor(
     @IODispatcher private val dispatcher: CoroutineDispatcher
 )  : MovieRemoteDataSource {
 
-    override suspend fun get(): Result<List<MovieRemote>> = withContext(dispatcher) {
+    override suspend fun get(): GResult<List<MovieRemote>, Throwable> = withContext(dispatcher) {
         val fields = "id,title,original_title_romanised,image,movie_banner,description,director,producer,release_date,running_time,rt_score"
         val limit = 250
         return@withContext try {
             val result = movieEndpoints.getMovies(limit = limit, fields = fields)
-            Result.success(result)
+            GResult.Success(result)
         } catch (failure: Exception) {
             val exception = handleException(failure)
-            Result.failure(exception)
+            GResult.Error(exception)
         }
     }
 

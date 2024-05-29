@@ -3,6 +3,7 @@ package io.kikiriki.sgmovie.data.repository.movie.mock
 import io.kikiriki.sgmovie.core.coroutines.di.IODispatcher
 import io.kikiriki.sgmovie.data.repository.movie.MovieMockDataSource
 import io.kikiriki.sgmovie.domain.model.Movie
+import io.kikiriki.sgmovie.domain.model.base.GResult
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -73,9 +74,9 @@ class MovieMockDataSourceImpl @Inject constructor(
         )
     )
 
-    override fun get(): Flow<List<Movie>> = flowOf(movies)
+    override fun get(forceRefresh: Boolean): Flow<GResult<List<Movie>, Throwable>> = flowOf(GResult.Success(movies))
 
-    override suspend fun update(movie: Movie): Result<Boolean> = withContext(dispatcher) {
+    override suspend fun update(movie: Movie): GResult<Boolean, Throwable> = withContext(dispatcher) {
         delay(1000)
         movies = movies.map {
             if (it.id == movie.id) {
@@ -84,7 +85,7 @@ class MovieMockDataSourceImpl @Inject constructor(
                 it
             }
         }
-        return@withContext Result.success(true)
+        return@withContext GResult.Success(true)
     }
 
 }

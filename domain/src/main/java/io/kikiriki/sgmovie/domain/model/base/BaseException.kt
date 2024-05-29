@@ -1,4 +1,4 @@
-package io.kikiriki.sgmovie.domain.exception
+package io.kikiriki.sgmovie.domain.model.base
 
 open class BaseException(
     val code: BaseCode,

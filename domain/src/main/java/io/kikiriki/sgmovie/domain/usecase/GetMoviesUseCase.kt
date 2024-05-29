@@ -2,6 +2,7 @@ package io.kikiriki.sgmovie.domain.usecase
 
 import io.kikiriki.sgmovie.core.coroutines.di.IODispatcher
 import io.kikiriki.sgmovie.domain.model.Movie
+import io.kikiriki.sgmovie.domain.model.base.GResult
 import io.kikiriki.sgmovie.domain.repository.MovieRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
@@ -13,7 +14,7 @@ class GetMoviesUseCase @Inject constructor(
     @IODispatcher private val dispatcher: CoroutineDispatcher
 ) {
 
-    suspend operator fun invoke() : Flow<List<Movie>> = withContext(dispatcher) {
+    suspend operator fun invoke() : Flow<GResult<List<Movie>, Throwable>> = withContext(dispatcher) {
         return@withContext movieRepository.get()
     }
 
