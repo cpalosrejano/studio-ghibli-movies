@@ -1,10 +1,9 @@
 package io.kikiriki.sgmovie.data.repository.movie.local
 
 import io.kikiriki.sgmovie.core.coroutines.di.IODispatcher
+import io.kikiriki.sgmovie.data.exception.LocalDataSourceException
 import io.kikiriki.sgmovie.data.model.MovieLocal
 import io.kikiriki.sgmovie.data.repository.movie.MovieLocalDataSource
-import io.kikiriki.sgmovie.data.utils.LocalDataSourceException
-import io.kikiriki.sgmovie.data.utils.LocalDataSourceException.Code
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -26,7 +25,7 @@ class MovieLocalDataSourceImpl @Inject constructor(
             .onEach { emit(it) }
             .catch {
                 throw LocalDataSourceException(
-                    code = Code.CANNOT_GET_MOVIES,
+                    code = LocalDataSourceException.Code.CANNOT_GET_MOVIES,
                     message = it.message.orEmpty()
                 )
             }
@@ -47,7 +46,7 @@ class MovieLocalDataSourceImpl @Inject constructor(
         } catch (failure: Exception) {
             Result.failure(
                 LocalDataSourceException(
-                    code = Code.CANNOT_INSERT_MOVIES,
+                    code = LocalDataSourceException.Code.CANNOT_INSERT_MOVIES,
                     message = failure.localizedMessage.orEmpty()
                 )
             )
@@ -61,7 +60,7 @@ class MovieLocalDataSourceImpl @Inject constructor(
         } catch (failure: Exception) {
             Result.failure(
                 LocalDataSourceException(
-                    code = Code.CANNOT_UPDATE_MOVIE,
+                    code = LocalDataSourceException.Code.CANNOT_UPDATE_MOVIE,
                     message = failure.localizedMessage.orEmpty()
                 )
             )

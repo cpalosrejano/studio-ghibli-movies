@@ -2,7 +2,7 @@ package io.kikiriki.sgmovie.ui.movie_detail
 
 import io.kikiriki.sgmovie.R
 import io.kikiriki.sgmovie.core.test.BaseTest
-import io.kikiriki.sgmovie.data.utils.LocalDataSourceException
+import io.kikiriki.sgmovie.data.exception.LocalDataSourceException
 import io.kikiriki.sgmovie.domain.model.Movie
 import io.mockk.coEvery
 import io.mockk.impl.annotations.RelaxedMockK
@@ -48,8 +48,7 @@ class MovieDetailViewModelTest : BaseTest() {
         movieDetailViewModel.updateMovie(movie)
 
         // then
-        //assert(movieDetailViewModel.uiState.value?.error == R.string.error_bbdd_update_movie)
-        assert(movieDetailViewModel.uiState.value?.error == R.string.default_error)
+        assert(movieDetailViewModel.uiState.value?.error == R.string.error_bbdd_update_movie)
     }
 
     @Test

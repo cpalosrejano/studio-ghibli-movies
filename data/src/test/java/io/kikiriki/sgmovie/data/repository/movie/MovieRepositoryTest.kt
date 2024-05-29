@@ -1,6 +1,8 @@
 package io.kikiriki.sgmovie.data.repository.movie
 
 import io.kikiriki.sgmovie.core.test.BaseTest
+import io.kikiriki.sgmovie.data.exception.LocalDataSourceException
+import io.kikiriki.sgmovie.data.exception.RemoteDataSourceException
 import io.kikiriki.sgmovie.data.model.mapper.MovieMapper
 import io.kikiriki.sgmovie.data.repository.movie.local.MovieDao
 import io.kikiriki.sgmovie.data.repository.movie.local.MovieLocalDataSourceImpl
@@ -8,8 +10,7 @@ import io.kikiriki.sgmovie.data.repository.movie.mock.MovieMockDataSourceImpl
 import io.kikiriki.sgmovie.data.repository.movie.remote.MovieEndpoints
 import io.kikiriki.sgmovie.data.repository.movie.remote.MovieRemoteDataSourceImpl
 import io.kikiriki.sgmovie.data.repository.movie.util.DataMock
-import io.kikiriki.sgmovie.data.utils.LocalDataSourceException
-import io.kikiriki.sgmovie.data.utils.RemoteDataSourceException
+import io.kikiriki.sgmovie.domain.exception.BaseCode
 import io.kikiriki.sgmovie.domain.repository.MovieRepository
 import io.mockk.coEvery
 import io.mockk.impl.annotations.RelaxedMockK
@@ -77,7 +78,7 @@ class MovieRepositoryTest : BaseTest() {
 
         // then
         assert( exception is RemoteDataSourceException)
-        assert( (exception as? RemoteDataSourceException)?.code == RemoteDataSourceException.Code.UNAUTHORIZED )
+        assert( (exception as? RemoteDataSourceException)?.code == BaseCode.REMOTE_UNAUTHORIZED )
     }
 
     @Test
@@ -96,7 +97,7 @@ class MovieRepositoryTest : BaseTest() {
 
         // then
         assert( exception is RemoteDataSourceException)
-        assert( (exception as? RemoteDataSourceException)?.code == RemoteDataSourceException.Code.RESOURCE_NOT_FOUND )
+        assert( (exception as? RemoteDataSourceException)?.code == BaseCode.REMOTE_RESOURCE_NOT_FOUND )
 
     }
 
@@ -116,7 +117,7 @@ class MovieRepositoryTest : BaseTest() {
 
         // then
         assert( exception is RemoteDataSourceException)
-        assert( (exception as? RemoteDataSourceException)?.code == RemoteDataSourceException.Code.HTTP_UNKNOWN )
+        assert( (exception as? RemoteDataSourceException)?.code == BaseCode.REMOTE_HTTP_UNKNOWN )
 
     }
 
@@ -140,7 +141,7 @@ class MovieRepositoryTest : BaseTest() {
 
         // then
         assert( exception is LocalDataSourceException)
-        assert( (exception as? LocalDataSourceException)?.code == LocalDataSourceException.Code.CANNOT_GET_MOVIES )
+        assert( (exception as? LocalDataSourceException)?.code == BaseCode.LOCAL_CANNOT_GET_MOVIES )
 
     }
 
@@ -164,7 +165,7 @@ class MovieRepositoryTest : BaseTest() {
 
         // then
         assert( exception is LocalDataSourceException)
-        assert( (exception as? LocalDataSourceException)?.code == LocalDataSourceException.Code.CANNOT_INSERT_MOVIES )
+        assert( (exception as? LocalDataSourceException)?.code == BaseCode.LOCAL_CANNOT_INSERT_MOVIES )
 
     }
 
@@ -185,7 +186,7 @@ class MovieRepositoryTest : BaseTest() {
         // then
         assert( result.isFailure )
         assert( result.exceptionOrNull() is LocalDataSourceException)
-        assert( (result.exceptionOrNull() as? LocalDataSourceException)?.code == LocalDataSourceException.Code.CANNOT_UPDATE_MOVIE )
+        assert( (result.exceptionOrNull() as? LocalDataSourceException)?.code == BaseCode.LOCAL_CANNOT_UPDATE_MOVIE )
 
     }
 
