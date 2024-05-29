@@ -2,6 +2,7 @@ package io.kikiriki.sgmovie.domain.usecase
 
 import io.kikiriki.sgmovie.core.test.BaseTest
 import io.kikiriki.sgmovie.domain.model.Movie
+import io.kikiriki.sgmovie.domain.model.base.GResult
 import io.kikiriki.sgmovie.domain.repository.MovieRepository
 import io.mockk.coEvery
 import io.mockk.impl.annotations.RelaxedMockK
@@ -34,8 +35,16 @@ class GetMoviesUseCaseTest : BaseTest() {
         // when
         var resultException: Throwable? = null
         var resultData: List<Movie>? = null
-        coEvery { movieRepository.get() } returns flowOf(movies)
-        getMoviesUseCase().onEach { resultData = it }.catch { resultException = it }.collect()
+        coEvery { movieRepository.get() } returns flowOf(GResult.Success(movies))
+        getMoviesUseCase().onEach {
+            when (it) {
+                is GResult.Success -> resultData = it.data
+                is GResult.Error -> {}
+                is GResult.SuccessWithError -> {}
+            }
+        }.catch {
+            resultException = it
+        }.collect()
         delay(100)
 
         // then
@@ -81,8 +90,16 @@ class GetMoviesUseCaseTest : BaseTest() {
         // when
         var resultException: Throwable? = null
         var resultData: List<Movie>? = null
-        coEvery { movieRepository.get() } returns flowOf(movies)
-        getMoviesUseCase().onEach { resultData = it }.catch { resultException = it }.collect()
+        coEvery { movieRepository.get() } returns flowOf(GResult.Success(movies))
+        getMoviesUseCase().onEach {
+            when (it) {
+                is GResult.Success -> resultData = it.data
+                is GResult.Error -> {}
+                is GResult.SuccessWithError -> {}
+            }
+        }.catch {
+            resultException = it
+        }.collect()
         delay(100)
 
         // then

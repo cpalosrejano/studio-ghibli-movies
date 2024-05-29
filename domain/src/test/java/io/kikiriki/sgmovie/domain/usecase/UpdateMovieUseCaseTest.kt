@@ -2,6 +2,7 @@ package io.kikiriki.sgmovie.domain.usecase
 
 import io.kikiriki.sgmovie.core.test.BaseTest
 import io.kikiriki.sgmovie.domain.model.Movie
+import io.kikiriki.sgmovie.domain.model.base.GResult
 import io.kikiriki.sgmovie.domain.repository.MovieRepository
 import io.mockk.coEvery
 import io.mockk.impl.annotations.RelaxedMockK
@@ -40,12 +41,12 @@ class UpdateMovieUseCaseTest : BaseTest() {
         )
 
         // when
-        coEvery { movieRepository.update(movie) } returns Result.success(true)
+        coEvery { movieRepository.update(movie) } returns GResult.Success(true)
         val result = updateMovieUseCase(movie)
 
         // then
-        assert( result.isSuccess )
-        assert( result.getOrNull() == true )
+        assert( result is GResult.Success )
+        assert( (result as? GResult.Success)?.data == true )
     }
 
 }
