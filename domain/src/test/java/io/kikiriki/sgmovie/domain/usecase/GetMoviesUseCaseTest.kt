@@ -1,18 +1,16 @@
-package io.kikiriki.sgmovie.domain.movie
+package io.kikiriki.sgmovie.domain.usecase
 
-import io.kikiriki.sgmovie.BaseTest
-import io.kikiriki.sgmovie.data.model.domain.Movie
-import io.kikiriki.sgmovie.data.model.local.LocalDataSourceException
-import io.kikiriki.sgmovie.data.model.remote.RemoteDataSourceException
-import io.kikiriki.sgmovie.data.repository.movie.MovieRepository
-import io.kikiriki.sgmovie.utils.ExceptionManager
+import io.kikiriki.sgmovie.core.test.BaseTest
+import io.kikiriki.sgmovie.domain.model.Movie
+import io.kikiriki.sgmovie.domain.model.base.GResult
+import io.kikiriki.sgmovie.domain.repository.MovieRepository
 import io.mockk.coEvery
 import io.mockk.impl.annotations.RelaxedMockK
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.runBlocking
@@ -26,50 +24,7 @@ class GetMoviesUseCaseTest : BaseTest() {
 
     override fun onStart() {
         super.onStart()
-        getMoviesUseCase = GetMoviesUseCase(movieRepository)
-    }
-
-    @Test
-    fun get_movies_test_error_network() = runBlocking {
-        // given
-        val exception = RemoteDataSourceException(
-            code = ExceptionManager.Code.NETWORK_UNAUTHORIZED,
-            message = "random exception message",
-            httpCode = 401
-        )
-
-        // when
-        var resultException: Throwable? = null
-        var resultData: List<Movie>? = null
-        coEvery { movieRepository.get() } returns flow { throw exception }
-        getMoviesUseCase().onEach { resultData = it }.catch { resultException = it }.collect()
-        delay(100)
-
-        // then
-        assert( resultException == exception )
-        assert( resultData == null )
-
-    }
-
-    @Test
-    fun get_movies_test_error_database_get_movies() = runBlocking {
-        // given
-        val exception = LocalDataSourceException(
-            code = ExceptionManager.Code.BBDD_CANNOT_GET_MOVIES,
-            message = "random exception message",
-        )
-
-        // when
-        var resultException: Throwable? = null
-        var resultData: List<Movie>? = null
-        coEvery { movieRepository.get() } returns flow { throw exception }
-        getMoviesUseCase().onEach { resultData = it }.catch { resultException = it }.collect()
-        delay(100)
-
-        // then
-        assert( resultException == exception )
-        assert( resultData == null )
-
+        getMoviesUseCase = GetMoviesUseCase(movieRepository, Dispatchers.IO)
     }
 
     @Test
@@ -80,8 +35,16 @@ class GetMoviesUseCaseTest : BaseTest() {
         // when
         var resultException: Throwable? = null
         var resultData: List<Movie>? = null
-        coEvery { movieRepository.get() } returns flowOf(movies)
-        getMoviesUseCase().onEach { resultData = it }.catch { resultException = it }.collect()
+        coEvery { movieRepository.get() } returns flowOf(GResult.Success(movies))
+        getMoviesUseCase().onEach {
+            when (it) {
+                is GResult.Success -> resultData = it.data
+                is GResult.Error -> {}
+                is GResult.SuccessWithError -> {}
+            }
+        }.catch {
+            resultException = it
+        }.collect()
         delay(100)
 
         // then
@@ -127,8 +90,16 @@ class GetMoviesUseCaseTest : BaseTest() {
         // when
         var resultException: Throwable? = null
         var resultData: List<Movie>? = null
-        coEvery { movieRepository.get() } returns flowOf(movies)
-        getMoviesUseCase().onEach { resultData = it }.catch { resultException = it }.collect()
+        coEvery { movieRepository.get() } returns flowOf(GResult.Success(movies))
+        getMoviesUseCase().onEach {
+            when (it) {
+                is GResult.Success -> resultData = it.data
+                is GResult.Error -> {}
+                is GResult.SuccessWithError -> {}
+            }
+        }.catch {
+            resultException = it
+        }.collect()
         delay(100)
 
         // then

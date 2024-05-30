@@ -70,7 +70,7 @@ class MainActivityUITest {
         // perform click on the first item of item list
         val itemPosition = 0
         onView(withId(R.id.recycler_view))
-            .perform(RecyclerViewActions.actionOnItemAtPosition<AdapterMovie.ViewHolderNote>(
+            .perform(RecyclerViewActions.actionOnItemAtPosition<AdapterMovie.ViewHolderMovie>(
                 itemPosition, click()
             ))
 
@@ -87,7 +87,7 @@ class MainActivityUITest {
 
         // perform click on first item to open detail view
         onView(withId(R.id.recycler_view))
-            .perform(RecyclerViewActions.actionOnItemAtPosition<AdapterMovie.ViewHolderNote>(
+            .perform(RecyclerViewActions.actionOnItemAtPosition<AdapterMovie.ViewHolderMovie>(
                 itemPosition, click()
             ))
 
@@ -101,7 +101,7 @@ class MainActivityUITest {
         // mark as non favourite
         onView(withId(R.id.lbl_favourite)).perform(click())
 
-        // check if favourite label is checked
+        // check if favourite label is un_checked
         onView(withId(R.id.lbl_favourite))
             .check(matches(textViewContainsDrawable(R.drawable.ic_save)))
     }
@@ -114,15 +114,13 @@ class MainActivityUITest {
 
         // perform click on favourite view in the first item view
         onView(withId(R.id.recycler_view))
-            .perform(RecyclerViewActions.actionOnItemAtPosition<AdapterMovie.ViewHolderNote>(
+            .perform(RecyclerViewActions.actionOnItemAtPosition<AdapterMovie.ViewHolderMovie>(
                 itemPosition, clickOnItemWithId(R.id.img_save)
             ))
 
-        Thread.sleep(5000)
-
         // perform click on first item to open detail view
         onView(withId(R.id.recycler_view))
-            .perform(RecyclerViewActions.actionOnItemAtPosition<AdapterMovie.ViewHolderNote>(
+            .perform(RecyclerViewActions.actionOnItemAtPosition<AdapterMovie.ViewHolderMovie>(
                 itemPosition, click()
             ))
 

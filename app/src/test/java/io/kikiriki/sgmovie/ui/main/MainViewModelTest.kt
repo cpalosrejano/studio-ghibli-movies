@@ -1,13 +1,11 @@
 package io.kikiriki.sgmovie.ui.main
 
-import io.kikiriki.sgmovie.BaseTest
 import io.kikiriki.sgmovie.R
-import io.kikiriki.sgmovie.data.model.domain.Movie
-import io.kikiriki.sgmovie.data.model.local.LocalDataSourceException
-import io.kikiriki.sgmovie.data.model.remote.RemoteDataSourceException
-import io.kikiriki.sgmovie.domain.movie.GetMoviesUseCase
-import io.kikiriki.sgmovie.domain.movie.UpdateMovieUseCase
-import io.kikiriki.sgmovie.utils.ExceptionManager
+import io.kikiriki.sgmovie.core.test.BaseTest
+import io.kikiriki.sgmovie.data.exception.LocalDataSourceException
+import io.kikiriki.sgmovie.data.exception.RemoteDataSourceException
+import io.kikiriki.sgmovie.domain.model.Movie
+import io.kikiriki.sgmovie.domain.model.base.GResult
 import io.mockk.coEvery
 import io.mockk.impl.annotations.RelaxedMockK
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -21,9 +19,9 @@ import org.junit.Test
 class MainViewModelTest : BaseTest() {
 
     @RelaxedMockK
-    private lateinit var getMoviesUseCase: GetMoviesUseCase
+    private lateinit var getMoviesUseCase: io.kikiriki.sgmovie.domain.usecase.GetMoviesUseCase
     @RelaxedMockK
-    private lateinit var updateMovieUseCase: UpdateMovieUseCase
+    private lateinit var updateMovieUseCase: io.kikiriki.sgmovie.domain.usecase.UpdateMovieUseCase
 
     private lateinit var mainViewModel: MainViewModel
 
@@ -36,9 +34,8 @@ class MainViewModelTest : BaseTest() {
     fun get_movies_test_error_network_unauthorized() = runBlocking {
         // given
         val exception = RemoteDataSourceException(
-            code = ExceptionManager.Code.NETWORK_UNAUTHORIZED,
-            message = "random exception message",
-            httpCode = 401
+            code = RemoteDataSourceException.Code.UNAUTHORIZED,
+            message = "random exception message"
         )
 
         // when
@@ -57,9 +54,8 @@ class MainViewModelTest : BaseTest() {
     fun get_movies_test_error_network_not_found() = runBlocking {
         // given
         val exception = RemoteDataSourceException(
-            code = ExceptionManager.Code.NETWORK_NOT_FOUND,
-            message = "random exception message",
-            httpCode = 404
+            code = RemoteDataSourceException.Code.RESOURCE_NOT_FOUND,
+            message = "random exception message"
         )
 
         // when
@@ -78,9 +74,8 @@ class MainViewModelTest : BaseTest() {
     fun get_movies_test_error_network_default() = runBlocking {
         // given
         val exception = RemoteDataSourceException(
-            code = ExceptionManager.Code.DEFAULT_ERROR,
-            message = "random exception message",
-            httpCode = 404
+            code = RemoteDataSourceException.Code.DEFAULT,
+            message = "random exception message"
         )
 
         // when
@@ -89,7 +84,27 @@ class MainViewModelTest : BaseTest() {
         delay(100)
 
         // then
-        assert(mainViewModel.uiState.value?.error == R.string.default_remote_error)
+        assert(mainViewModel.uiState.value?.error == R.string.default_error)
+        assert(mainViewModel.uiState.value?.isLoading == false)
+        assert(mainViewModel.uiState.value?.items?.isEmpty() == true)
+
+    }
+
+    @Test
+    fun get_movies_test_error_no_internet_connection() = runBlocking {
+        // given
+        val exception = RemoteDataSourceException(
+            code = RemoteDataSourceException.Code.NO_INTERNET_CONNECTION,
+            message = "random exception message"
+        )
+
+        // when
+        coEvery { getMoviesUseCase() } returns flow { throw exception }
+        mainViewModel.getMovies()
+        delay(100)
+
+        // then
+        assert(mainViewModel.uiState.value?.error == R.string.error_network_no_connected)
         assert(mainViewModel.uiState.value?.isLoading == false)
         assert(mainViewModel.uiState.value?.items?.isEmpty() == true)
 
@@ -99,7 +114,7 @@ class MainViewModelTest : BaseTest() {
     fun get_movies_test_error_database_get_movies() = runBlocking {
         // given
         val exception = LocalDataSourceException(
-            code = ExceptionManager.Code.BBDD_CANNOT_GET_MOVIES,
+            code = LocalDataSourceException.Code.CANNOT_GET_MOVIES,
             message = "random exception message",
         )
 
@@ -119,7 +134,7 @@ class MainViewModelTest : BaseTest() {
     fun get_movies_test_error_database_insert_movies() = runBlocking {
         // given
         val exception = LocalDataSourceException(
-            code = ExceptionManager.Code.BBDD_CANNOT_INSERT_MOVIES,
+            code = LocalDataSourceException.Code.CANNOT_INSERT_MOVIES,
             message = "random exception message",
         )
 
@@ -141,7 +156,7 @@ class MainViewModelTest : BaseTest() {
         val result = listOf<Movie>()
 
         // when
-        coEvery { getMoviesUseCase() } returns flowOf(result)
+        coEvery { getMoviesUseCase() } returns flowOf(GResult.Success(result))
         mainViewModel.getMovies()
         delay(100)
 
@@ -187,7 +202,7 @@ class MainViewModelTest : BaseTest() {
         )
 
         // when
-        coEvery { getMoviesUseCase() } returns flowOf(movies)
+        coEvery { getMoviesUseCase() } returns flowOf(GResult.Success(movies))
         mainViewModel.getMovies()
         delay(100)
 
@@ -217,14 +232,12 @@ class MainViewModelTest : BaseTest() {
             favourite = true
         )
         val exception = LocalDataSourceException(
-            code = ExceptionManager.Code.BBDD_CANNOT_UPDATE_MOVIE,
+            code = LocalDataSourceException.Code.CANNOT_UPDATE_MOVIE,
             message = "random exception message"
         )
 
         // when
-        coEvery { updateMovieUseCase(movie.copy(favourite = !movie.favourite)) } returns Result.failure(
-            exception
-        )
+        coEvery { updateMovieUseCase(movie.copy(favourite = !movie.favourite)) } returns GResult.Error(exception)
         mainViewModel.updateMovie(movie)
 
         // then
@@ -252,7 +265,7 @@ class MainViewModelTest : BaseTest() {
         )
 
         // when
-        coEvery { updateMovieUseCase(movie.copy(favourite = !movie.favourite)) } returns Result.success(true)
+        coEvery { updateMovieUseCase(movie.copy(favourite = !movie.favourite)) } returns GResult.Success(true)
         mainViewModel.updateMovie(movie)
 
         // then

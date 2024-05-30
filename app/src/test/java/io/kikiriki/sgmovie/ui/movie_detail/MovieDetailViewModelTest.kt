@@ -1,11 +1,10 @@
 package io.kikiriki.sgmovie.ui.movie_detail
 
-import io.kikiriki.sgmovie.BaseTest
 import io.kikiriki.sgmovie.R
-import io.kikiriki.sgmovie.data.model.domain.Movie
-import io.kikiriki.sgmovie.data.model.local.LocalDataSourceException
-import io.kikiriki.sgmovie.domain.movie.UpdateMovieUseCase
-import io.kikiriki.sgmovie.utils.ExceptionManager
+import io.kikiriki.sgmovie.core.test.BaseTest
+import io.kikiriki.sgmovie.data.exception.LocalDataSourceException
+import io.kikiriki.sgmovie.domain.model.Movie
+import io.kikiriki.sgmovie.domain.model.base.GResult
 import io.mockk.coEvery
 import io.mockk.impl.annotations.RelaxedMockK
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -15,7 +14,7 @@ import org.junit.Test
 @ExperimentalCoroutinesApi
 class MovieDetailViewModelTest : BaseTest() {
 
-    @RelaxedMockK private lateinit var updateMovieUseCase: UpdateMovieUseCase
+    @RelaxedMockK private lateinit var updateMovieUseCase: io.kikiriki.sgmovie.domain.usecase.UpdateMovieUseCase
     private lateinit var movieDetailViewModel: MovieDetailViewModel
 
     override fun onStart() {
@@ -41,12 +40,12 @@ class MovieDetailViewModelTest : BaseTest() {
             favourite = true
         )
         val exception = LocalDataSourceException(
-            code = ExceptionManager.Code.BBDD_CANNOT_UPDATE_MOVIE,
+            code = LocalDataSourceException.Code.CANNOT_UPDATE_MOVIE,
             message = "random exception message"
         )
 
         // when
-        coEvery { updateMovieUseCase(movie.copy(favourite = !movie.favourite)) } returns Result.failure(exception)
+        coEvery { updateMovieUseCase(movie.copy(favourite = !movie.favourite)) } returns GResult.Error(exception)
         movieDetailViewModel.updateMovie(movie)
 
         // then
@@ -72,7 +71,7 @@ class MovieDetailViewModelTest : BaseTest() {
         )
 
         // when
-        coEvery { updateMovieUseCase(movie.copy(favourite = !movie.favourite)) } returns Result.success(true)
+        coEvery { updateMovieUseCase(movie.copy(favourite = !movie.favourite)) } returns GResult.Success(true)
         movieDetailViewModel.updateMovie(movie)
 
         // then
