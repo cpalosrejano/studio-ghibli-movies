@@ -1,0 +1,55 @@
+[versions]
+core-ktx = "1.13.1"
+constraintlayout = "2.1.4"
+lifecycle = "2.8.0"
+google-material = "1.12.0"
+coil = "2.4.0"
+hilt = "2.45"
+test-junit = "4.13.2"
+test-mockk = "1.13.8"
+test-kotlinx-coroutines = "1.7.3"
+test-android-arch = "2.2.0"
+android-junit = "1.1.5"
+android-espresso = "3.5.1"
+retrofit = "2.9.0"
+okhttp-logging-interceptor = "5.0.0-alpha.2"
+moshi-kotlin = "1.12.0"
+room = "2.6.1"
+android-gradle-plugin = "8.4.1"
+kotlin = "1.8.20"
+hilt-plugin = "2.44"
+
+[libraries]
+androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
+androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
+androidx-lifecycle-viewmodel = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
+androidx-lifecycle-livedata = { group = "androidx.lifecycle", name = "lifecycle-livedata-ktx", version.ref = "lifecycle" }
+androidx-lifecycle-runtime = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycle" }
+google-material = { group = "com.google.android.material", name = "material", version.ref = "google-material" }
+coil = { group = "io.coil-kt", name = "coil", version.ref = "coil" }
+coil-gif = { group = "io.coil-kt", name = "coil-gif", version.ref = "coil" }
+hilt = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
+hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "hilt" }
+test-junit = { group = "junit", name = "junit", version.ref = "test-junit" }
+test-mockk = { group = "io.mockk", name = "mockk", version.ref = "test-mockk" }
+test-mockk-android = { group = "io.mockk", name = "mockk-android", version.ref = "test-mockk" }
+test-kotlinx-coroutines = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "test-kotlinx-coroutines" }
+androidx-arch-core-test = { group = "androidx.arch.core", name = "core-testing", version.ref = "test-android-arch" }
+androidx-test-junit = { group = "androidx.test.ext", name = "junit", version.ref = "android-junit" }
+androidx-test-espresso = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "android-espresso" }
+retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
+retrofit-converter-moshi = { group = "com.squareup.retrofit2", name = "converter-moshi", version.ref = "retrofit" }
+okhttp-logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp-logging-interceptor" }
+moshi-kotlin-codegen = { group = "com.squareup.moshi", name = "moshi-kotlin-codegen", version.ref = "moshi-kotlin" }
+room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
+room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
+room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "android-gradle-plugin" }
+android-library = { id = "com.android.library", version.ref = "android-gradle-plugin" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
+kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
+google-hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt-plugin" }

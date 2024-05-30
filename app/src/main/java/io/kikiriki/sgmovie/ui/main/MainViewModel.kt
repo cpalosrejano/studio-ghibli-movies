@@ -4,9 +4,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import io.kikiriki.sgmovie.data.model.domain.Movie
-import io.kikiriki.sgmovie.domain.movie.GetMoviesUseCase
-import io.kikiriki.sgmovie.domain.movie.UpdateMovieUseCase
+import io.kikiriki.sgmovie.domain.model.Movie
+import io.kikiriki.sgmovie.domain.model.base.GResult
+import io.kikiriki.sgmovie.domain.usecase.GetMoviesUseCase
+import io.kikiriki.sgmovie.domain.usecase.UpdateMovieUseCase
 import io.kikiriki.sgmovie.utils.ExceptionManager
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
@@ -27,23 +28,45 @@ class MainViewModel @Inject constructor(
 
         getMoviesUseCase()
             .onEach {
-                _uiState.postValue(MainUIState(items = it))
+                when (it) {
+
+                    is GResult.Success -> {
+                        val movies = it.data
+                        _uiState.value = MainUIState(items = movies)
+                    }
+                    is GResult.Error -> {
+                        val errorSt = ExceptionManager.getMessage(it.error)
+                        _uiState.value = MainUIState(error = errorSt)
+                    }
+                    is GResult.SuccessWithError -> {
+                        val movies = it.data
+                        val errorSt = ExceptionManager.getMessage(it.error)
+                        _uiState.value = MainUIState(items = movies, message = errorSt)
+                    }
+
+                }
             }
             .catch {
                 val error = ExceptionManager.getMessage(it)
-                _uiState.postValue(MainUIState(error = error))
+                _uiState.value = MainUIState(error = error)
             }
             .collect()
     }
 
     fun updateMovie(movie: Movie) = viewModelScope.launch {
-        try {
-            val newMovieStatus = movie.copy(favourite = !movie.favourite)
-            updateMovieUseCase(newMovieStatus).getOrThrow()
-        } catch (e: Exception) {
-            // get the exception and send to the UI
-            val error = ExceptionManager.getMessage(e)
-            _uiState.postValue(MainUIState(error = error))
+        val newMovieStatus = movie.copy(favourite = !movie.favourite)
+        when (val result = updateMovieUseCase(newMovieStatus)) {
+            is GResult.Success -> {}
+            is GResult.SuccessWithError -> {
+                // get the exception and send to the UI
+                val error = ExceptionManager.getMessage(result.error)
+                _uiState.value = MainUIState(error = error)
+            }
+            is GResult.Error -> {
+                // get the exception and send to the UI
+                val error = ExceptionManager.getMessage(result.error)
+                _uiState.value = MainUIState(error = error)
+            }
         }
     }
 

@@ -9,15 +9,16 @@ import coil.load
 import com.google.android.material.badge.BadgeDrawable
 import com.google.android.material.badge.BadgeUtils
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import io.kikiriki.sgmovie.R
-import io.kikiriki.sgmovie.data.model.domain.Movie
-import io.kikiriki.sgmovie.data.model.domain.Sort
 import io.kikiriki.sgmovie.databinding.ActivityMainBinding
-import io.kikiriki.sgmovie.framework.coil.CoilUtils
+import io.kikiriki.sgmovie.domain.model.Movie
+import io.kikiriki.sgmovie.model.Sort
 import io.kikiriki.sgmovie.ui.BaseActivity
 import io.kikiriki.sgmovie.ui.adapter.AdapterMovie
 import io.kikiriki.sgmovie.ui.movie_detail.MovieDetailFragment
+import io.kikiriki.sgmovie.utils.CoilUtils
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -67,7 +68,9 @@ class MainActivity : BaseActivity() {
         // recycler view adapter and item click
         viewBinding.recyclerView.adapter = adapter
         adapter.onMovieClick = { movie -> openMovieDetail(movie) }
-        adapter.onMovieFavouriteClick = { movie -> viewModel.updateMovie(movie) }
+        adapter.onMovieFavouriteClick = { movie ->
+            viewModel.updateMovie(movie)
+        }
     }
 
     private fun setupObservers() {
@@ -82,6 +85,13 @@ class MainActivity : BaseActivity() {
             // error view
             viewBinding.errorView.root.isVisible = uiState.error != null
             uiState.error?.let { viewBinding.errorView.lblMessage.setText(uiState.error) }
+
+            // message view
+            uiState.message?.let {
+                val snackBar = Snackbar.make(viewBinding.root, it, Snackbar.LENGTH_INDEFINITE)
+                snackBar.setAction(R.string.retry) { viewModel.getMovies() }
+                snackBar.show()
+            }
 
             // loading view
             viewBinding.loadingView.root.isVisible = uiState.isLoading

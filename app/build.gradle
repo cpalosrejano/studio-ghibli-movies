@@ -1,9 +1,9 @@
 plugins {
-    id 'kotlin-kapt'
-    id 'com.android.application'
-    id 'kotlin-parcelize'
-    id 'org.jetbrains.kotlin.android'
-    id 'com.google.dagger.hilt.android'
+    alias(libs.plugins.kotlin.kapt)
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.parcelize)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.google.hilt)
 }
 
 android {
@@ -43,57 +43,47 @@ android {
 
 dependencies {
 
+    implementation project(':domain')
+    implementation project(':data')
+    testImplementation project(':core:test')
+
     // android X: kotlin core
-    implementation 'androidx.core:core-ktx:1.12.0'
+    implementation libs.androidx.core.ktx
     // android X: constraint layout
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation libs.androidx.constraintlayout
     // android X: coroutines with lifecycle aware
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2'
-    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.6.2'
-    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.6.2'
+    implementation libs.androidx.lifecycle.viewmodel
+    implementation libs.androidx.lifecycle.livedata
+    implementation libs.androidx.lifecycle.runtime
 
     // google material
-    implementation 'com.google.android.material:material:1.10.0'
-
-    // hilt - dependency injector
-    implementation 'com.google.dagger:hilt-android:2.44'
-    kapt 'com.google.dagger:hilt-compiler:2.44'
+    implementation libs.google.material
 
     // image processing
-    implementation 'io.coil-kt:coil:2.4.0'
-    implementation 'io.coil-kt:coil-gif:2.4.0'
+    implementation libs.coil
+    implementation libs.coil.gif
 
-    // networking (retrofit + moshi)
-    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
-    implementation 'com.squareup.retrofit2:converter-moshi:2.9.0'
-    implementation 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.2'
-    kapt 'com.squareup.moshi:moshi-kotlin-codegen:1.12.0'
-
-    // room database
-    implementation "androidx.room:room-runtime:2.6.0"
-    annotationProcessor "androidx.room:room-compiler:2.6.0"
-    kapt "androidx.room:room-compiler:2.6.0"
-    implementation "androidx.room:room-ktx:2.6.0"
+    // hilt - dependency injector
+    implementation libs.hilt
+    kapt libs.hilt.compiler
 
     // testing
-    testImplementation 'junit:junit:4.13.2'
-    testImplementation 'io.mockk:mockk:1.13.8'
-    testImplementation "io.mockk:mockk-android:1.13.8"
-    /* dispatchers */ testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.1'
-    /* InstantTaskExecutorRule */ testImplementation "androidx.arch.core:core-testing:2.2.0"
+    testImplementation libs.test.junit
+    testImplementation libs.test.mockk
+    testImplementation libs.test.mockk.android
+    // testing: Dispatchers
+    testImplementation libs.test.kotlinx.coroutines
+    // testing: InstantTaskExecutorRule
+    testImplementation libs.androidx.arch.core.test
 
     // ui testing
-    /* To learn how to use hilt with ui testing to mock data repository, follow this guide:
-        https://mahendranv.github.io/posts/hilt-instrument/
-    */
     androidTestImplementation 'androidx.test:core-ktx:1.5.0'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    androidTestImplementation libs.androidx.test.junit
+    androidTestImplementation libs.androidx.test.espresso
     androidTestImplementation 'androidx.test.espresso:espresso-intents:3.5.1'
     androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.5.1'
     androidTestImplementation 'com.google.dagger:hilt-android-testing:2.44'
     kaptAndroidTest 'com.google.dagger:hilt-android-compiler:2.44'
-
 }
 
 // Hilt: Allow references to generated code
