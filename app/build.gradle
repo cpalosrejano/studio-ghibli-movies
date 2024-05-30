@@ -17,9 +17,14 @@ android {
         versionCode 1
         versionName "1.0"
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-    }
+        /* we will use the custom test runner which support hilt */
+        //testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "io.kikiriki.sgmovie.CustomTestRunner"
 
+    }
+    testOptions {
+        animationsDisabled = true
+    }
     viewBinding {
         enabled = true
     }
@@ -74,8 +79,13 @@ dependencies {
     testImplementation libs.androidx.arch.core.test
 
     // ui testing
+    androidTestImplementation libs.androidx.test.core.ktx
     androidTestImplementation libs.androidx.test.junit
     androidTestImplementation libs.androidx.test.espresso
+    androidTestImplementation libs.androidx.test.espresso.intents
+    androidTestImplementation libs.androidx.test.espresso.contrib
+    androidTestImplementation libs.google.dagger.hilt.android.testing
+    kaptAndroidTest libs.google.dagger.hilt.android.compiler
 }
 
 // Hilt: Allow references to generated code

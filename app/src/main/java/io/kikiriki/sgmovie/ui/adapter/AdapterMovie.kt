@@ -13,18 +13,18 @@ import io.kikiriki.sgmovie.domain.model.Movie
 import io.kikiriki.sgmovie.utils.Constants.Coil.CROSSFADE
 import io.kikiriki.sgmovie.utils.Constants.Coil.ROUNDED_CORNERS
 
-class AdapterMovie : ListAdapter<Movie, AdapterMovie.ViewHolderNote>(diffUtil) {
+class AdapterMovie : ListAdapter<Movie, AdapterMovie.ViewHolderMovie>(diffUtil) {
 
     var onMovieClick: ((Movie) -> Unit)? = null
     var onMovieFavouriteClick: ((Movie) -> Unit)? = null
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) : ViewHolderNote {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) : ViewHolderMovie {
         val inflater = LayoutInflater.from(parent.context)
         val itemBinding = ItemMovieBinding.inflate(inflater, parent, false)
-        return ViewHolderNote(itemBinding)
+        return ViewHolderMovie(itemBinding)
     }
 
-    override fun onBindViewHolder(holder: ViewHolderNote, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolderMovie, position: Int) {
         val item = getItem(position)
 
         // setup views
@@ -43,7 +43,7 @@ class AdapterMovie : ListAdapter<Movie, AdapterMovie.ViewHolderNote>(diffUtil) {
         holder.viewBinding.root.setOnClickListener { onMovieClick?.invoke(item) }
     }
 
-    class ViewHolderNote(val viewBinding: ItemMovieBinding) : RecyclerView.ViewHolder(viewBinding.root)
+    class ViewHolderMovie(val viewBinding: ItemMovieBinding) : RecyclerView.ViewHolder(viewBinding.root)
 
     companion object {
         private val diffUtil = object : DiffUtil.ItemCallback<Movie>() {

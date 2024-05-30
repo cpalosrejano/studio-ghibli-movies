@@ -68,7 +68,9 @@ class MainActivity : BaseActivity() {
         // recycler view adapter and item click
         viewBinding.recyclerView.adapter = adapter
         adapter.onMovieClick = { movie -> openMovieDetail(movie) }
-        adapter.onMovieFavouriteClick = { movie -> viewModel.updateMovie(movie) }
+        adapter.onMovieFavouriteClick = { movie ->
+            viewModel.updateMovie(movie)
+        }
     }
 
     private fun setupObservers() {
