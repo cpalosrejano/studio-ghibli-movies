@@ -22,7 +22,9 @@ android {
         testInstrumentationRunner = "io.kikiriki.sgmovie.CustomTestRunner"
 
     }
-
+    testOptions {
+        animationsDisabled = true
+    }
     viewBinding {
         enabled = true
     }
