@@ -47,6 +47,8 @@ This app is made with the following libraries:
 
 * **AndroidX lifecycle:** coroutines with lifecycle aware
 
+* **Firebase:** analytics, crashlytics
+
 * **Google Material 3:** theming
 
 
