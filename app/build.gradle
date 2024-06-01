@@ -4,6 +4,8 @@ plugins {
     alias(libs.plugins.kotlin.parcelize)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.google.hilt)
+    alias(libs.plugins.google.services)
+    alias(libs.plugins.firebase.crashlytics)
 }
 
 android {
@@ -48,6 +50,13 @@ dependencies {
     implementation project(':domain')
     implementation project(':data')
     testImplementation project(':core:test')
+
+    // firebase
+    implementation platform(libs.firebase.bom)
+    // firebase: crashlytics
+    implementation(libs.firebase.crashlytics)
+    // firebase: analytics
+    implementation libs.firebase.analytics
 
     // android X: kotlin core
     implementation libs.androidx.core.ktx
