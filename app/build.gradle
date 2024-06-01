@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.google.hilt)
     alias(libs.plugins.google.services)
+    alias(libs.plugins.firebase.crashlytics)
 }
 
 android {
@@ -52,6 +53,8 @@ dependencies {
 
     // firebase
     implementation platform(libs.firebase.bom)
+    // firebase: crashlytics
+    implementation(libs.firebase.crashlytics)
     // firebase: analytics
     implementation libs.firebase.analytics
 
