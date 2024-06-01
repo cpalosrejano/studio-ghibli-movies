@@ -8,6 +8,10 @@ import android.widget.Toast
 import coil.load
 import coil.transform.RoundedCornersTransformation
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.analytics.logEvent
+import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
 import io.kikiriki.sgmovie.R
 import io.kikiriki.sgmovie.databinding.FragmentMovieDetailBinding
@@ -25,6 +29,13 @@ class MovieDetailFragment private constructor() : BottomSheetDialogFragment() {
     @Inject lateinit var viewModel: MovieDetailViewModel
 
     private var movie: Movie? = null
+
+    private lateinit var firebaseAnalytics: FirebaseAnalytics
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        firebaseAnalytics = Firebase.analytics
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         movie = arguments?.getParcelableSupport(EXTRA_MOVIE, Movie::class.java)
@@ -63,13 +74,31 @@ class MovieDetailFragment private constructor() : BottomSheetDialogFragment() {
     private fun setupObserver() = viewModel.uiState.observe(this) { uiState ->
 
         // update movie and setup view
-        uiState.movie?.let {
-            movie = it
+        uiState.movie?.let { updatedMovie ->
+            movie = updatedMovie
             setupView()
+
+            // send analytics
+            when(updatedMovie.favourite) {
+                true -> sendAnalyticEventAddFavoriteMovie(updatedMovie)
+                false -> sendAnalyticEventDeleteFavoriteMovie(updatedMovie)
+            }
+
         }
 
         // error view
         uiState.error?.let { Toast.makeText(context, it, Toast.LENGTH_LONG).show() }
+    }
+
+    private fun sendAnalyticEventAddFavoriteMovie(movie: Movie) {
+        firebaseAnalytics.logEvent("add_favorite") {
+            param("movie", movie.title)
+        }
+    }
+    private fun sendAnalyticEventDeleteFavoriteMovie(movie: Movie) {
+        firebaseAnalytics.logEvent("delete_favorite") {
+            param("movie", movie.title)
+        }
     }
 
     companion object {

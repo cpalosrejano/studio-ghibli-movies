@@ -10,6 +10,10 @@ import com.google.android.material.badge.BadgeDrawable
 import com.google.android.material.badge.BadgeUtils
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.analytics.logEvent
+import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
 import io.kikiriki.sgmovie.R
 import io.kikiriki.sgmovie.databinding.ActivityMainBinding
@@ -30,11 +34,17 @@ class MainActivity : BaseActivity() {
     private var selectedSortType: Sort = Sort.NAME
     private val adapter = AdapterMovie()
 
+    private lateinit var firebaseAnalytics: FirebaseAnalytics
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(viewBinding.root)
         setupObservers()
         setupView()
+
+        firebaseAnalytics = Firebase.analytics
+
 
         viewModel.getMovies()
     }
@@ -70,6 +80,7 @@ class MainActivity : BaseActivity() {
         adapter.onMovieClick = { movie -> openMovieDetail(movie) }
         adapter.onMovieFavouriteClick = { movie ->
             viewModel.updateMovie(movie)
+            sendAnalyticsEventMovie(movie)
         }
     }
 
@@ -162,6 +173,25 @@ class MainActivity : BaseActivity() {
             val newBadge = BadgeDrawable.create(this)
             BadgeUtils.attachBadgeDrawable(newBadge, viewBinding.toolbar, R.id.action_sort)
             viewBinding.toolbar.tag = newBadge
+        }
+    }
+
+    private fun sendAnalyticsEventMovie(movie: Movie) {
+        val favorite = !movie.favourite
+        when (favorite){
+            true -> sendAnalyticEventAddFavoriteMovie(movie)
+            false -> sendAnalyticEventDeleteFavoriteMovie(movie)
+        }
+    }
+
+    private fun sendAnalyticEventAddFavoriteMovie(movie: Movie) {
+        firebaseAnalytics.logEvent("add_favorite") {
+            param("movie", movie.title)
+        }
+    }
+    private fun sendAnalyticEventDeleteFavoriteMovie(movie: Movie) {
+        firebaseAnalytics.logEvent("delete_favorite") {
+            param("movie", movie.title)
         }
     }
 
