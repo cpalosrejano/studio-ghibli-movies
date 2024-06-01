@@ -10,6 +10,7 @@
 /.idea/androidTestResultsUserPreferences.xml
 /.idea/appInsightsSettings.xml
 /.idea/deploymentTargetSelector.xml
+/app/google-services.json
 
 .DS_Store
 /build
