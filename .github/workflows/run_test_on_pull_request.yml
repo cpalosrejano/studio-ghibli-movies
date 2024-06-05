@@ -1,9 +1,11 @@
-name: Android CI
+name: Run test on pull request
 
-# This action will be executed on every pull request to master branch
+# This action will be executed on every pull request to master or develop branch
 on:
   pull_request:
-    branches: [ "master" ]
+    branches:
+      - master
+      - develop
 
 jobs:
   # We will user MacOS environment to build and execute our app test
