@@ -1,4 +1,4 @@
-package io.kikiriki.sgmovie.data.repository.movie
+package io.kikiriki.sgmovie.data.repository.movie.mock
 
 import io.kikiriki.sgmovie.domain.repository.MovieRepository
 
