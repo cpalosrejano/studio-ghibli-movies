@@ -33,6 +33,7 @@ androidx-lifecycle-runtime = { group = "androidx.lifecycle", name = "lifecycle-r
 firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebase-bom" }
 firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
+firebase-firestore = { module = "com.google.firebase:firebase-firestore" }
 google-material = { group = "com.google.android.material", name = "material", version.ref = "google-material" }
 coil = { group = "io.coil-kt", name = "coil", version.ref = "coil" }
 coil-gif = { group = "io.coil-kt", name = "coil-gif", version.ref = "coil" }
