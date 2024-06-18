@@ -1,7 +1,12 @@
 package io.kikiriki.sgmovie.data.repository.movie
 
 import io.kikiriki.sgmovie.core.coroutines.di.IODispatcher
+import io.kikiriki.sgmovie.data.exception.RemoteDataSourceException
 import io.kikiriki.sgmovie.data.model.mapper.MovieMapper
+import io.kikiriki.sgmovie.data.repository.movie.firestore.MovieFirestoreDataSource
+import io.kikiriki.sgmovie.data.repository.movie.local.MovieLocalDataSource
+import io.kikiriki.sgmovie.data.repository.movie.mock.MovieMockDataSource
+import io.kikiriki.sgmovie.data.repository.movie.remote.MovieRemoteDataSource
 import io.kikiriki.sgmovie.data.utils.Constants
 import io.kikiriki.sgmovie.domain.model.Movie
 import io.kikiriki.sgmovie.domain.model.base.GResult
@@ -17,6 +22,7 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class MovieRepositoryImpl @Inject constructor(
+    private val firestore: MovieFirestoreDataSource,
     private val remote: MovieRemoteDataSource,
     private val local: MovieLocalDataSource,
     private val mock: MovieMockDataSource,
@@ -41,7 +47,7 @@ class MovieRepositoryImpl @Inject constructor(
                     // if list is empty or force refresh is true, fetch movies from API
                     var fetchResult: GResult<*, Throwable>? = null
                     if (it.isEmpty() || forceRefresh) {
-                        fetchResult = fetchAPIMovies()
+                        fetchResult = fetchMovies()
                     }
 
                     // map result from database to emit to listeners
@@ -63,28 +69,6 @@ class MovieRepositoryImpl @Inject constructor(
         }
     }
 
-    private suspend fun fetchAPIMovies() : GResult<Boolean, Throwable> {
-        // try to fetch movies from API
-        return when (val result = remote.get()) {
-
-            is GResult.SuccessWithError -> {
-                val domainMovies = MovieMapper.remoteToData(result.data)
-                val localMovies = MovieMapper.dataToLocal(domainMovies)
-                local.insert(localMovies)
-                GResult.Success(true)
-            }
-            is GResult.Success -> {
-                val domainMovies = MovieMapper.remoteToData(result.data)
-                val localMovies = MovieMapper.dataToLocal(domainMovies)
-                local.insert(localMovies)
-                GResult.Success(true)
-            }
-            is GResult.Error -> {
-                GResult.Error(result.error)
-            }
-        }
-    }
-
     override suspend fun update(movie: Movie): GResult<Boolean, Throwable> = withContext(dispatcher) {
         if (Constants.Repository.MOCK) {
             return@withContext mock.update(movie)
@@ -92,10 +76,56 @@ class MovieRepositoryImpl @Inject constructor(
 
         return@withContext try {
             val localMovie = MovieMapper.dataToLocal(movie)
-            local.update(localMovie)
+            val result = local.update(localMovie)
+            GResult.Success(result)
         } catch (failure: Exception) {
             GResult.Error(failure)
         }
+    }
+
+    private suspend fun fetchMovies() : GResult<Boolean, Throwable> {
+        var remoteError: Throwable? = null
+        var firestoreError: Throwable? = null
+
+        // try to fetch movies from API
+        try {
+            val moviesRemote = remote.get()
+            val movies = MovieMapper.remoteToData(moviesRemote)
+            upsetMovies(movies)
+        } catch (exception: Exception) {
+            remoteError = exception
+        }
+
+        // try to fetch movies from Firestore
+        try {
+            val moviesRemote = firestore.get()
+            val movies = MovieMapper.firestoreToData(moviesRemote)
+            upsetMovies(movies)
+        } catch (exception: Exception) {
+            firestoreError = exception
+        }
+
+        return if (firestoreError != null && remoteError != null) {
+            // both request failed, return error
+            GResult.Error(remoteError)
+
+        } else if (firestoreError == null && remoteError == null) {
+            // both request success, return success
+            GResult.Success(true)
+
+        } else {
+            // one request failed, return success with error
+            val error: Throwable = remoteError ?: firestoreError ?:
+            RemoteDataSourceException(RemoteDataSourceException.Code.DEFAULT, "")
+
+            GResult.SuccessWithError(true, error)
+        }
+
+    }
+
+    private suspend fun upsetMovies(movies: List<Movie>) {
+        val localMovies = MovieMapper.dataToLocal(movies)
+        local.insert(localMovies)
     }
 
 }
