@@ -1,8 +1,7 @@
 package io.kikiriki.sgmovie.di
 
 import io.kikiriki.sgmovie.data.model.MovieRemote
-import io.kikiriki.sgmovie.data.repository.movie.MovieRemoteDataSource
-import io.kikiriki.sgmovie.domain.model.base.GResult
+import io.kikiriki.sgmovie.data.repository.movie.remote.MovieRemoteDataSource
 import io.kikiriki.sgmovie.utils.EspressoIdleResource
 import javax.inject.Inject
 
@@ -63,11 +62,11 @@ class FakeMovieRemoteDataSourceImpl @Inject constructor() : MovieRemoteDataSourc
         )
     )
 
-    override suspend fun get(): GResult<List<MovieRemote>, Throwable> {
+    override suspend fun get(): List<MovieRemote> {
         // return the desired result
         return try {
             EspressoIdleResource.increment()
-            GResult.Success(remoteMovies)
+            remoteMovies
         } finally {
             EspressoIdleResource.decrement()
         }

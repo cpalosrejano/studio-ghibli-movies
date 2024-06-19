@@ -42,25 +42,32 @@ class MovieRepositoryImpl @Inject constructor(
             // start to listen database
             local.get()
                 .flowOn(dispatcher)
-                .onEach {
+                .onEach { localMovies ->
 
                     // if list is empty or force refresh is true, fetch movies from API
                     var fetchResult: GResult<*, Throwable>? = null
-                    if (it.isEmpty() || forceRefresh) {
+                    if (localMovies.isEmpty() || forceRefresh) {
                         fetchResult = fetchMovies()
                     }
 
                     // map result from database to emit to listeners
-                    val listMovie = MovieMapper.localToData(it)
+                    val movies = MovieMapper.localToData(localMovies)
 
-                    if (fetchResult is GResult.Error) {
-                        // success with errors
-                        emit( GResult.SuccessWithError(listMovie, fetchResult.error) )
-                    } else {
-                        // success
-                        emit( GResult.Success(listMovie) )
+                    // validate result of fetch
+                    when (fetchResult) {
+                        is GResult.Error -> {
+                            // if fetch contains error, return local movies and error
+                            emit( GResult.SuccessWithError(movies, fetchResult.error) )
+                        }
+                        is GResult.SuccessWithError -> {
+                            // if fetch contains error, return local movies and error
+                            emit( GResult.SuccessWithError(movies, fetchResult.error) )
+                        }
+                        else -> {
+                            // otherwise success
+                            emit( GResult.Success(movies) )
+                        }
                     }
-
                 }
                 .catch {
                     emit(GResult.Error(it) )
