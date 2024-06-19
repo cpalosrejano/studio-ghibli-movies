@@ -1,7 +1,6 @@
 package io.kikiriki.sgmovie.data.repository.movie.mock
 
 import io.kikiriki.sgmovie.core.coroutines.di.IODispatcher
-import io.kikiriki.sgmovie.data.repository.movie.MovieMockDataSource
 import io.kikiriki.sgmovie.domain.model.Movie
 import io.kikiriki.sgmovie.domain.model.base.GResult
 import kotlinx.coroutines.CoroutineDispatcher

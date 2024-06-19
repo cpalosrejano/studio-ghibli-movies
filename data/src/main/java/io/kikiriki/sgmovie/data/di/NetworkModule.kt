@@ -1,6 +1,9 @@
 package io.kikiriki.sgmovie.data.di
 
 import androidx.annotation.Keep
+import com.google.firebase.Firebase
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.firestore
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -41,5 +44,9 @@ object NetworkModule {
             .client(okHttp).build()
             .create(MovieEndpoints::class.java)
     }
+
+    @Singleton
+    @Provides
+    fun provideFirestoreClient() : FirebaseFirestore = Firebase.firestore
 
 }

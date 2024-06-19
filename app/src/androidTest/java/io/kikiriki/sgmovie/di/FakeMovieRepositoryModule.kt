@@ -5,12 +5,13 @@ import dagger.Module
 import dagger.hilt.android.components.ActivityComponent
 import dagger.hilt.testing.TestInstallIn
 import io.kikiriki.sgmovie.data.di.MovieRepositoryModule
-import io.kikiriki.sgmovie.data.repository.movie.MovieLocalDataSource
-import io.kikiriki.sgmovie.data.repository.movie.MovieMockDataSource
-import io.kikiriki.sgmovie.data.repository.movie.MovieRemoteDataSource
 import io.kikiriki.sgmovie.data.repository.movie.MovieRepositoryImpl
+import io.kikiriki.sgmovie.data.repository.movie.firestore.MovieFirestoreDataSource
+import io.kikiriki.sgmovie.data.repository.movie.local.MovieLocalDataSource
 import io.kikiriki.sgmovie.data.repository.movie.local.MovieLocalDataSourceImpl
+import io.kikiriki.sgmovie.data.repository.movie.mock.MovieMockDataSource
 import io.kikiriki.sgmovie.data.repository.movie.mock.MovieMockDataSourceImpl
+import io.kikiriki.sgmovie.data.repository.movie.remote.MovieRemoteDataSource
 import io.kikiriki.sgmovie.domain.repository.MovieRepository
 
 /**
@@ -25,6 +26,9 @@ import io.kikiriki.sgmovie.domain.repository.MovieRepository
 )
 @Module
 abstract class FakeMovieRepositoryModule {
+
+    @Binds
+    abstract fun bindMovieFirestoreDataSource(implementation: FakeMovieFirestoreDataSourceImpl) : MovieFirestoreDataSource
 
     @Binds
     abstract fun bindMovieRemoteDataSource(implementation: FakeMovieRemoteDataSourceImpl) : MovieRemoteDataSource

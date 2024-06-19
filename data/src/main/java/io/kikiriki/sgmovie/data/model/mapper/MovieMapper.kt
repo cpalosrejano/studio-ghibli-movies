@@ -1,7 +1,9 @@
 package io.kikiriki.sgmovie.data.model.mapper
 
+import io.kikiriki.sgmovie.data.model.MovieFirestore
 import io.kikiriki.sgmovie.data.model.MovieLocal
 import io.kikiriki.sgmovie.data.model.MovieRemote
+import io.kikiriki.sgmovie.data.repository.movie.firestore.Firestore
 import io.kikiriki.sgmovie.domain.model.Movie
 
 object MovieMapper {
@@ -84,6 +86,42 @@ object MovieMapper {
     }
     fun dataToLocal(movies: List<Movie>) : List<MovieLocal> {
         return movies.map { dataToLocal(it) }
+    }
+
+    fun snapshotToFirestore(snapshotMovie: Map<*, *>) : MovieFirestore {
+        return MovieFirestore(
+            id = snapshotMovie[Firestore.Movies.KEY_ID].toString(),
+            title = snapshotMovie[Firestore.Movies.KEY_TITLE].toString(),
+            original_title_romanised = snapshotMovie[Firestore.Movies.KEY_ORIGINAL_TITLE_ROMANISED].toString(),
+            image = snapshotMovie[Firestore.Movies.KEY_IMAGE].toString(),
+            movie_banner = snapshotMovie[Firestore.Movies.KEY_MOVIE_BANNER].toString(),
+            description = snapshotMovie[Firestore.Movies.KEY_DESCRIPTION].toString(),
+            director = snapshotMovie[Firestore.Movies.KEY_DIRECTOR].toString(),
+            producer = snapshotMovie[Firestore.Movies.KEY_PRODUCER].toString(),
+            release_year = (snapshotMovie[Firestore.Movies.KEY_RELEASE_YEAR] as Long).toInt(),
+            duration = (snapshotMovie[Firestore.Movies.KEY_DURATION] as Long).toInt(),
+            rt_score = (snapshotMovie[Firestore.Movies.KEY_RT_SCORE] as Long).toInt()
+        )
+    }
+
+    fun firestoreToData(movie: MovieFirestore) : Movie {
+        return Movie (
+            id = movie.id,
+            title = movie.title,
+            originalTitleRomanised = movie.original_title_romanised,
+            image = movie.image,
+            movieBanner = movie.movie_banner,
+            description = movie.description,
+            director = movie.director,
+            producer = movie.producer,
+            releaseDate = movie.release_year,
+            runningTime = movie.duration.toString(),
+            rtScore = movie.rt_score
+        )
+    }
+
+    fun firestoreToData(moviesFirestore: List<MovieFirestore>) : List<Movie> {
+        return moviesFirestore.map { firestoreToData(it) }
     }
 
 }

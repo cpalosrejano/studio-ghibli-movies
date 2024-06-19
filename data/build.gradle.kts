@@ -44,6 +44,11 @@ dependencies {
     implementation(libs.hilt)
     kapt(libs.hilt.compiler)
 
+    // firebase
+    implementation(platform(libs.firebase.bom))
+    // firebase: firestore
+    implementation(libs.firebase.firestore)
+
     // networking (retrofit + moshi)
     implementation(libs.retrofit)
     implementation(libs.retrofit.converter.moshi)

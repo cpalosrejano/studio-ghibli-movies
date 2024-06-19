@@ -3,8 +3,6 @@ package io.kikiriki.sgmovie.data.repository.movie.local
 import io.kikiriki.sgmovie.core.coroutines.di.IODispatcher
 import io.kikiriki.sgmovie.data.exception.LocalDataSourceException
 import io.kikiriki.sgmovie.data.model.MovieLocal
-import io.kikiriki.sgmovie.data.repository.movie.MovieLocalDataSource
-import io.kikiriki.sgmovie.domain.model.base.GResult
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -33,7 +31,7 @@ class MovieLocalDataSourceImpl @Inject constructor(
             .collect()
     }
 
-    override suspend fun insert(movies: List<MovieLocal>): GResult<Boolean, Throwable> = withContext(dispatcher) {
+    override suspend fun insert(movies: List<MovieLocal>): Boolean = withContext(dispatcher) {
         return@withContext try {
             // get favourites and set to new list
             val favourites = movieDao.getFavourites()
@@ -42,28 +40,23 @@ class MovieLocalDataSourceImpl @Inject constructor(
             }
             // insert new data with old favourites movies
             movieDao.insert(movies)
-            GResult.Success(true)
+            true
 
         } catch (failure: Exception) {
-            GResult.Error(
-                LocalDataSourceException(
-                    code = LocalDataSourceException.Code.CANNOT_INSERT_MOVIES,
-                    message = failure.localizedMessage.orEmpty()
-                )
+            throw LocalDataSourceException(
+                code = LocalDataSourceException.Code.CANNOT_INSERT_MOVIES,
+                message = failure.localizedMessage.orEmpty()
             )
         }
     }
 
-    override suspend fun update(movie: MovieLocal): GResult<Boolean, Throwable> = withContext(dispatcher) {
+    override suspend fun update(movie: MovieLocal):Boolean = withContext(dispatcher) {
         return@withContext try {
-            val value = movieDao.updateFavourite(movie) == 1
-            GResult.Success(value)
+            movieDao.updateFavourite(movie) == 1
         } catch (failure: Exception) {
-            GResult.Error(
-                LocalDataSourceException(
-                    code = LocalDataSourceException.Code.CANNOT_UPDATE_MOVIE,
-                    message = failure.localizedMessage.orEmpty()
-                )
+            throw LocalDataSourceException(
+                code = LocalDataSourceException.Code.CANNOT_UPDATE_MOVIE,
+                message = failure.localizedMessage.orEmpty()
             )
         }
     }
