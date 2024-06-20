@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- DIALOG STYLE -->
+    <style name="MaterialAlertDialogStyle" parent="@style/ThemeOverlay.Material3.MaterialAlertDialog">
+        <item name="materialAlertDialogTitleTextStyle">@style/DialogTitleTextStyle</item>
+    </style>
+    <style name="DialogTitleTextStyle" parent="@style/MaterialAlertDialog.Material3.Title.Text">
+        <item name="fontFamily">@font/pangolin_regular</item>
+    </style>
+
+    <!-- TOOLBAR STYLE -->
+    <style name="ToolbarStyle" parent="TextAppearance.Material3.ActionBar.Title">
+        <item name="fontFamily">@font/pangolin_regular</item>
+    </style>
+
+    <!-- TITLE LARGE STYLES -->
+    <style name="TitleLargeTextStyle" parent="@style/TextAppearance.Material3.TitleLarge">
+        <item name="fontFamily">@font/pangolin_regular</item>
+    </style>
+    <style name="TitleMediumTextStyle" parent="TextAppearance.Material3.TitleMedium">
+        <item name="fontFamily">@font/pangolin_regular</item>
+    </style>
+
+    <!-- BODY LARGE STYLES -->
+    <style name="BodyLargeTextStyle" parent="TextAppearance.Material3.BodyLarge">
+        <item name="fontFamily">@font/abeezee_regular</item>
+    </style>
+    <style name="BodySmallTextStyle" parent="TextAppearance.Material3.BodySmall">
+        <item name="fontFamily">@font/abeezee_regular</item>
+    </style>
+
+    <!-- LABEL LARGE STYLES -->
+    <style name="LabelLargeTextStyle" parent="TextAppearance.Material3.LabelLarge">
+        <item name="fontFamily">@font/abeezee_regular</item>
+    </style>
+
+    
+</resources>
