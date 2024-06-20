@@ -128,7 +128,7 @@ class MainActivity : BaseActivity() {
         val sortOptionsLabels = sortOptions.map { getString(it.title) }.toTypedArray()
 
         // show dialog
-        MaterialAlertDialogBuilder(this)
+        MaterialAlertDialogBuilder(this, R.style.MaterialAlertDialogStyle)
             .setTitle(R.string.dialog_sort_by_lbl_title)
             .setIcon(R.drawable.ic_sort)
             .setNegativeButton(android.R.string.cancel) { _, _ -> }
