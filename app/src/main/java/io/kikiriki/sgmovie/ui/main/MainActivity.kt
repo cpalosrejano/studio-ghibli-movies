@@ -55,11 +55,19 @@ class MainActivity : BaseActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.action_sort) {
-            openSortMoviesDialog()
-            return true
+        return when (item.itemId) {
+            R.id.action_sort -> {
+                openSortMoviesDialog()
+                true
+            }
+            R.id.action_settings -> {
+                openSettingsActivity()
+                true
+            }
+            else -> {
+                super.onOptionsItemSelected(item)
+            }
         }
-        return super.onOptionsItemSelected(item)
     }
 
     private fun setupView() {
@@ -174,6 +182,10 @@ class MainActivity : BaseActivity() {
             BadgeUtils.attachBadgeDrawable(newBadge, viewBinding.toolbar, R.id.action_sort)
             viewBinding.toolbar.tag = newBadge
         }
+    }
+
+    private fun openSettingsActivity() {
+
     }
 
     private fun sendAnalyticsEventMovie(movie: Movie) {
