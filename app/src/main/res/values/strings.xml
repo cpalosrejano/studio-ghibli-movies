@@ -5,6 +5,11 @@
     <string name="main_menu_lbl_sort">Sort movies</string>
     <string name="main_menu_lbl_settings">Settings</string>
 
+    <!-- SETTINGS ACTIVITY -->
+    <string name="settings_title">Settings</string>
+    <string name="settings_lbl_version">App version: %1$s</string>
+    <string name="settings_lbl_privacy_policy">Privacy policy</string>
+
     <!-- DETAIL FRAGMENT -->
     <string name="movie_detail_lbl_score">%1$d %%</string>
     <string name="movie_detail_lbl_running_time">%1$s min</string>

@@ -1,6 +1,7 @@
 package io.kikiriki.sgmovie.ui.main
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -22,6 +23,7 @@ import io.kikiriki.sgmovie.model.Sort
 import io.kikiriki.sgmovie.ui.BaseActivity
 import io.kikiriki.sgmovie.ui.adapter.AdapterMovie
 import io.kikiriki.sgmovie.ui.movie_detail.MovieDetailFragment
+import io.kikiriki.sgmovie.ui.settings.SettingsActivity
 import io.kikiriki.sgmovie.utils.CoilUtils
 import javax.inject.Inject
 
@@ -185,7 +187,9 @@ class MainActivity : BaseActivity() {
     }
 
     private fun openSettingsActivity() {
-
+        startActivity(
+            Intent(this, SettingsActivity::class.java)
+        )
     }
 
     private fun sendAnalyticsEventMovie(movie: Movie) {
