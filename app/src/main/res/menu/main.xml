@@ -6,4 +6,9 @@
         android:icon="@drawable/ic_sort"
         android:title="@string/main_menu_lbl_sort"
         app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_settings"
+        android:icon="@drawable/ic_settings"
+        android:title="@string/main_menu_lbl_settings"
+        app:showAsAction="ifRoom" />
 </menu>

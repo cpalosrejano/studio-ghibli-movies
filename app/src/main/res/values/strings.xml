@@ -3,6 +3,7 @@
 
     <!-- MAIN ACTIVITY -->
     <string name="main_menu_lbl_sort">Sort movies</string>
+    <string name="main_menu_lbl_settings">Settings</string>
 
     <!-- DETAIL FRAGMENT -->
     <string name="movie_detail_lbl_score">%1$d %%</string>
