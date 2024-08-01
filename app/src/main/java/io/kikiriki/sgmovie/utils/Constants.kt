@@ -10,4 +10,8 @@ object Constants {
         val ROUNDED_CORNERS_XL: Float = 28.px.toFloat()
     }
 
+    object Legal {
+        const val PRIVACY_POLICY_URL = "https://cpalosrejano.github.io/studio-ghibli-movies/"
+    }
+
 }
