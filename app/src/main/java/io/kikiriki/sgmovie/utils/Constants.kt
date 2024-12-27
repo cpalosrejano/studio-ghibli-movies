@@ -11,7 +11,7 @@ object Constants {
     }
 
     object Legal {
-        const val PRIVACY_POLICY_URL = "https://cpalosrejano.github.io/studio-ghibli-movies/"
+        const val PRIVACY_POLICY_URL = "https://www.privacypolicies.com/live/503cebca-11b0-4bda-9fb0-051be4285c4d"
     }
 
 }
