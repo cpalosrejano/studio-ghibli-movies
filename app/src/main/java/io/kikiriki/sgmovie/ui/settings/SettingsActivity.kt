@@ -5,6 +5,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import androidx.activity.enableEdgeToEdge
 import dagger.hilt.android.AndroidEntryPoint
 import io.kikiriki.sgmovie.R
 import io.kikiriki.sgmovie.databinding.ActivitySettingsBinding
@@ -19,6 +20,7 @@ class SettingsActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         setContentView(viewBinding.root)
         setupView()
     }
@@ -36,7 +38,7 @@ class SettingsActivity : BaseActivity() {
         viewBinding.cardPrivacyPolicy.setOnClickListener { openPrivacyPolicy() }
 
         try {
-            val versionName: String = packageManager.getPackageInfo(packageName, 0).versionName
+            val versionName: String = packageManager.getPackageInfo(packageName, 0).versionName.orEmpty()
             viewBinding.appInfoTvVersion.text = resources.getString(R.string.settings_lbl_version, versionName)
         } catch (_:Exception) {
             viewBinding.appInfoTvVersion.visibility = View.GONE
