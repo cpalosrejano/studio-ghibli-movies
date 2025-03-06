@@ -23,7 +23,7 @@ import io.kikiriki.sgmovie.utils.extension.getParcelableSupport
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class MovieDetailFragment private constructor() : BottomSheetDialogFragment() {
+class MovieDetailFragment : BottomSheetDialogFragment() {
 
     private val viewBinding by lazy { FragmentMovieDetailBinding.inflate(layoutInflater) }
     @Inject lateinit var viewModel: MovieDetailViewModel
