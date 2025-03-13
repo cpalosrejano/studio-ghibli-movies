@@ -15,12 +15,16 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
+import java.util.Locale
 
 @ExperimentalCoroutinesApi
 class GetMoviesUseCaseTest : BaseTest() {
 
     @RelaxedMockK private lateinit var movieRepository: MovieRepository
     private lateinit var getMoviesUseCase: GetMoviesUseCase
+
+    private val lang = Locale.getDefault().language
+    private val coproductions = false
 
     override fun onStart() {
         super.onStart()
@@ -35,17 +39,18 @@ class GetMoviesUseCaseTest : BaseTest() {
         // when
         var resultException: Throwable? = null
         var resultData: List<Movie>? = null
-        coEvery { movieRepository.get() } returns flowOf(GResult.Success(movies))
+
+        coEvery { movieRepository.get(lang, coproductions) } returns flowOf(GResult.Success(movies))
         getMoviesUseCase().onEach {
             when (it) {
-                is GResult.Success -> resultData = it.data
-                is GResult.Error -> {}
-                is GResult.SuccessWithError -> {}
+                is GResult.Success -> { resultData = it.data }
+                is GResult.Error -> { resultException = it.error }
+                is GResult.SuccessWithError -> { resultException = it.error }
             }
         }.catch {
             resultException = it
         }.collect()
-        delay(100)
+        delay(1000)
 
         // then
         assert( resultException == null )
@@ -90,7 +95,7 @@ class GetMoviesUseCaseTest : BaseTest() {
         // when
         var resultException: Throwable? = null
         var resultData: List<Movie>? = null
-        coEvery { movieRepository.get() } returns flowOf(GResult.Success(movies))
+        coEvery { movieRepository.get(lang) } returns flowOf(GResult.Success(movies))
         getMoviesUseCase().onEach {
             when (it) {
                 is GResult.Success -> resultData = it.data

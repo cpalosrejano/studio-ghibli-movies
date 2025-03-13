@@ -14,11 +14,9 @@ class MovieRemoteDataSourceImpl @Inject constructor(
     @IODispatcher private val dispatcher: CoroutineDispatcher
 )  : MovieRemoteDataSource {
 
-    override suspend fun get(): List<MovieRemote> = withContext(dispatcher) {
-        val fields = "id,title,original_title_romanised,image,movie_banner,description,director,producer,release_date,running_time,rt_score"
-        val limit = 250
+    override suspend fun get(lang: String, coproductions: Boolean): List<MovieRemote> = withContext(dispatcher) {
         try {
-            val result = movieEndpoints.getMovies(limit = limit, fields = fields)
+            val result = movieEndpoints.getMovies(lang, coproductions)
             return@withContext result
         } catch (failure: Exception) {
             val exception = handleException(failure)

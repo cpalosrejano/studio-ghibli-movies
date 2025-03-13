@@ -73,7 +73,8 @@ class MovieMockDataSourceImpl @Inject constructor(
         )
     )
 
-    override fun get(forceRefresh: Boolean): Flow<GResult<List<Movie>, Throwable>> = flowOf(GResult.Success(movies))
+    override fun get(lang: String, coproductions: Boolean, forceRefresh: Boolean):
+            Flow<GResult<List<Movie>, Throwable>> = flowOf(GResult.Success(movies))
 
     override suspend fun update(movie: Movie): GResult<Boolean, Throwable> = withContext(dispatcher) {
         delay(1000)

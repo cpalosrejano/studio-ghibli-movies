@@ -7,6 +7,7 @@ import io.kikiriki.sgmovie.domain.repository.MovieRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
+import java.util.Locale
 import javax.inject.Inject
 
 class GetMoviesUseCase @Inject constructor(
@@ -15,7 +16,8 @@ class GetMoviesUseCase @Inject constructor(
 ) {
 
     suspend operator fun invoke() : Flow<GResult<List<Movie>, Throwable>> = withContext(dispatcher) {
-        return@withContext movieRepository.get()
+        val lang = Locale.getDefault().language
+        return@withContext movieRepository.get(lang)
     }
 
 }
