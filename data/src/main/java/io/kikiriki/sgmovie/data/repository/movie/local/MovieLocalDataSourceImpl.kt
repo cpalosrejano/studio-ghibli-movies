@@ -5,11 +5,7 @@ import io.kikiriki.sgmovie.data.exception.LocalDataSourceException
 import io.kikiriki.sgmovie.data.model.MovieLocal
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -18,17 +14,17 @@ class MovieLocalDataSourceImpl @Inject constructor(
     @IODispatcher private val dispatcher: CoroutineDispatcher
 )  : MovieLocalDataSource {
 
-    override fun get(): Flow<List<MovieLocal>> = flow {
-        movieDao.getAll()
-            .flowOn(dispatcher)
-            .onEach { emit(it) }
-            .catch {
-                throw LocalDataSourceException(
-                    code = LocalDataSourceException.Code.CANNOT_GET_MOVIES,
-                    message = it.message.orEmpty()
-                )
-            }
-            .collect()
+    override fun getAsFlow(): Flow<List<MovieLocal>> = movieDao.getAll()
+
+    override suspend fun get(): List<MovieLocal> {
+        try {
+            return movieDao.getAll().firstOrNull() ?: emptyList()
+        } catch (e: Exception) {
+            throw LocalDataSourceException(
+                code = LocalDataSourceException.Code.CANNOT_GET_MOVIES,
+                message = e.message.orEmpty()
+            )
+        }
     }
 
     override suspend fun insert(movies: List<MovieLocal>): Boolean = withContext(dispatcher) {

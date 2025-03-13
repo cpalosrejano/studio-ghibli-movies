@@ -13,6 +13,7 @@ data class Movie(
     val description: String,
     val director: String,
     val producer: String? = null,
+    val soundtrack: String? = null,
     val releaseDate: Int,
     val runningTime: String? = null,
     val rtScore: Int,

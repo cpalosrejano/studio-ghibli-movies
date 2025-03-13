@@ -30,6 +30,7 @@ import okhttp3.ResponseBody.Companion.toResponseBody
 import org.junit.Test
 import retrofit2.HttpException
 import retrofit2.Response
+import java.util.Locale
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class MovieRepositoryTest : BaseTest() {
@@ -40,8 +41,8 @@ class MovieRepositoryTest : BaseTest() {
 
     private lateinit var repository: MovieRepository
 
-    private val fields = "id,title,original_title_romanised,image,movie_banner,description,director,producer,release_date,running_time,rt_score"
-    private val limit = 250
+    private val lang = Locale.getDefault().language
+    private val coproductions = false
 
     override fun onStart() {
         super.onStart()
@@ -59,13 +60,12 @@ class MovieRepositoryTest : BaseTest() {
     @Test
     fun check_if_get_remote_then_success() = runBlocking {
         // given
-        coEvery { firestoreDataSource.get() } returns DataMock.moviesFirestore
-        coEvery { endpoints.getMovies(limit, fields) } returns DataMock.moviesRemote
+        coEvery { endpoints.getMovies(lang, coproductions) } returns DataMock.moviesRemote
         coEvery { dao.getAll() } returns flowOf(DataMock.moviesLocal)
 
         // when
         var result: GResult<List<Movie>, Throwable>? = null
-        repository.get(true).onEach {
+        repository.get(lang, coproductions).onEach {
             result = it
         }.collect()
 
@@ -77,14 +77,13 @@ class MovieRepositoryTest : BaseTest() {
     @Test
     fun check_if_get_remote_then_error_unauthorized() = runBlocking {
         // given
-        coEvery { firestoreDataSource.get() } returns DataMock.moviesFirestore
         val httpException = HttpException(Response.error<ResponseBody>(401, "Un authorized".toResponseBody("plain/text".toMediaTypeOrNull())))
-        coEvery { dao.getAll() } returns flowOf(DataMock.moviesLocal)
-        coEvery { endpoints.getMovies(limit, fields) } throws httpException
+        coEvery { dao.getAll() } returns flowOf(emptyList())
+        coEvery { endpoints.getMovies(lang, coproductions) } throws httpException
 
         // when
         var exception: Throwable? = null
-        repository.get(true).onEach {
+        repository.get(lang, coproductions).onEach {
             when (it) {
                 is GResult.Success -> { it.data }
                 is GResult.Error -> { exception = it.error }
@@ -102,14 +101,13 @@ class MovieRepositoryTest : BaseTest() {
     @Test
     fun check_if_get_remote_then_error_resource_not_found() = runBlocking {
         // given
-        coEvery { firestoreDataSource.get() } returns DataMock.moviesFirestore
         val httpException = HttpException(Response.error<ResponseBody>(404, "Resource not found".toResponseBody("plain/text".toMediaTypeOrNull())))
-        coEvery { dao.getAll() } returns flowOf(DataMock.moviesLocal)
-        coEvery { endpoints.getMovies(limit, fields) } throws httpException
+        coEvery { dao.getAll() } returns flowOf(emptyList())
+        coEvery { endpoints.getMovies(lang, coproductions) } throws httpException
 
         // when
         var exception: Throwable? = null
-        repository.get(true).onEach {
+        repository.get(lang, coproductions).onEach {
             when (it) {
                 is GResult.Success -> { it.data }
                 is GResult.Error -> { exception = it.error }
@@ -128,14 +126,13 @@ class MovieRepositoryTest : BaseTest() {
     @Test
     fun check_if_get_remote_then_error_default() = runBlocking {
         // given
-        coEvery { firestoreDataSource.get() } returns DataMock.moviesFirestore
         val httpException = HttpException(Response.error<ResponseBody>(501, "Not implemented".toResponseBody("plain/text".toMediaTypeOrNull())))
-        coEvery { endpoints.getMovies(limit, fields) } throws httpException
-        coEvery { dao.getAll() } returns flowOf(DataMock.moviesLocal)
+        coEvery { endpoints.getMovies(lang, coproductions) } throws httpException
+        coEvery { dao.getAll() } returns flowOf(emptyList())
 
         // when
         var exception: Throwable? = null
-        repository.get(true).onEach {
+        repository.get(lang, coproductions).onEach {
             when (it) {
                 is GResult.Success -> { it.data }
                 is GResult.Error -> { exception = it.error }
@@ -152,46 +149,18 @@ class MovieRepositoryTest : BaseTest() {
     }
 
     @Test
-    fun check_if_get_firestore_then_error_default() = runBlocking {
-        // given
-
-        val error = RemoteDataSourceException(RemoteDataSourceException.Code.DEFAULT, "firestore error")
-        coEvery { firestoreDataSource.get() } throws error
-        coEvery { endpoints.getMovies(limit, fields) } returns DataMock.moviesRemote
-        coEvery { dao.getAll() } returns flowOf(DataMock.moviesLocal)
-
-        // when
-        var exception: Throwable? = null
-        repository.get(true).onEach {
-            when (it) {
-                is GResult.Success -> { it.data }
-                is GResult.Error -> { exception = it.error }
-                is GResult.SuccessWithError -> { exception = it.error }
-            }
-        }.catch {
-            exception = it
-        }.collect()
-
-        // then
-        assert( exception is RemoteDataSourceException)
-        assert( (exception as? RemoteDataSourceException)?.code == BaseCode.DEFAULT )
-
-    }
-
-    @Test
     fun check_if_get_local_then_error_cannot_get_movies() = runBlocking {
         // given
         val localException = LocalDataSourceException(
             LocalDataSourceException.Code.CANNOT_GET_MOVIES,
             "BBDD_CANNOT_GET_MOVIES"
         )
-        coEvery { firestoreDataSource.get() } returns DataMock.moviesFirestore
-        coEvery { endpoints.getMovies(limit, fields) } returns DataMock.moviesRemote
+        coEvery { endpoints.getMovies(lang, coproductions) } returns DataMock.moviesRemote
         coEvery { dao.getAll() } throws localException
 
         // when
         var exception: Throwable? = null
-        repository.get(true).onEach {
+        repository.get(lang, coproductions).onEach {
             when (it) {
                 is GResult.Success -> { it.data }
                 is GResult.Error -> { exception = it.error }
@@ -214,13 +183,12 @@ class MovieRepositoryTest : BaseTest() {
             LocalDataSourceException.Code.CANNOT_INSERT_MOVIES,
             "BBDD_CANNOT_INSERT_MOVIES"
         )
-        coEvery { firestoreDataSource.get() } returns DataMock.moviesFirestore
-        coEvery { endpoints.getMovies(limit, fields) } returns DataMock.moviesRemote
-        coEvery { dao.getAll() } throws localException
+        coEvery { endpoints.getMovies(lang, coproductions) } returns DataMock.moviesRemote
+        coEvery { dao.insert(DataMock.moviesLocal) } throws localException
 
         // when
         var exception: Throwable? = null
-        repository.get(true).onEach {
+        repository.get(lang, coproductions).onEach {
             when (it) {
                 is GResult.Success -> { it.data }
                 is GResult.Error -> { exception = it.error }
@@ -243,7 +211,6 @@ class MovieRepositoryTest : BaseTest() {
             LocalDataSourceException.Code.CANNOT_UPDATE_MOVIE,
             "BBDD_CANNOT_UPDATE_MOVIE"
         )
-        coEvery { firestoreDataSource.get() } returns DataMock.moviesFirestore
         val movieLocal = DataMock.moviesLocal.first()
         coEvery { dao.updateFavourite(movieLocal) } throws localException
 
