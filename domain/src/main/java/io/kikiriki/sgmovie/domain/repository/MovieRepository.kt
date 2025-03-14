@@ -9,6 +9,8 @@ interface MovieRepository {
     fun get(lang: String, coproductions: Boolean = false, forceRefresh: Boolean = false):
             Flow<GResult<List<Movie>, Throwable>>
 
+    fun getMovieById(movieId: String) : Flow<Movie>
+
     suspend fun updateLike(movie: Movie) : GResult<Boolean, Throwable>
 
 }
