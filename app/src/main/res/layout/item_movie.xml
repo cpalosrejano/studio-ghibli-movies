@@ -64,7 +64,7 @@
             app:layout_constraintStart_toEndOf="@id/img_image"
             app:layout_constraintTop_toTopOf="parent"
             style="@style/TitleMediumTextStyle"
-            app:layout_constraintEnd_toStartOf="@id/img_save"
+            app:layout_constraintEnd_toStartOf="@id/layout_likes"
             app:layout_constraintBottom_toTopOf="@id/lbl_description"
             android:layout_marginStart="12dp"
             tools:text="Gake no ue no Ponyo"/>
