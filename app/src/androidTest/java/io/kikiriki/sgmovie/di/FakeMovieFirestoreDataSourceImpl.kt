@@ -14,6 +14,10 @@ class FakeMovieFirestoreDataSourceImpl @Inject constructor() : MovieFirestoreDat
 
     override fun getLikes(): Flow<Map<String, Long>> = flowOf(moviesLike)
 
+    override fun getMovieLikesById(movieId: String): Flow<Long> {
+        return flowOf(1)
+    }
+
     override fun updateLike(movieId: String, like: Boolean) {
         if(moviesLike.containsKey(movieId)) {
             val actualLikes = moviesLike[movieId] ?: 0

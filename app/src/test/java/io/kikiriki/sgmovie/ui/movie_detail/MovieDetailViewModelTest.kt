@@ -5,21 +5,25 @@ import io.kikiriki.sgmovie.core.test.BaseTest
 import io.kikiriki.sgmovie.data.exception.LocalDataSourceException
 import io.kikiriki.sgmovie.domain.model.Movie
 import io.kikiriki.sgmovie.domain.model.base.GResult
+import io.kikiriki.sgmovie.domain.usecase.GetMovieByIdUseCase
+import io.kikiriki.sgmovie.domain.usecase.UpdateMovieLikeUseCase
 import io.mockk.coEvery
 import io.mockk.impl.annotations.RelaxedMockK
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
 
 @ExperimentalCoroutinesApi
 class MovieDetailViewModelTest : BaseTest() {
 
-    @RelaxedMockK private lateinit var updateMovieLikeUseCase: io.kikiriki.sgmovie.domain.usecase.UpdateMovieLikeUseCase
+    @RelaxedMockK private lateinit var updateMovieLikeUseCase: UpdateMovieLikeUseCase
+    @RelaxedMockK private lateinit var getMovieByIdUseCase: GetMovieByIdUseCase
     private lateinit var movieDetailViewModel: MovieDetailViewModel
 
     override fun onStart() {
         super.onStart()
-        movieDetailViewModel = MovieDetailViewModel(updateMovieLikeUseCase)
+        movieDetailViewModel = MovieDetailViewModel(updateMovieLikeUseCase, getMovieByIdUseCase)
     }
 
     @Test
@@ -47,11 +51,13 @@ class MovieDetailViewModelTest : BaseTest() {
         )
 
         // when
+        coEvery { getMovieByIdUseCase("dc2e6bd1-8156-4886-adff-b39e6043af0c") } returns flowOf(movie)
         coEvery { updateMovieLikeUseCase(movie.copy(like = !movie.like)) } returns GResult.Error(exception)
-        movieDetailViewModel.updateMovie(movie)
+        movieDetailViewModel.getMovieById("dc2e6bd1-8156-4886-adff-b39e6043af0c")
+        movieDetailViewModel.updateMovieLike()
 
         // then
-        assert(movieDetailViewModel.uiState.value?.error == R.string.error_bbdd_update_movie)
+        assert(movieDetailViewModel.error.value == R.string.error_bbdd_update_movie)
     }
 
     @Test
@@ -75,12 +81,17 @@ class MovieDetailViewModelTest : BaseTest() {
         )
 
         // when
-        coEvery { updateMovieLikeUseCase(movie.copy(like = !movie.like)) } returns GResult.Success(true)
-        movieDetailViewModel.updateMovie(movie)
+        coEvery { getMovieByIdUseCase("dc2e6bd1-8156-4886-adff-b39e6043af0c") } returns flowOf(movie)
+        val newMovie = movie.copy(like = false)
+        coEvery { updateMovieLikeUseCase(newMovie) } returns GResult.Success(true)
+        coEvery { getMovieByIdUseCase("dc2e6bd1-8156-4886-adff-b39e6043af0c") } returns flowOf(newMovie)
+        movieDetailViewModel.getMovieById("dc2e6bd1-8156-4886-adff-b39e6043af0c")
+        movieDetailViewModel.updateMovieLike()
 
         // then
-        assert(movieDetailViewModel.uiState.value?.error == null)
-        assert(movieDetailViewModel.uiState.value?.movie?.like != movie.like)
+        assert(movieDetailViewModel.error.value == null)
+        assert(movieDetailViewModel.movie.value?.like == newMovie.like)
+
     }
 
 }
