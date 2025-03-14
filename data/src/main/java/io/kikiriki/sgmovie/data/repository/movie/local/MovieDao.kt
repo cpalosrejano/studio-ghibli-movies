@@ -17,6 +17,9 @@ interface MovieDao {
     @Query("SELECT * FROM movies where `like` == 1")
     suspend fun getMoviesLike(): List<MovieLocal>
 
+    @Query("SELECT * FROM movies WHERE id = :movieId")
+    fun getMovieById(movieId: String): Flow<MovieLocal>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(movies: List<MovieLocal>)
 
