@@ -23,6 +23,7 @@ class ExceptionManager {
                 BaseCode.REMOTE_NO_INTERNET_CONNECTION -> R.string.error_network_no_connected
 
                 BaseCode.LOCAL_CANNOT_GET_MOVIES -> R.string.error_bbdd_get_movies
+                BaseCode.LOCAL_CANNOT_GET_MOVIE_DETAIL -> R.string.error_bbdd_get_movie_detail
                 BaseCode.LOCAL_CANNOT_UPDATE_MOVIE -> R.string.error_bbdd_update_movie
                 BaseCode.LOCAL_CANNOT_INSERT_MOVIES -> R.string.error_bbdd_insert_movies
 
