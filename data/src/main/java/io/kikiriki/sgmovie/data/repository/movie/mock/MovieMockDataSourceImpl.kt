@@ -1,6 +1,7 @@
 package io.kikiriki.sgmovie.data.repository.movie.mock
 
 import io.kikiriki.sgmovie.core.coroutines.di.IODispatcher
+import io.kikiriki.sgmovie.data.exception.LocalDataSourceException
 import io.kikiriki.sgmovie.domain.model.Movie
 import io.kikiriki.sgmovie.domain.model.base.GResult
 import kotlinx.coroutines.CoroutineDispatcher
@@ -83,6 +84,12 @@ class MovieMockDataSourceImpl @Inject constructor(
 
     override fun get(lang: String, coproductions: Boolean, forceRefresh: Boolean):
             Flow<GResult<List<Movie>, Throwable>> = flowOf(GResult.Success(movies))
+
+    override fun getMovieById(movieId: String): Flow<Movie> {
+        val movie = movies.find { it.id == movieId }
+        if (movie != null) return flowOf(movie)
+        else throw LocalDataSourceException(LocalDataSourceException.Code.CANNOT_GET_MOVIE_DETAIL, "")
+    }
 
     override suspend fun updateLike(movie: Movie): GResult<Boolean, Throwable> = withContext(dispatcher) {
         delay(1000)
