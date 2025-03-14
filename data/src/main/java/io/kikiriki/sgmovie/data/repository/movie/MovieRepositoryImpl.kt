@@ -12,6 +12,7 @@ import io.kikiriki.sgmovie.domain.model.base.GResult
 import io.kikiriki.sgmovie.domain.repository.MovieRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
@@ -46,20 +47,28 @@ class MovieRepositoryImpl @Inject constructor(
 
         // emit local movies with firestore updates as flow
         emitAll(
-            local.getAsFlow().map {
-                GResult.Success(MovieMapper.localToData(it))
-            }
+            local.getAsFlow().map { MovieMapper.localToData(it) }
+                .combine(firestore.getLikes()) { movies: List<Movie>, likes ->
+
+                    GResult.Success(
+                        movies.map { movie ->
+                            val likeCount = likes[movie.id] ?: 0
+                            movie.copy(likeCount = likeCount)
+                        }
+                    )
+                }
         )
     }
 
-    override suspend fun update(movie: Movie): GResult<Boolean, Throwable> = withContext(dispatcher) {
+    override suspend fun updateLike(movie: Movie): GResult<Boolean, Throwable> = withContext(dispatcher) {
         if (Constants.Repository.MOCK) {
-            return@withContext mock.update(movie)
+            return@withContext mock.updateLike(movie)
         }
 
         return@withContext try {
-            val localMovie = MovieMapper.dataToLocal(movie)
-            val result = local.update(localMovie)
+            // update local and firestore
+            val result = local.updateLike(MovieMapper.dataToLocal(movie))
+            firestore.updateLike(movie.id, movie.like)
             GResult.Success(result)
         } catch (failure: Exception) {
             GResult.Error(failure)
@@ -70,7 +79,7 @@ class MovieRepositoryImpl @Inject constructor(
     /**
      * Get movies from API and save them into local database
      */
-    private suspend fun fetchMovies(lang: String, coproductions: Boolean,) : Result<List<Movie>> {
+    private suspend fun fetchMovies(lang: String, coproductions: Boolean) : Result<List<Movie>> {
         try {
             val movies = MovieMapper.remoteToData(remote.get(lang, coproductions))
             local.insert(MovieMapper.dataToLocal(movies))
