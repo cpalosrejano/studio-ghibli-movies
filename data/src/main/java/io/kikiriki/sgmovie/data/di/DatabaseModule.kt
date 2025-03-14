@@ -9,6 +9,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import io.kikiriki.sgmovie.data.AppDatabase
 import io.kikiriki.sgmovie.data.repository.movie.local.MovieDao
+import io.kikiriki.sgmovie.data.utils.DBMigrations
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -19,7 +20,10 @@ object DatabaseModule {
     @Provides
     fun provideDatabase(@ApplicationContext context: Context) : AppDatabase {
         if (! this::database.isInitialized) {
-            database = Room.databaseBuilder(context, AppDatabase::class.java, "sgmovie-database").build()
+            database = Room
+                .databaseBuilder(context, AppDatabase::class.java, "sgmovie-database")
+                .addMigrations(DBMigrations.MIGRATION_1_2)
+                .build()
         }
         return database
     }

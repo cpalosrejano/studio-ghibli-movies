@@ -6,7 +6,7 @@ import io.kikiriki.sgmovie.data.model.MovieLocal
 import io.kikiriki.sgmovie.data.repository.movie.local.MovieDao
 
 @Database(
-    version = 1,
+    version = 2,
     entities = [MovieLocal::class]
 )
 abstract class AppDatabase : RoomDatabase() {

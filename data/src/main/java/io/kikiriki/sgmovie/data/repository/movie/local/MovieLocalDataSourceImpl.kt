@@ -29,12 +29,12 @@ class MovieLocalDataSourceImpl @Inject constructor(
 
     override suspend fun insert(movies: List<MovieLocal>): Boolean = withContext(dispatcher) {
         return@withContext try {
-            // get favourites and set to new list
-            val favourites = movieDao.getFavourites()
+            // get likes and set to new list
+            val favourites = movieDao.getMoviesLike()
             movies.forEach { newMovie ->
-                newMovie.favourite = favourites.find { it.id == newMovie.id }?.favourite ?: false
+                newMovie.like = favourites.find { it.id == newMovie.id }?.like ?: false
             }
-            // insert new data with old favourites movies
+            // insert new data with old likes movies
             movieDao.insert(movies)
             true
 
@@ -46,9 +46,9 @@ class MovieLocalDataSourceImpl @Inject constructor(
         }
     }
 
-    override suspend fun update(movie: MovieLocal):Boolean = withContext(dispatcher) {
+    override suspend fun updateLike(movie: MovieLocal):Boolean = withContext(dispatcher) {
         return@withContext try {
-            movieDao.updateFavourite(movie) == 1
+            movieDao.updateMovieLike(movie) == 1
         } catch (failure: Exception) {
             throw LocalDataSourceException(
                 code = LocalDataSourceException.Code.CANNOT_UPDATE_MOVIE,
