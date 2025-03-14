@@ -139,7 +139,7 @@
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintStart_toEndOf="@id/lbl_running_time"
                             app:layout_constraintEnd_toEndOf="parent"
-                            android:text="@string/movie_detail_lbl_favourite" />
+                            tools:text="976 likes" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
