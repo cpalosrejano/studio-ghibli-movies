@@ -75,6 +75,13 @@ class MovieRepositoryImpl @Inject constructor(
         }
     }
 
+    override fun getMovieById(movieId: String): Flow<Movie> {
+        return local.getMovieById(movieId).map {
+                MovieMapper.localToData(it)
+            }.combine(firestore.getMovieLikesById(movieId)) { movie, likeCount ->
+                movie.copy(likeCount = likeCount)
+        }
+    }
 
     /**
      * Get movies from API and save them into local database
