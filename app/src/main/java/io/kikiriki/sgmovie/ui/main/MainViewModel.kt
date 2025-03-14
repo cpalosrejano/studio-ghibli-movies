@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import io.kikiriki.sgmovie.domain.model.Movie
 import io.kikiriki.sgmovie.domain.model.base.GResult
 import io.kikiriki.sgmovie.domain.usecase.GetMoviesUseCase
-import io.kikiriki.sgmovie.domain.usecase.UpdateMovieUseCase
+import io.kikiriki.sgmovie.domain.usecase.UpdateMovieLikeUseCase
 import io.kikiriki.sgmovie.utils.ExceptionManager
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
@@ -17,7 +17,7 @@ import javax.inject.Inject
 
 class MainViewModel @Inject constructor(
     private val getMoviesUseCase: GetMoviesUseCase,
-    private val updateMovieUseCase: UpdateMovieUseCase,
+    private val updateMovieLikeUseCase: UpdateMovieLikeUseCase,
 ) : ViewModel() {
 
     private val _uiState: MutableLiveData<MainUIState> = MutableLiveData(MainUIState())
@@ -54,8 +54,8 @@ class MainViewModel @Inject constructor(
     }
 
     fun updateMovie(movie: Movie) = viewModelScope.launch {
-        val newMovieStatus = movie.copy(favourite = !movie.favourite)
-        when (val result = updateMovieUseCase(newMovieStatus)) {
+        val newMovieStatus = movie.copy(like = !movie.like)
+        when (val result = updateMovieLikeUseCase(newMovieStatus)) {
             is GResult.Success -> {}
             is GResult.SuccessWithError -> {
                 // get the exception and send to the UI
