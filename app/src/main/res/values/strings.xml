@@ -33,6 +33,7 @@
 
     <!-- HANDLED ERROR  -->
     <string name="error_bbdd_get_movies">Cannot get movies from database</string>
+    <string name="error_bbdd_get_movie_detail">Cannot get the movie detail</string>
     <string name="error_bbdd_insert_movies">Cannot save movies in database</string>
     <string name="error_bbdd_update_movie">Cannot update movie</string>
     <string name="error_network_unauthorized">You have not authorization to access to this resource</string>
