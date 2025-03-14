@@ -3,6 +3,7 @@ package io.kikiriki.sgmovie.domain.usecase
 import io.kikiriki.sgmovie.core.test.BaseTest
 import io.kikiriki.sgmovie.domain.model.Movie
 import io.kikiriki.sgmovie.domain.model.base.GResult
+import io.kikiriki.sgmovie.domain.preferences.PreferenceStorage
 import io.kikiriki.sgmovie.domain.repository.MovieRepository
 import io.mockk.coEvery
 import io.mockk.impl.annotations.RelaxedMockK
@@ -21,14 +22,16 @@ import java.util.Locale
 class GetMoviesUseCaseTest : BaseTest() {
 
     @RelaxedMockK private lateinit var movieRepository: MovieRepository
+    @RelaxedMockK private lateinit var preferenceStorage: PreferenceStorage
     private lateinit var getMoviesUseCase: GetMoviesUseCase
 
     private val lang = Locale.getDefault().language
     private val coproductions = false
+    private val forceRefresh = true
 
     override fun onStart() {
         super.onStart()
-        getMoviesUseCase = GetMoviesUseCase(movieRepository, Dispatchers.IO)
+        getMoviesUseCase = GetMoviesUseCase(movieRepository, preferenceStorage, Dispatchers.IO)
     }
 
     @Test
@@ -40,7 +43,7 @@ class GetMoviesUseCaseTest : BaseTest() {
         var resultException: Throwable? = null
         var resultData: List<Movie>? = null
 
-        coEvery { movieRepository.get(lang, coproductions) } returns flowOf(GResult.Success(movies))
+        coEvery { movieRepository.get(lang, coproductions, forceRefresh) } returns flowOf(GResult.Success(movies))
         getMoviesUseCase().onEach {
             when (it) {
                 is GResult.Success -> { resultData = it.data }
@@ -55,7 +58,6 @@ class GetMoviesUseCaseTest : BaseTest() {
         // then
         assert( resultException == null )
         assert( resultData == movies )
-
     }
 
     @Test
@@ -99,7 +101,7 @@ class GetMoviesUseCaseTest : BaseTest() {
         // when
         var resultException: Throwable? = null
         var resultData: List<Movie>? = null
-        coEvery { movieRepository.get(lang) } returns flowOf(GResult.Success(movies))
+        coEvery { movieRepository.get(lang, coproductions, forceRefresh) } returns flowOf(GResult.Success(movies))
         getMoviesUseCase().onEach {
             when (it) {
                 is GResult.Success -> resultData = it.data
