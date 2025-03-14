@@ -14,12 +14,12 @@ import org.junit.Test
 @ExperimentalCoroutinesApi
 class MovieDetailViewModelTest : BaseTest() {
 
-    @RelaxedMockK private lateinit var updateMovieUseCase: io.kikiriki.sgmovie.domain.usecase.UpdateMovieUseCase
+    @RelaxedMockK private lateinit var updateMovieLikeUseCase: io.kikiriki.sgmovie.domain.usecase.UpdateMovieLikeUseCase
     private lateinit var movieDetailViewModel: MovieDetailViewModel
 
     override fun onStart() {
         super.onStart()
-        movieDetailViewModel = MovieDetailViewModel(updateMovieUseCase)
+        movieDetailViewModel = MovieDetailViewModel(updateMovieLikeUseCase)
     }
 
     @Test
@@ -28,16 +28,18 @@ class MovieDetailViewModelTest : BaseTest() {
         val movie = Movie(
             id = "dc2e6bd1-8156-4886-adff-b39e6043af0c",
             title = "Spirited Away",
-            originalTitleRomanised = "Sen to Chihiro no kamikakushi",
-            image = "https://image.tmdb.org/t/p/w600_and_h900_bestv2/39wmItIWsg5sZMyRUHLkWBcuVCM.jpg",
-            movieBanner = "https://image.tmdb.org/t/p/original/bSXfU4dwZyBA1vMmXvejdRXBvuF.jpg",
+            titleRomanised = "Sen to Chihiro no kamikakushi",
+            imageCartel = "https://image.tmdb.org/t/p/w600_and_h900_bestv2/39wmItIWsg5sZMyRUHLkWBcuVCM.jpg",
+            imageBanner = "https://image.tmdb.org/t/p/original/bSXfU4dwZyBA1vMmXvejdRXBvuF.jpg",
             description = "Spirited Away is an Oscar winning Japanese animated film about a ten year old girl who wanders away from her parents along a path that leads to a world ruled by strange and unusual monster-like animals. Her parents have been changed into pigs along with others inside a bathhouse full of these creatures. Will she ever see the world how it once was?",
             director = "Hayao Miyazaki",
             producer = "Toshio Suzuki",
+            soundtrack = "Joe Hisaishi",
             releaseDate = 2001,
-            runningTime = "124",
+            runningTime = 124,
             rtScore = 97,
-            favourite = true
+            coproduction = false,
+            like = true
         )
         val exception = LocalDataSourceException(
             code = LocalDataSourceException.Code.CANNOT_UPDATE_MOVIE,
@@ -45,7 +47,7 @@ class MovieDetailViewModelTest : BaseTest() {
         )
 
         // when
-        coEvery { updateMovieUseCase(movie.copy(favourite = !movie.favourite)) } returns GResult.Error(exception)
+        coEvery { updateMovieLikeUseCase(movie.copy(like = !movie.like)) } returns GResult.Error(exception)
         movieDetailViewModel.updateMovie(movie)
 
         // then
@@ -58,25 +60,27 @@ class MovieDetailViewModelTest : BaseTest() {
         val movie = Movie(
             id = "dc2e6bd1-8156-4886-adff-b39e6043af0c",
             title = "Spirited Away",
-            originalTitleRomanised = "Sen to Chihiro no kamikakushi",
-            image = "https://image.tmdb.org/t/p/w600_and_h900_bestv2/39wmItIWsg5sZMyRUHLkWBcuVCM.jpg",
-            movieBanner = "https://image.tmdb.org/t/p/original/bSXfU4dwZyBA1vMmXvejdRXBvuF.jpg",
+            titleRomanised = "Sen to Chihiro no kamikakushi",
+            imageCartel = "https://image.tmdb.org/t/p/w600_and_h900_bestv2/39wmItIWsg5sZMyRUHLkWBcuVCM.jpg",
+            imageBanner = "https://image.tmdb.org/t/p/original/bSXfU4dwZyBA1vMmXvejdRXBvuF.jpg",
             description = "Spirited Away is an Oscar winning Japanese animated film about a ten year old girl who wanders away from her parents along a path that leads to a world ruled by strange and unusual monster-like animals. Her parents have been changed into pigs along with others inside a bathhouse full of these creatures. Will she ever see the world how it once was?",
             director = "Hayao Miyazaki",
             producer = "Toshio Suzuki",
+            soundtrack = "Joe Hisaishi",
             releaseDate = 2001,
-            runningTime = "124",
+            runningTime = 124,
             rtScore = 97,
-            favourite = true
+            coproduction = false,
+            like = true
         )
 
         // when
-        coEvery { updateMovieUseCase(movie.copy(favourite = !movie.favourite)) } returns GResult.Success(true)
+        coEvery { updateMovieLikeUseCase(movie.copy(like = !movie.like)) } returns GResult.Success(true)
         movieDetailViewModel.updateMovie(movie)
 
         // then
         assert(movieDetailViewModel.uiState.value?.error == null)
-        assert(movieDetailViewModel.uiState.value?.movie?.favourite != movie.favourite)
+        assert(movieDetailViewModel.uiState.value?.movie?.like != movie.like)
     }
 
 }
