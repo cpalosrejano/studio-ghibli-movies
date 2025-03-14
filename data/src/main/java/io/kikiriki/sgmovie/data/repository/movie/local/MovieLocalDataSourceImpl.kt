@@ -3,6 +3,7 @@ package io.kikiriki.sgmovie.data.repository.movie.local
 import io.kikiriki.sgmovie.core.coroutines.di.IODispatcher
 import io.kikiriki.sgmovie.data.exception.LocalDataSourceException
 import io.kikiriki.sgmovie.data.model.MovieLocal
+import io.kikiriki.sgmovie.domain.model.Movie
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
@@ -22,6 +23,17 @@ class MovieLocalDataSourceImpl @Inject constructor(
         } catch (e: Exception) {
             throw LocalDataSourceException(
                 code = LocalDataSourceException.Code.CANNOT_GET_MOVIES,
+                message = e.message.orEmpty()
+            )
+        }
+    }
+
+    override fun getMovieById(movieId: String): Flow<MovieLocal> {
+        try {
+            return movieDao.getMovieById(movieId)
+        } catch (e: Exception) {
+            throw LocalDataSourceException(
+                code = LocalDataSourceException.Code.CANNOT_GET_MOVIE_DETAIL,
                 message = e.message.orEmpty()
             )
         }
