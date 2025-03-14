@@ -24,9 +24,23 @@ class MovieFirestoreDataSourceImpl @Inject constructor(
                     val likesMap = snapshot.documents.associate { doc ->
                         doc.id to (doc.getLong(FIELD_LIKE_COUNT) ?: 0)
                     }
-                    trySend(likesMap).isSuccess
+                    trySend(likesMap)
                 }
             }
+        awaitClose { listener.remove() }
+    }
+
+
+    override fun getMovieLikesById(movieId: String): Flow<Long> = callbackFlow {
+        val docRef = firestore.collection(COLLECTION_MOVIES_LIKE).document(movieId)
+        val listener = docRef.addSnapshotListener { snapshot, error ->
+            if (error != null) {
+                close(error)
+                return@addSnapshotListener
+            }
+            val likeCount = snapshot?.getLong(FIELD_LIKE_COUNT) ?: 0
+            trySend(likeCount)
+        }
         awaitClose { listener.remove() }
     }
 
