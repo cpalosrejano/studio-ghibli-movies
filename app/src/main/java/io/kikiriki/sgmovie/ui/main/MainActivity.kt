@@ -126,7 +126,7 @@ class MainActivity : BaseActivity() {
 
     private fun openMovieDetail(movie: Movie) {
         MovieDetailFragment
-            .newInstance(movie)
+            .newInstance(movie.id)
             .show(supportFragmentManager, MovieDetailFragment::class.simpleName)
     }
 

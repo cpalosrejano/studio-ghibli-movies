@@ -28,17 +28,17 @@ class MovieDetailFragment : BottomSheetDialogFragment() {
     private val viewBinding by lazy { FragmentMovieDetailBinding.inflate(layoutInflater) }
     @Inject lateinit var viewModel: MovieDetailViewModel
 
-    private var movie: Movie? = null
-
     private lateinit var firebaseAnalytics: FirebaseAnalytics
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         firebaseAnalytics = Firebase.analytics
+
+        val movieId = arguments?.getString(EXTRA_MOVIE_ID).orEmpty()
+        viewModel.getMovieById(movieId)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        movie = arguments?.getParcelableSupport(EXTRA_MOVIE, Movie::class.java)
         return viewBinding.root
     }
 
@@ -49,45 +49,50 @@ class MovieDetailFragment : BottomSheetDialogFragment() {
     }
 
     private fun setupView() {
-        movie?.let { movie ->
-            viewBinding.imgBanner.load(movie.movieBanner) {
-                transformations(RoundedCornersTransformation(topLeft = ROUNDED_CORNERS_XL, topRight = ROUNDED_CORNERS_XL))
-                crossfade(CROSSFADE)
-            }
-            viewBinding.imgImage.load(movie.image) {
-                transformations(RoundedCornersTransformation(ROUNDED_CORNERS))
-                crossfade(CROSSFADE)
-            }
-            viewBinding.lblTitle.text = movie.title
-            viewBinding.lblDirector.text = movie.director
-            viewBinding.lblYear.text = movie.releaseDate.toString()
-            viewBinding.lblRunningTime.text = getString(R.string.movie_detail_lbl_running_time, movie.runningTime)
-            viewBinding.lblScore.text = String.format(getString(R.string.movie_detail_lbl_score), movie.rtScore)
-            viewBinding.lblDescription.text = movie.description
-            viewBinding.lblFavourite.setOnClickListener { viewModel.updateMovie(movie) }
-            val iconFavourite = if(movie.favourite) R.drawable.ic_saved else R.drawable.ic_save
-            viewBinding.lblFavourite.setCompoundDrawablesWithIntrinsicBounds(0, iconFavourite,0,0)
-
+        viewBinding.lblFavourite.setOnClickListener {
+            viewModel.updateMovieLike()
         }
     }
 
-    private fun setupObserver() = viewModel.uiState.observe(this) { uiState ->
+    private fun setupObserver() {
 
-        // update movie and setup view
-        uiState.movie?.let { updatedMovie ->
-            movie = updatedMovie
-            setupView()
-
-            // send analytics
-            when(updatedMovie.favourite) {
-                true -> sendAnalyticEventAddFavoriteMovie(updatedMovie)
-                false -> sendAnalyticEventDeleteFavoriteMovie(updatedMovie)
-            }
-
+        // show possible errors
+        viewModel.error.observe(this) { error: Int? ->
+            error?.let { Toast.makeText(context, it, Toast.LENGTH_LONG).show() }
         }
 
-        // error view
-        uiState.error?.let { Toast.makeText(context, it, Toast.LENGTH_LONG).show() }
+        // print movie updates
+        viewModel.movie.observe(viewLifecycleOwner) { movie: Movie ->
+            updateMovieDetail(movie)
+        }
+
+    }
+
+    private fun updateMovieDetail(movie: Movie) {
+        viewBinding.imgBanner.load(movie.imageBanner) {
+            transformations(RoundedCornersTransformation(topLeft = ROUNDED_CORNERS_XL, topRight = ROUNDED_CORNERS_XL))
+            crossfade(CROSSFADE)
+        }
+        viewBinding.imgImage.load(movie.imageCartel) {
+            transformations(RoundedCornersTransformation(ROUNDED_CORNERS))
+            crossfade(CROSSFADE)
+        }
+        viewBinding.lblTitle.text = movie.title
+        viewBinding.lblDirector.text = movie.director
+        viewBinding.lblYear.text = movie.releaseDate.toString()
+        val hours = movie.runningTime / 60
+        val minutes = String.format("%02d", movie.runningTime % 60)
+        if (hours >= 1) {
+            viewBinding.lblRunningTime.text = getString(R.string.movie_detail_lbl_running_time_hour_min, hours, minutes)
+        } else {
+            viewBinding.lblRunningTime.text = getString(R.string.movie_detail_lbl_running_time_min, minutes)
+        }
+        viewBinding.lblScore.text = String.format(getString(R.string.movie_detail_lbl_score), movie.rtScore)
+        viewBinding.lblDescription.text = movie.description
+
+        val iconFavourite = if(movie.like) R.drawable.ic_saved else R.drawable.ic_save
+        viewBinding.lblFavourite.setCompoundDrawablesWithIntrinsicBounds(0, iconFavourite,0,0)
+        viewBinding.lblFavourite.text = getString(R.string.movie_detail_lbl_likes, movie.likeCount)
     }
 
     private fun sendAnalyticEventAddFavoriteMovie(movie: Movie) {
@@ -102,12 +107,12 @@ class MovieDetailFragment : BottomSheetDialogFragment() {
     }
 
     companion object {
-        private const val EXTRA_MOVIE = "extra-movie"
+        private const val EXTRA_MOVIE_ID = "extra-movie-id"
 
-        fun newInstance(movie: Movie) : MovieDetailFragment {
+        fun newInstance(movieId: String) : MovieDetailFragment {
             val fragment = MovieDetailFragment()
             fragment.arguments = Bundle().apply {
-                putParcelable(EXTRA_MOVIE, movie)
+                putString(EXTRA_MOVIE_ID, movieId)
             }
             return fragment
         }
