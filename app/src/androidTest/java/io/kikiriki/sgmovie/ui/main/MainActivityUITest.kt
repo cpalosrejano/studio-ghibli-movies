@@ -214,7 +214,7 @@ class MainActivityUITest {
             .perform(click())
 
         // perform click on favorite sort method
-        onView(withText(R.string.dialog_sort_by_lbl_favourites))
+        onView(withText(R.string.dialog_sort_by_lbl_like))
             .perform(click())
 
         // check if item at position 0 is favorite
