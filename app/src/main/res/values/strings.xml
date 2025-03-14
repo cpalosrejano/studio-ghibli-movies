@@ -12,9 +12,10 @@
 
     <!-- DETAIL FRAGMENT -->
     <string name="movie_detail_lbl_score">%1$d %%</string>
-    <string name="movie_detail_lbl_running_time">%1$s min</string>
-    <string name="movie_detail_lbl_favourite">Favourite</string>
-    <string name="movie_detail_error_cannot_update_favourite">Cannot update favourite movie</string>
+    <string name="movie_detail_lbl_running_time_hour_min">%1$dh %02$s min</string>
+    <string name="movie_detail_lbl_running_time_min">%1$s min</string>
+    <string name="movie_detail_lbl_likes">%1$d likes</string>
+    <string name="movie_detail_error_cannot_update_like">Cannot update movie like</string>
 
     <!-- CUSTOM VIEWS -->
     <string name="view_empty_lbl_empty">There is nothing here</string>
@@ -24,7 +25,8 @@
     <!-- SORT DIALOG -->
     <string name="dialog_sort_by_lbl_title">Sort by…</string>
     <string name="dialog_sort_by_lbl_name">Name - Default</string>
-    <string name="dialog_sort_by_lbl_favourites">Favourites</string>
+    <string name="dialog_sort_by_lbl_like">Like</string>
+    <string name="dialog_sort_by_lbl_total_likes">Total likes</string>
     <string name="dialog_sort_by_lbl_score">Score</string>
     <string name="dialog_sort_by_lbl_director">Director</string>
     <string name="dialog_sort_by_lbl_year">Year</string>
