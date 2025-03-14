@@ -11,16 +11,16 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface MovieDao {
 
-    @Query("SELECT * FROM MovieLocal")
+    @Query("SELECT * FROM movies")
     fun getAll(): Flow<List<MovieLocal>>
 
-    @Query("SELECT * FROM MovieLocal where favourite == 1")
-    suspend fun getFavourites(): List<MovieLocal>
+    @Query("SELECT * FROM movies where `like` == 1")
+    suspend fun getMoviesLike(): List<MovieLocal>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(movies: List<MovieLocal>)
 
     @Update()
-    suspend fun updateFavourite(movie: MovieLocal): Int
+    suspend fun updateMovieLike(movie: MovieLocal): Int
 
 }

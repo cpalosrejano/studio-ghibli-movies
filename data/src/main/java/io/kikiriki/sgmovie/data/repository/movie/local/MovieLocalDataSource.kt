@@ -8,5 +8,5 @@ interface MovieLocalDataSource {
     fun getAsFlow() : Flow<List<MovieLocal>>
     suspend fun get(): List<MovieLocal>
     suspend fun insert(movies: List<MovieLocal>) : Boolean
-    suspend fun update(movie: MovieLocal) : Boolean
+    suspend fun updateLike(movie: MovieLocal) : Boolean
 }
