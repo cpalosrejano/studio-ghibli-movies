@@ -21,6 +21,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.runBlocking
@@ -65,7 +66,7 @@ class MovieRepositoryTest : BaseTest() {
 
         // when
         var result: GResult<List<Movie>, Throwable>? = null
-        repository.get(lang, coproductions).onEach {
+        repository.get(lang, coproductions, true).onEach {
             result = it
         }.collect()
 
@@ -184,19 +185,17 @@ class MovieRepositoryTest : BaseTest() {
             "BBDD_CANNOT_INSERT_MOVIES"
         )
         coEvery { endpoints.getMovies(lang, coproductions) } returns DataMock.moviesRemote
-        coEvery { dao.insert(DataMock.moviesLocal) } throws localException
+        val movies = MovieMapper.remoteToData(DataMock.moviesRemote)
+        coEvery { dao.insert(MovieMapper.dataToLocal(movies)) } throws localException
 
         // when
         var exception: Throwable? = null
-        repository.get(lang, coproductions).onEach {
-            when (it) {
-                is GResult.Success -> { it.data }
-                is GResult.Error -> { exception = it.error }
-                is GResult.SuccessWithError -> { exception = it.error }
-            }
-        }.catch {
-            exception = it
-        }.collect()
+        val result = repository.get(lang, coproductions, true).first()
+        when (result) {
+            is GResult.Success -> { result.data }
+            is GResult.Error -> { exception = result.error }
+            is GResult.SuccessWithError -> { exception = result.error }
+        }
 
         // then
         assert( exception is LocalDataSourceException)
@@ -212,11 +211,11 @@ class MovieRepositoryTest : BaseTest() {
             "BBDD_CANNOT_UPDATE_MOVIE"
         )
         val movieLocal = DataMock.moviesLocal.first()
-        coEvery { dao.updateFavourite(movieLocal) } throws localException
+        coEvery { dao.updateMovieLike(movieLocal) } throws localException
 
         // when
         val domainMovie = MovieMapper.localToData(DataMock.moviesLocal.first())
-        val result = repository.update(domainMovie)
+        val result = repository.updateLike(domainMovie)
 
         // then
         assert( result is GResult.Error )
@@ -229,10 +228,10 @@ class MovieRepositoryTest : BaseTest() {
         // given
         val movie = DataMock.movies.first()
         val localMovie = MovieMapper.dataToLocal(movie)
-        coEvery { dao.updateFavourite(localMovie) } returns 1
+        coEvery { dao.updateMovieLike(localMovie) } returns 1
 
         // when
-        val result = repository.update(movie)
+        val result = repository.updateLike(movie)
 
         // then
         assert( result is GResult.Success )
