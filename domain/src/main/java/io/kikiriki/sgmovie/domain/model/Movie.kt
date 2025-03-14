@@ -7,15 +7,17 @@ import kotlinx.parcelize.Parcelize
 data class Movie(
     val id: String,
     val title: String,
-    val originalTitleRomanised: String? = null,
-    val image: String,
-    val movieBanner: String? = null,
+    val titleRomanised: String,
+    val imageCartel: String,
+    val imageBanner: String,
     val description: String,
     val director: String,
-    val producer: String? = null,
-    val soundtrack: String? = null,
+    val producer: String,
+    val soundtrack: String,
     val releaseDate: Int,
-    val runningTime: String? = null,
+    val runningTime: Int,
     val rtScore: Int,
-    val favourite: Boolean = false
+    val coproduction: Boolean,
+    val like: Boolean = false,
+    val likeCount: Long = 0
 ) : Parcelable

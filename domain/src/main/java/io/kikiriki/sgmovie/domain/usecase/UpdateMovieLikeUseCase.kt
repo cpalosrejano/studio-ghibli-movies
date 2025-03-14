@@ -8,13 +8,13 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class UpdateMovieUseCase @Inject constructor(
+class UpdateMovieLikeUseCase @Inject constructor(
     private val movieRepository: MovieRepository,
     @IODispatcher private val dispatcher: CoroutineDispatcher
 ) {
 
     suspend operator fun invoke(movie: Movie) : GResult<Boolean, Throwable> = withContext(dispatcher) {
-        return@withContext movieRepository.update(movie)
+        return@withContext movieRepository.updateLike(movie)
     }
 
 }
