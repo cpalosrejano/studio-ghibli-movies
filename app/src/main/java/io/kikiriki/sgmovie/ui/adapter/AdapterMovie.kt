@@ -35,8 +35,8 @@ class AdapterMovie : ListAdapter<Movie, AdapterMovie.ViewHolderMovie>(diffUtil) 
             transformations(RoundedCornersTransformation(ROUNDED_CORNERS))
             crossfade(CROSSFADE)
         }
-        holder.viewBinding.imgSave.load(
-            if (item.like) R.drawable.ic_saved else R.drawable.ic_save
+        holder.viewBinding.imgLike.load(
+            if (item.like) R.drawable.ic_like_filled else R.drawable.ic_like
         )
         holder.viewBinding.lblLikeCount.text = item.likeCount.formatNumber()
 
