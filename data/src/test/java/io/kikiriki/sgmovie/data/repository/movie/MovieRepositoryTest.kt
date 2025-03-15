@@ -218,9 +218,9 @@ class MovieRepositoryTest : BaseTest() {
         val result = repository.updateLike(domainMovie)
 
         // then
-        assert( result is GResult.Error )
-        assert( (result as? GResult.Error)?.error is LocalDataSourceException )
-        assert( ((result as? GResult.Error)?.error as? LocalDataSourceException)?.code == BaseCode.LOCAL_CANNOT_UPDATE_MOVIE  )
+        assert( result.isFailure )
+        assert( result.exceptionOrNull() is LocalDataSourceException )
+        assert( (result.exceptionOrNull() as? LocalDataSourceException)?.code == BaseCode.LOCAL_CANNOT_UPDATE_MOVIE  )
     }
 
     @Test
@@ -234,9 +234,9 @@ class MovieRepositoryTest : BaseTest() {
         val result = repository.updateLike(movie)
 
         // then
-        assert( result is GResult.Success )
-        assert( (result as? GResult.Success)?.data is Boolean )
-        assert( (result as? GResult.Success)?.data == true)
+        assert( result.isSuccess )
+        assert( result.getOrNull() is Boolean )
+        assert( (result.getOrNull()) == true)
 
 
     }
