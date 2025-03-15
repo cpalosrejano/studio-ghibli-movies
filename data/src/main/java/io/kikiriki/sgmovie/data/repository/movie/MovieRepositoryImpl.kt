@@ -60,7 +60,7 @@ class MovieRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun updateLike(movie: Movie): GResult<Boolean, Throwable> = withContext(dispatcher) {
+    override suspend fun updateLike(movie: Movie): Result<Boolean> = withContext(dispatcher) {
         if (Constants.Repository.MOCK) {
             return@withContext mock.updateLike(movie)
         }
@@ -69,9 +69,9 @@ class MovieRepositoryImpl @Inject constructor(
             // update local and firestore
             val result = local.updateLike(MovieMapper.dataToLocal(movie))
             firestore.updateLike(movie.id, movie.like)
-            GResult.Success(result)
+            Result.success(result)
         } catch (failure: Exception) {
-            GResult.Error(failure)
+            Result.failure(failure)
         }
     }
 

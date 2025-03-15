@@ -11,6 +11,6 @@ interface MovieRepository {
 
     fun getMovieById(movieId: String) : Flow<Movie>
 
-    suspend fun updateLike(movie: Movie) : GResult<Boolean, Throwable>
+    suspend fun updateLike(movie: Movie) : Result<Boolean>
 
 }

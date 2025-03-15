@@ -4,7 +4,6 @@ import io.kikiriki.sgmovie.R
 import io.kikiriki.sgmovie.core.test.BaseTest
 import io.kikiriki.sgmovie.data.exception.LocalDataSourceException
 import io.kikiriki.sgmovie.domain.model.Movie
-import io.kikiriki.sgmovie.domain.model.base.GResult
 import io.kikiriki.sgmovie.domain.usecase.GetMovieByIdUseCase
 import io.kikiriki.sgmovie.domain.usecase.UpdateMovieLikeUseCase
 import io.mockk.coEvery
@@ -52,7 +51,7 @@ class MovieDetailViewModelTest : BaseTest() {
 
         // when
         coEvery { getMovieByIdUseCase("dc2e6bd1-8156-4886-adff-b39e6043af0c") } returns flowOf(movie)
-        coEvery { updateMovieLikeUseCase(movie.copy(like = !movie.like)) } returns GResult.Error(exception)
+        coEvery { updateMovieLikeUseCase(movie.copy(like = !movie.like)) } returns Result.failure(exception)
         movieDetailViewModel.getMovieById("dc2e6bd1-8156-4886-adff-b39e6043af0c")
         movieDetailViewModel.updateMovieLike()
 
@@ -83,7 +82,7 @@ class MovieDetailViewModelTest : BaseTest() {
         // when
         coEvery { getMovieByIdUseCase("dc2e6bd1-8156-4886-adff-b39e6043af0c") } returns flowOf(movie)
         val newMovie = movie.copy(like = false)
-        coEvery { updateMovieLikeUseCase(newMovie) } returns GResult.Success(true)
+        coEvery { updateMovieLikeUseCase(newMovie) } returns Result.success(true)
         coEvery { getMovieByIdUseCase("dc2e6bd1-8156-4886-adff-b39e6043af0c") } returns flowOf(newMovie)
         movieDetailViewModel.getMovieById("dc2e6bd1-8156-4886-adff-b39e6043af0c")
         movieDetailViewModel.updateMovieLike()

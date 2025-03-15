@@ -91,7 +91,7 @@ class MovieMockDataSourceImpl @Inject constructor(
         else throw LocalDataSourceException(LocalDataSourceException.Code.CANNOT_GET_MOVIE_DETAIL, "")
     }
 
-    override suspend fun updateLike(movie: Movie): GResult<Boolean, Throwable> = withContext(dispatcher) {
+    override suspend fun updateLike(movie: Movie): Result<Boolean> = withContext(dispatcher) {
         delay(1000)
         movies = movies.map {
             if (it.id == movie.id) {
@@ -100,7 +100,7 @@ class MovieMockDataSourceImpl @Inject constructor(
                 it
             }
         }
-        return@withContext GResult.Success(true)
+        return@withContext Result.success(true)
     }
 
 }

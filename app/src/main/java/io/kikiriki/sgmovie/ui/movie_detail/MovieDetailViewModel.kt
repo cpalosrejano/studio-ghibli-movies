@@ -6,13 +6,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import io.kikiriki.sgmovie.R
 import io.kikiriki.sgmovie.domain.model.Movie
-import io.kikiriki.sgmovie.domain.model.base.GResult
 import io.kikiriki.sgmovie.domain.usecase.GetMovieByIdUseCase
 import io.kikiriki.sgmovie.domain.usecase.UpdateMovieLikeUseCase
-import io.kikiriki.sgmovie.ui.main.MainUIState
 import io.kikiriki.sgmovie.utils.ExceptionManager
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
@@ -56,23 +52,18 @@ class MovieDetailViewModel @Inject constructor(
         newMovieStatus = newMovieStatus.copy(like = !newMovieStatus.like)
 
         // update in local and firestore
-        when (val result = updateMovieLikeUseCase(newMovieStatus)) {
-
-            is GResult.Success -> {
-                if (!result.data) {
+        val result = updateMovieLikeUseCase(newMovieStatus)
+        result.fold(
+            onSuccess = { success ->
+                if (!success) {
                     _error.postValue(R.string.movie_detail_error_cannot_update_like)
                 }
-            }
-            is GResult.Error -> {
-                val error = ExceptionManager.getMessage(result.error)
+            },
+            onFailure = { failure ->
+                val error = ExceptionManager.getMessage(failure)
                 _error.postValue(error)
             }
-            is GResult.SuccessWithError -> {
-                val error = ExceptionManager.getMessage(result.error)
-                _error.postValue(error)
-            }
-
-        }
+        )
     }
 
 }

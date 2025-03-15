@@ -2,7 +2,6 @@ package io.kikiriki.sgmovie.domain.usecase
 
 import io.kikiriki.sgmovie.core.coroutines.di.IODispatcher
 import io.kikiriki.sgmovie.domain.model.Movie
-import io.kikiriki.sgmovie.domain.model.base.GResult
 import io.kikiriki.sgmovie.domain.repository.MovieRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
@@ -13,7 +12,7 @@ class UpdateMovieLikeUseCase @Inject constructor(
     @IODispatcher private val dispatcher: CoroutineDispatcher
 ) {
 
-    suspend operator fun invoke(movie: Movie) : GResult<Boolean, Throwable> = withContext(dispatcher) {
+    suspend operator fun invoke(movie: Movie) : Result<Boolean> = withContext(dispatcher) {
         return@withContext movieRepository.updateLike(movie)
     }
 
