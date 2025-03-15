@@ -243,7 +243,7 @@ class MainViewModelTest : BaseTest() {
         )
 
         // when
-        coEvery { updateMovieLikeUseCase(movie.copy(like = !movie.like)) } returns GResult.Error(exception)
+        coEvery { updateMovieLikeUseCase(movie.copy(like = !movie.like)) } returns Result.failure(exception)
         mainViewModel.updateMovie(movie)
 
         // then
@@ -273,7 +273,7 @@ class MainViewModelTest : BaseTest() {
         )
 
         // when
-        coEvery { updateMovieLikeUseCase(movie.copy(like = !movie.like)) } returns GResult.Success(true)
+        coEvery { updateMovieLikeUseCase(movie.copy(like = !movie.like)) } returns Result.success(true)
         mainViewModel.updateMovie(movie)
 
         // then
