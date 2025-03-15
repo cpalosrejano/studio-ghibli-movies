@@ -1,0 +1,57 @@
+<resources>
+    <string name="app_name">Studio Ghibli Movies</string>
+
+    <!-- MAIN ACTIVITY -->
+    <string name="main_menu_lbl_sort">Ordenar películas</string>
+    <string name="main_menu_lbl_settings">Ajustes</string>
+
+    <!-- SETTINGS ACTIVITY -->
+    <string name="settings_title">Ajustes</string>
+    <string name="settings_lbl_version">Version: %1$s</string>
+    <string name="settings_lbl_privacy_policy">Política de privacidad</string>
+    <string name="settings_lbl_translate_app">Traducir la app</string>
+    <string name="settings_lbl_translate_app_body">¿Quieres ayudarnos o solicitar que traduzcamos la app? ¡Hablemos!</string>
+    <string name="settings_lbl_translate_app_email_subject">Películas de Studio Ghibli [%1$s]</string>
+    <string name="settings_lbl_translate_app_email_body">Escribe tu solicitud a continuación</string>
+    <string name="settings_lbl_send_email">Enviar correo electrónico</string>
+    <string name="settings_lbl_error_no_email_client_found">No hay ninguna aplicación de correo instalada</string>
+
+    <!-- DETAIL FRAGMENT -->
+    <string name="movie_detail_lbl_score">%1$d %%</string>
+    <string name="movie_detail_lbl_running_time_hour_min">%1$dh %02$s min</string>
+    <string name="movie_detail_lbl_running_time_min">%1$s min</string>
+    <string name="movie_detail_lbl_likes">%1$d me gusta</string>
+    <string name="movie_detail_error_cannot_update_like">No se pudo actualizar</string>
+
+    <!-- CUSTOM VIEWS -->
+    <string name="view_empty_lbl_empty">No hay nada aquí</string>
+    <string name="view_loading_lbl_loading">Cargando, por favor espera</string>
+    <string name="view_error_btn_try_again">Inténtalo de nuevo</string>
+
+    <!-- SORT DIALOG -->
+    <string name="dialog_sort_by_lbl_title">Ordenar por…</string>
+    <string name="dialog_sort_by_lbl_name">Nombre - Por defecto</string>
+    <string name="dialog_sort_by_lbl_like">Mis me gusta</string>
+    <string name="dialog_sort_by_lbl_total_likes">Cantidad de me gusta</string>
+    <string name="dialog_sort_by_lbl_score">Puntuación</string>
+    <string name="dialog_sort_by_lbl_director">Director</string>
+    <string name="dialog_sort_by_lbl_year">Año</string>
+
+    <!-- HANDLED ERROR  -->
+    <string name="error_bbdd_get_movies">No se han podido obtener las películas de base de datos</string>
+    <string name="error_bbdd_get_movie_detail">No se pudo obtener el detalle de la película</string>
+    <string name="error_bbdd_insert_movies">No se han podido guardar las películas en base de datos</string>
+    <string name="error_bbdd_update_movie">No se pudo actualizar la película</string>
+    <string name="error_network_unauthorized">No tienes autorización para ver este recurso</string>
+    <string name="error_network_not_found">El recurso no se ha encontrado</string>
+    <string name="error_feature_not_implemented">Funcionalidad no implementada todavía</string>
+    <string name="error_network_no_connected">No tienes conexión a internet</string>
+    <string name="error_network_unknown">Error conectando con nuestros servidores</string>
+
+    <!-- DEFAULT ERROR -->
+    <string name="default_error">Uy, algo salió mal</string>
+
+    <!-- DEFAULT TEXT -->
+    <string name="retry">Reintentar</string>
+
+</resources>
