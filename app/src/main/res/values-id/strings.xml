@@ -1,0 +1,57 @@
+<resources>
+    <string name="app_name">Studio Ghibli Movies</string>
+
+    <!-- MAIN ACTIVITY -->
+    <string name="main_menu_lbl_sort">Urutkan film</string>
+    <string name="main_menu_lbl_settings">Pengaturan</string>
+
+    <!-- SETTINGS ACTIVITY -->
+    <string name="settings_title">Pengaturan</string>
+    <string name="settings_lbl_version">Versi aplikasi: %1$s</string>
+    <string name="settings_lbl_privacy_policy">Kebijakan privasi</string>
+    <string name="settings_lbl_translate_app">Terjemahkan aplikasi</string>
+    <string name="settings_lbl_translate_app_body">Apakah Anda ingin membantu kami atau meminta kami menerjemahkan aplikasi? Ayo bicara!</string>
+    <string name="settings_lbl_translate_app_email_subject">Film Studio Ghibli [%1$s]</string>
+    <string name="settings_lbl_translate_app_email_body">Tulis permintaan Anda di bawah ini</string>
+    <string name="settings_lbl_send_email">Kirim email</string>
+    <string name="settings_lbl_error_no_email_client_found">Tidak ada aplikasi email yang terpasang</string>
+
+    <!-- DETAIL FRAGMENT -->
+    <string name="movie_detail_lbl_score">%1$d %%</string>
+    <string name="movie_detail_lbl_running_time_hour_min">%1$dh %02$s menit</string>
+    <string name="movie_detail_lbl_running_time_min">%1$s min</string>
+    <string name="movie_detail_lbl_likes">%1$d suka</string>
+    <string name="movie_detail_error_cannot_update_like">Tidak dapat memperbarui film seperti</string>
+
+    <!-- CUSTOM VIEWS -->
+    <string name="view_empty_lbl_empty">Tidak ada apa pun di sini</string>
+    <string name="view_loading_lbl_loading">Memuat, harap tunggu</string>
+    <string name="view_error_btn_try_again">Coba lagi</string>
+
+    <!-- SORT DIALOG -->
+    <string name="dialog_sort_by_lbl_title">Urutkan berdasarkan…</string>
+    <string name="dialog_sort_by_lbl_name">Nama - Default</string>
+    <string name="dialog_sort_by_lbl_like">Suka</string>
+    <string name="dialog_sort_by_lbl_total_likes">Total like</string>
+    <string name="dialog_sort_by_lbl_score">Skor</string>
+    <string name="dialog_sort_by_lbl_director">Sutradara</string>
+    <string name="dialog_sort_by_lbl_year">Tahun</string>
+
+    <!-- HANDLED ERROR  -->
+    <string name="error_bbdd_get_movies">Tidak dapat memperoleh film dari basis data</string>
+    <string name="error_bbdd_get_movie_detail">Tidak dapat memperoleh detail film</string>
+    <string name="error_bbdd_insert_movies">Tidak dapat menyimpan film dalam basis data</string>
+    <string name="error_bbdd_update_movie">Tidak dapat memperbarui film</string>
+    <string name="error_network_unauthorized">Anda tidak memiliki otorisasi untuk mengakses sumber daya ini</string>
+    <string name="error_network_not_found">Sumber daya tidak ditemukan</string>
+    <string name="error_feature_not_implemented">Fitur belum diimplementasikan</string>
+    <string name="error_network_no_connected">Tidak ada koneksi internet</string>
+    <string name="error_network_unknown">Kesalahan saat menghubungkan dengan server kami</string>
+
+    <!-- DEFAULT ERROR -->
+    <string name="default_error">Ops, ada yang salah</string>
+
+    <!-- DEFAULT TEXT -->
+    <string name="retry">Coba lagi</string>
+
+</resources>
