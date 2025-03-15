@@ -49,7 +49,7 @@ class MovieDetailFragment : BottomSheetDialogFragment() {
     }
 
     private fun setupView() {
-        viewBinding.lblFavourite.setOnClickListener {
+        viewBinding.lblLike.setOnClickListener {
             viewModel.updateMovieLike()
         }
     }
@@ -90,9 +90,9 @@ class MovieDetailFragment : BottomSheetDialogFragment() {
         viewBinding.lblScore.text = String.format(getString(R.string.movie_detail_lbl_score), movie.rtScore)
         viewBinding.lblDescription.text = movie.description
 
-        val iconFavourite = if(movie.like) R.drawable.ic_saved else R.drawable.ic_save
-        viewBinding.lblFavourite.setCompoundDrawablesWithIntrinsicBounds(0, iconFavourite,0,0)
-        viewBinding.lblFavourite.text = getString(R.string.movie_detail_lbl_likes, movie.likeCount)
+        val iconFavourite = if(movie.like) R.drawable.ic_like_filled else R.drawable.ic_like
+        viewBinding.lblLike.setCompoundDrawablesWithIntrinsicBounds(0, iconFavourite,0,0)
+        viewBinding.lblLike.text = getString(R.string.movie_detail_lbl_likes, movie.likeCount)
     }
 
     private fun sendAnalyticEventAddFavoriteMovie(movie: Movie) {

@@ -37,11 +37,11 @@
             tools:ignore="UseCompoundDrawables">
 
             <ImageView
-                android:id="@+id/img_save"
+                android:id="@+id/img_like"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/app_name"
-                tools:src="@drawable/ic_save"
+                tools:src="@drawable/ic_like"
                 tools:ignore="RtlSymmetry" />
 
             <TextView
