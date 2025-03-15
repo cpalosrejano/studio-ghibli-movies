@@ -99,20 +99,20 @@ class MainActivityUITest {
             ))
 
         // in detail view: mark movie as favourite
-        onView(withId(R.id.lbl_favourite))
+        onView(withId(R.id.lbl_like))
             .perform(click())
 
         // in detail view: check if favourite label is checked
-        onView(withId(R.id.lbl_favourite))
-            .check(matches(textViewContainsDrawable(R.drawable.ic_saved)))
+        onView(withId(R.id.lbl_like))
+            .check(matches(textViewContainsDrawable(R.drawable.ic_like_filled)))
 
         // mark as non favourite
-        onView(withId(R.id.lbl_favourite))
+        onView(withId(R.id.lbl_like))
             .perform(click())
 
         // check if favourite label is un_checked
-        onView(withId(R.id.lbl_favourite))
-            .check(matches(textViewContainsDrawable(R.drawable.ic_save)))
+        onView(withId(R.id.lbl_like))
+            .check(matches(textViewContainsDrawable(R.drawable.ic_like)))
     }
 
     /**
@@ -130,20 +130,20 @@ class MainActivityUITest {
         // enable favorite the second item list
         onView(withId(R.id.recycler_view))
             .perform(RecyclerViewActions.actionOnItemAtPosition<AdapterMovie.ViewHolderMovie>(
-                itemPosition, clickOnItemWithId(R.id.img_save)))
+                itemPosition, clickOnItemWithId(R.id.lbl_like)))
 
         // check if second list item is favorite
         onView(withRecyclerView(R.id.recycler_view).atPosition(itemPosition))
-            .check(matches(imageViewContainsDrawable(R.id.img_save, R.drawable.ic_save)))
+            .check(matches(imageViewContainsDrawable(R.id.lbl_like, R.drawable.ic_like)))
 
         // disable favorite the second item list
         onView(withId(R.id.recycler_view))
             .perform(RecyclerViewActions.actionOnItemAtPosition<AdapterMovie.ViewHolderMovie>(
-                itemPosition, clickOnItemWithId(R.id.img_save)))
+                itemPosition, clickOnItemWithId(R.id.lbl_like)))
 
         // check if second list item is not favorite
         onView(withRecyclerView(R.id.recycler_view).atPosition(itemPosition))
-            .check(matches(imageViewContainsDrawable(R.id.img_save, R.drawable.ic_saved)))
+            .check(matches(imageViewContainsDrawable(R.id.lbl_like, R.drawable.ic_like_filled)))
 
     }
 
@@ -175,7 +175,7 @@ class MainActivityUITest {
         // perform click on favourite view in the first item view
         onView(withId(R.id.recycler_view))
             .perform(RecyclerViewActions.actionOnItemAtPosition<AdapterMovie.ViewHolderMovie>(
-                itemPosition, clickOnItemWithId(R.id.img_save)
+                itemPosition, clickOnItemWithId(R.id.lbl_like)
             ))
 
         // perform click on first item to open detail view
@@ -185,8 +185,8 @@ class MainActivityUITest {
             ))
 
         // check if favourite label is checked
-        onView(withId(R.id.lbl_favourite))
-            .check(matches(textViewContainsDrawable(R.drawable.ic_saved)))
+        onView(withId(R.id.lbl_like))
+            .check(matches(textViewContainsDrawable(R.drawable.ic_like_filled)))
 
     }
 
@@ -206,7 +206,7 @@ class MainActivityUITest {
         // perform click on favourite view in the first item view
         onView(withId(R.id.recycler_view))
             .perform(RecyclerViewActions.actionOnItemAtPosition<AdapterMovie.ViewHolderMovie>(
-                itemPosition, clickOnItemWithId(R.id.img_save)
+                itemPosition, clickOnItemWithId(R.id.lbl_like)
             ))
 
         // perform click on dialog menu item
@@ -220,7 +220,7 @@ class MainActivityUITest {
         // check if item at position 0 is favorite
         onView(withRecyclerView(R.id.recycler_view).atPosition(0))
             .check(matches(hasDescendant(
-                imageViewContainsDrawable(R.id.img_save, R.drawable.ic_saved)
+                imageViewContainsDrawable(R.id.lbl_like, R.drawable.ic_like_filled)
             )))
     }
 
