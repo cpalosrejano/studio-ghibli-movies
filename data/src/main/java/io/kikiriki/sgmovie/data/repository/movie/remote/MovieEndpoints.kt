@@ -11,7 +11,7 @@ interface MovieEndpoints {
         "Content-Type: application/json")
     @GET("movies")
     suspend fun getMovies (
-        @Query("lang") lang: String,
+        @Query("locale") lang: String,
         @Query("coproductions") coproductions: Boolean
     ) : List<MovieRemote>
 }

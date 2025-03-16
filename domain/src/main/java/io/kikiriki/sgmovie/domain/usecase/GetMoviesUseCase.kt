@@ -20,7 +20,7 @@ class GetMoviesUseCase @Inject constructor(
     suspend operator fun invoke() : Flow<GResult<List<Movie>, Throwable>> = withContext(dispatcher) {
 
         var forceRefresh = false
-        val systemLang = Locale.getDefault().language
+        val systemLang = Locale.getDefault().toLanguageTag()
         val storedLang = preferenceStorage.getLanguage()
 
         // save current system language and force refresh
