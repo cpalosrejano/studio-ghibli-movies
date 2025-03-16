@@ -25,10 +25,6 @@ class GetMoviesUseCaseTest : BaseTest() {
     @RelaxedMockK private lateinit var preferenceStorage: PreferenceStorage
     private lateinit var getMoviesUseCase: GetMoviesUseCase
 
-    private val lang = Locale.getDefault().language
-    private val coproductions = false
-    private val forceRefresh = true
-
     override fun onStart() {
         super.onStart()
         getMoviesUseCase = GetMoviesUseCase(movieRepository, preferenceStorage, Dispatchers.IO)
@@ -43,7 +39,9 @@ class GetMoviesUseCaseTest : BaseTest() {
         var resultException: Throwable? = null
         var resultData: List<Movie>? = null
 
-        coEvery { movieRepository.get(lang, coproductions, forceRefresh) } returns flowOf(GResult.Success(movies))
+        val lang = Locale.getDefault().toLanguageTag()
+        coEvery { preferenceStorage.getLanguage() } returns lang
+        coEvery { movieRepository.get(lang, false) } returns flowOf(GResult.Success(movies))
         getMoviesUseCase().onEach {
             when (it) {
                 is GResult.Success -> { resultData = it.data }
@@ -101,7 +99,9 @@ class GetMoviesUseCaseTest : BaseTest() {
         // when
         var resultException: Throwable? = null
         var resultData: List<Movie>? = null
-        coEvery { movieRepository.get(lang, coproductions, forceRefresh) } returns flowOf(GResult.Success(movies))
+        val lang = Locale.getDefault().toLanguageTag()
+        coEvery { preferenceStorage.getLanguage() } returns lang
+        coEvery { movieRepository.get(lang, false) } returns flowOf(GResult.Success(movies))
         getMoviesUseCase().onEach {
             when (it) {
                 is GResult.Success -> resultData = it.data
