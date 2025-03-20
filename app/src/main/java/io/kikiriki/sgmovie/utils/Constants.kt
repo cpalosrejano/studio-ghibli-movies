@@ -14,4 +14,8 @@ object Constants {
         const val PRIVACY_POLICY_URL = "https://www.privacypolicies.com/live/503cebca-11b0-4bda-9fb0-051be4285c4d"
     }
 
+    object Contact {
+        const val EMAIL = "cpalosrejano@gmail.com"
+    }
+
 }

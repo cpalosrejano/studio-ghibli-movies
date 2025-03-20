@@ -9,9 +9,9 @@ interface MovieEndpoints {
     @Headers(
         "Accept: application/json",
         "Content-Type: application/json")
-    @GET("films")
+    @GET("movies")
     suspend fun getMovies (
-        @Query("limit") limit: Int,
-        @Query("fields") fields: String
+        @Query("locale") lang: String,
+        @Query("coproductions") coproductions: Boolean
     ) : List<MovieRemote>
 }

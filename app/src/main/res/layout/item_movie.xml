@@ -26,16 +26,35 @@
             tools:src="@drawable/img_title"
             android:contentDescription="@string/app_name" />
 
-        <ImageView
-            android:id="@+id/img_save"
+        <LinearLayout
+            android:id="@+id/layout_likes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:contentDescription="@string/app_name"
-            android:paddingStart="8dp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            tools:src="@drawable/ic_save"
-            tools:ignore="RtlSymmetry" />
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            tools:ignore="UseCompoundDrawables">
+
+            <ImageView
+                android:id="@+id/img_like"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/app_name"
+                tools:src="@drawable/ic_like"
+                tools:ignore="RtlSymmetry" />
+
+            <TextView
+                android:id="@+id/lbl_like_count"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+                style="@style/BodySmallTextStyle"
+                android:layout_marginStart="2dp"
+                android:maxLines="1"
+                tools:text="999"/>
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/lbl_title"
@@ -45,7 +64,7 @@
             app:layout_constraintStart_toEndOf="@id/img_image"
             app:layout_constraintTop_toTopOf="parent"
             style="@style/TitleMediumTextStyle"
-            app:layout_constraintEnd_toStartOf="@id/img_save"
+            app:layout_constraintEnd_toStartOf="@id/layout_likes"
             app:layout_constraintBottom_toTopOf="@id/lbl_description"
             android:layout_marginStart="12dp"
             tools:text="Gake no ue no Ponyo"/>

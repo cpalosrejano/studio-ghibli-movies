@@ -6,43 +6,64 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import io.kikiriki.sgmovie.R
 import io.kikiriki.sgmovie.domain.model.Movie
-import io.kikiriki.sgmovie.domain.model.base.GResult
-import io.kikiriki.sgmovie.domain.usecase.UpdateMovieUseCase
+import io.kikiriki.sgmovie.domain.usecase.GetMovieByIdUseCase
+import io.kikiriki.sgmovie.domain.usecase.UpdateMovieLikeUseCase
 import io.kikiriki.sgmovie.utils.ExceptionManager
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class MovieDetailViewModel @Inject constructor(
-    private val updateMovieUseCase: UpdateMovieUseCase
+    private val updateMovieLikeUseCase: UpdateMovieLikeUseCase,
+    private val getMovieByIdUseCase: GetMovieByIdUseCase
 ) : ViewModel() {
 
-    private val _uiState: MutableLiveData<MovieDetailUIState> = MutableLiveData(MovieDetailUIState())
-    val uiState: LiveData<MovieDetailUIState> = _uiState
+    private val _error: MutableLiveData<Int?> = MutableLiveData(null)
+    val error: LiveData<Int?> = _error
 
-    fun updateMovie(movie: Movie) = viewModelScope.launch {
-        val newMovieStatus = movie.copy(favourite = !movie.favourite)
+    private val _movie = MutableLiveData<Movie>()
+    val movie: LiveData<Movie> = _movie
 
-        when (val result = updateMovieUseCase(newMovieStatus)) {
-
-            is GResult.Success -> {
-                if (result.data) {
-                    _uiState.value = MovieDetailUIState(movie = newMovieStatus)
-                } else {
-                    _uiState.value = MovieDetailUIState(error = R.string.movie_detail_error_cannot_update_favourite)
-                }
+    fun getMovieById(movieId: String) = viewModelScope.launch {
+        getMovieByIdUseCase(movieId)
+            .onEach { movie ->
+                _movie.postValue(movie)
             }
-            is GResult.Error -> {
-                // get the exception and send to the UI
-                val error = ExceptionManager.getMessage(result.error)
-                _uiState.value = MovieDetailUIState(error = error)
+            .catch {
+                val error = ExceptionManager.getMessage(it)
+                _error.postValue(error)
             }
-            is GResult.SuccessWithError -> {
-                // get the exception and send to the UI
-                val error = ExceptionManager.getMessage(result.error)
-                _uiState.value = MovieDetailUIState(error = error)
-            }
+            .collect()
+    }
 
+
+
+    fun updateMovieLike() = viewModelScope.launch {
+        // check current movie is not null
+        var newMovieStatus = movie.value
+        if (newMovieStatus == null) {
+            _error.postValue(R.string.movie_detail_error_cannot_update_like)
+            return@launch
         }
+
+        // switch movie like
+        newMovieStatus = newMovieStatus.copy(like = !newMovieStatus.like)
+
+        // update in local and firestore
+        val result = updateMovieLikeUseCase(newMovieStatus)
+        result.fold(
+            onSuccess = { success ->
+                if (!success) {
+                    _error.postValue(R.string.movie_detail_error_cannot_update_like)
+                }
+            },
+            onFailure = { failure ->
+                val error = ExceptionManager.getMessage(failure)
+                _error.postValue(error)
+            }
+        )
     }
 
 }

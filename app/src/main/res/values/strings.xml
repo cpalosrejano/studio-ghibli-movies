@@ -9,12 +9,19 @@
     <string name="settings_title">Settings</string>
     <string name="settings_lbl_version">App version: %1$s</string>
     <string name="settings_lbl_privacy_policy">Privacy policy</string>
+    <string name="settings_lbl_translate_app">Translate the app</string>
+    <string name="settings_lbl_translate_app_body">Do you want help us or request us to translate the app? Let\'s talk!</string>
+    <string name="settings_lbl_translate_app_email_subject">Studio Ghibli Movies [%1$s]</string>
+    <string name="settings_lbl_translate_app_email_body">Write below your request</string>
+    <string name="settings_lbl_send_email">Send email</string>
+    <string name="settings_lbl_error_no_email_client_found">There is no mail app installed</string>
 
     <!-- DETAIL FRAGMENT -->
     <string name="movie_detail_lbl_score">%1$d %%</string>
-    <string name="movie_detail_lbl_running_time">%1$s min</string>
-    <string name="movie_detail_lbl_favourite">Favourite</string>
-    <string name="movie_detail_error_cannot_update_favourite">Cannot update favourite movie</string>
+    <string name="movie_detail_lbl_running_time_hour_min">%1$dh %02$s min</string>
+    <string name="movie_detail_lbl_running_time_min">%1$s min</string>
+    <string name="movie_detail_lbl_likes">%1$d likes</string>
+    <string name="movie_detail_error_cannot_update_like">Cannot update movie like</string>
 
     <!-- CUSTOM VIEWS -->
     <string name="view_empty_lbl_empty">There is nothing here</string>
@@ -24,13 +31,15 @@
     <!-- SORT DIALOG -->
     <string name="dialog_sort_by_lbl_title">Sort by…</string>
     <string name="dialog_sort_by_lbl_name">Name - Default</string>
-    <string name="dialog_sort_by_lbl_favourites">Favourites</string>
+    <string name="dialog_sort_by_lbl_like">Like</string>
+    <string name="dialog_sort_by_lbl_total_likes">Total likes</string>
     <string name="dialog_sort_by_lbl_score">Score</string>
     <string name="dialog_sort_by_lbl_director">Director</string>
     <string name="dialog_sort_by_lbl_year">Year</string>
 
     <!-- HANDLED ERROR  -->
     <string name="error_bbdd_get_movies">Cannot get movies from database</string>
+    <string name="error_bbdd_get_movie_detail">Cannot get the movie detail</string>
     <string name="error_bbdd_insert_movies">Cannot save movies in database</string>
     <string name="error_bbdd_update_movie">Cannot update movie</string>
     <string name="error_network_unauthorized">You have not authorization to access to this resource</string>

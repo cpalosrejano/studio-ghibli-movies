@@ -1,83 +1,52 @@
 package io.kikiriki.sgmovie.data.repository.movie.firestore
 
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
-import io.kikiriki.sgmovie.core.coroutines.di.IODispatcher
-import io.kikiriki.sgmovie.data.exception.RemoteDataSourceException
-import io.kikiriki.sgmovie.data.model.MovieFirestore
-import io.kikiriki.sgmovie.data.model.mapper.MovieMapper
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.withContext
-import retrofit2.HttpException
-import java.net.UnknownHostException
+import com.google.firebase.firestore.SetOptions
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
 import javax.inject.Inject
-import kotlin.coroutines.resume
-import kotlin.coroutines.resumeWithException
-import kotlin.coroutines.suspendCoroutine
 
 class MovieFirestoreDataSourceImpl @Inject constructor(
     private val firestore: FirebaseFirestore,
-    @IODispatcher private val dispatcher: CoroutineDispatcher
 )  : MovieFirestoreDataSource {
 
-    override suspend fun get(): List<MovieFirestore> = withContext(dispatcher) {
-        return@withContext try {
-            val result: List<MovieFirestore> = getFirestoreMovies()
-            result
-        } catch (failure: Exception) {
-            val exception = handleException(failure)
-            throw exception
-        }
+    private companion object {
+        const val COLLECTION_MOVIES_LIKE = "movies_likes"
+        const val FIELD_LIKE_COUNT = "like_count"
     }
 
-    private suspend fun getFirestoreMovies() : List<MovieFirestore> = suspendCoroutine { continuation ->
-        firestore.collection(Firestore.Movies.COLLECTION_NAME).get().addOnSuccessListener { moviesResult ->
-            try {
-                // get movies list
-                val movies : List<MovieFirestore> = moviesResult.map { movieSnapshot ->
-                    MovieMapper.snapshotToFirestore(movieSnapshot.data)
+    override fun getLikes(): Flow<Map<String, Long>> = callbackFlow {
+        val listener = firestore.collection(COLLECTION_MOVIES_LIKE)
+            .addSnapshotListener { snapshot, _ ->
+                if (snapshot != null) {
+                    val likesMap = snapshot.documents.associate { doc ->
+                        doc.id to (doc.getLong(FIELD_LIKE_COUNT) ?: 0)
+                    }
+                    trySend(likesMap)
                 }
-                // return movies
-                continuation.resume(movies)
-
-            } catch (exception: Exception) {
-                continuation.resumeWithException(exception)
             }
-
-        }.addOnFailureListener { exception ->
-            continuation.resumeWithException(exception)
-
-        }
+        awaitClose { listener.remove() }
     }
 
-    private fun handleException(exception: Exception) : RemoteDataSourceException {
-        return when (exception) {
 
-            is HttpException -> {
-                RemoteDataSourceException(
-                    code = when (exception.code()) {
-                        401 -> { RemoteDataSourceException.Code.UNAUTHORIZED }
-                        404 -> { RemoteDataSourceException.Code.RESOURCE_NOT_FOUND }
-                        else -> { RemoteDataSourceException.Code.HTTP_UNKNOWN }
-                    },
-                    message = exception.message.orEmpty()
-                )
+    override fun getMovieLikesById(movieId: String): Flow<Long> = callbackFlow {
+        val docRef = firestore.collection(COLLECTION_MOVIES_LIKE).document(movieId)
+        val listener = docRef.addSnapshotListener { snapshot, error ->
+            if (error != null) {
+                close(error)
+                return@addSnapshotListener
             }
-
-            is UnknownHostException -> {
-                RemoteDataSourceException(
-                    code = RemoteDataSourceException.Code.NO_INTERNET_CONNECTION,
-                    message = exception.message.orEmpty()
-                )
-            }
-
-            else -> {
-                RemoteDataSourceException(
-                    code = RemoteDataSourceException.Code.DEFAULT,
-                    message = exception.message.orEmpty()
-                )
-            }
-
+            val likeCount = snapshot?.getLong(FIELD_LIKE_COUNT) ?: 0
+            trySend(likeCount)
         }
+        awaitClose { listener.remove() }
     }
 
+    override fun updateLike(movieId: String, like: Boolean) {
+        val docRef = firestore.collection(COLLECTION_MOVIES_LIKE).document(movieId)
+        val value = FieldValue.increment(if (like) 1 else -1)
+        docRef.set(mapOf(FIELD_LIKE_COUNT to value), SetOptions.merge())
+    }
 }

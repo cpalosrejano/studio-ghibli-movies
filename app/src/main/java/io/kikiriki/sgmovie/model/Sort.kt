@@ -9,18 +9,19 @@ class Sort private constructor(
 ) {
 
     enum class Type {
-        FAVOURITE, NAME, SCORE, DIRECTOR, YEAR
+        LIKE, NAME, SCORE, DIRECTOR, YEAR, LIKE_COUNT
     }
         
     companion object {
-        val FAVOURITES = Sort(Type.FAVOURITE, R.string.dialog_sort_by_lbl_favourites)
+        val LIKE = Sort(Type.LIKE, R.string.dialog_sort_by_lbl_like)
         val NAME = Sort(Type.NAME, R.string.dialog_sort_by_lbl_name)
         val SCORE = Sort(Type.SCORE, R.string.dialog_sort_by_lbl_score)
         val DIRECTOR = Sort(Type.DIRECTOR, R.string.dialog_sort_by_lbl_director)
         val YEAR = Sort(Type.YEAR, R.string.dialog_sort_by_lbl_year)
+        val LIKE_COUNT = Sort(Type.LIKE_COUNT, R.string.dialog_sort_by_lbl_total_likes)
 
         fun getAll() : List<Sort> {
-            return listOf(NAME, FAVOURITES, SCORE, DIRECTOR, YEAR)
+            return listOf(NAME, LIKE, SCORE, DIRECTOR, YEAR, LIKE_COUNT)
         }
 
     }

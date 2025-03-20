@@ -1,0 +1,57 @@
+<resources>
+    <string name="app_name">Studio Ghibli Movies</string>
+
+    <!-- MAIN ACTIVITY -->
+    <string name="main_menu_lbl_sort">Pagbukud-bukurin ang mga pelikula</string>
+    <string name="main_menu_lbl_settings">Mga Setting</string>
+
+    <!-- SETTINGS ACTIVITY -->
+    <string name="settings_title">Mga Setting</string>
+    <string name="settings_lbl_version">Bersyon ng app: %1$s</string>
+    <string name="settings_lbl_privacy_policy">Patakaran sa privacy</string>
+    <string name="settings_lbl_translate_app">Isalin ang app</string>
+    <string name="settings_lbl_translate_app_body">Gusto mo ba kaming tulungan o hilingin sa amin na isalin ang app? Mag-usap tayo!</string>
+    <string name="settings_lbl_translate_app_email_subject">Studio Ghibli Movies [%1$s]</string>
+    <string name="settings_lbl_translate_app_email_body">Isulat sa ibaba ng iyong kahilingan</string>
+    <string name="settings_lbl_send_email">Magpadala ng email</string>
+    <string name="settings_lbl_error_no_email_client_found">Walang naka-install na mail app</string>
+
+    <!-- DETAIL FRAGMENT -->
+    <string name="movie_detail_lbl_score">%1$d %%</string>
+    <string name="movie_detail_lbl_running_time_hour_min">%1$dh %02$s min</string>
+    <string name="movie_detail_lbl_running_time_min">%1$s min</string>
+    <string name="movie_detail_lbl_likes">%1$d likes</string>
+    <string name="movie_detail_error_cannot_update_like">Hindi ma-update tulad ng pelikula</string>
+
+    <!-- CUSTOM VIEWS -->
+    <string name="view_empty_lbl_empty">Walang anuman dito</string>
+    <string name="view_loading_lbl_loading">Naglo-load, mangyaring maghintay</string>
+    <string name="view_error_btn_try_again">Subukan muli</string>
+
+    <!-- SORT DIALOG -->
+    <string name="dialog_sort_by_lbl_title">Pagbukud-bukurin ayon sa…</string>
+    <string name="dialog_sort_by_lbl_name">Pangalan - Default</string>
+    <string name="dialog_sort_by_lbl_like">I-like</string>
+    <string name="dialog_sort_by_lbl_total_likes">Kabuuang likes</string>
+    <string name="dialog_sort_by_lbl_score">Iskor</string>
+    <string name="dialog_sort_by_lbl_director">Direktor</string>
+    <string name="dialog_sort_by_lbl_year">Taon</string>
+
+    <!-- HANDLED ERROR  -->
+    <string name="error_bbdd_get_movies">Hindi makakuha ng mga pelikula mula sa database</string>
+    <string name="error_bbdd_get_movie_detail">Hindi makuha ang detalye ng pelikula</string>
+    <string name="error_bbdd_insert_movies">Hindi ma-save ang mga pelikula sa database</string>
+    <string name="error_bbdd_update_movie">Hindi ma-update ang pelikula</string>
+    <string name="error_network_unauthorized">Wala kang pahintulot na mag-access sa mapagkukunang ito</string>
+    <string name="error_network_not_found">Hindi nahanap ang mapagkukunan</string>
+    <string name="error_feature_not_implemented">Hindi pa ipinapatupad ang feature</string>
+    <string name="error_network_no_connected">Walang koneksyon sa internet</string>
+    <string name="error_network_unknown">Error sa pagkonekta sa aming mga server</string>
+
+    <!-- DEFAULT ERROR -->
+    <string name="default_error">Ops, nagkaproblema</string>
+
+    <!-- DEFAULT TEXT -->
+    <string name="retry">Subukan muli</string>
+
+</resources>

@@ -1,7 +1,9 @@
 package io.kikiriki.sgmovie.data.repository.movie.firestore
 
-import io.kikiriki.sgmovie.data.model.MovieFirestore
+import kotlinx.coroutines.flow.Flow
 
 interface MovieFirestoreDataSource {
-    suspend fun get() : List<MovieFirestore>
+    fun getLikes(): Flow<Map<String, Long>>
+    fun getMovieLikesById(movieId: String) : Flow<Long>
+    fun updateLike(movieId: String, like: Boolean)
 }

@@ -10,6 +10,7 @@ class LocalDataSourceException(
 
     enum class Code (val code: BaseCode) {
         CANNOT_GET_MOVIES(BaseCode.LOCAL_CANNOT_GET_MOVIES),
+        CANNOT_GET_MOVIE_DETAIL(BaseCode.LOCAL_CANNOT_GET_MOVIE_DETAIL),
         CANNOT_INSERT_MOVIES(BaseCode.LOCAL_CANNOT_INSERT_MOVIES),
         CANNOT_UPDATE_MOVIE(BaseCode.LOCAL_CANNOT_UPDATE_MOVIE),
     }

@@ -126,7 +126,7 @@ class MainActivity : BaseActivity() {
 
     private fun openMovieDetail(movie: Movie) {
         MovieDetailFragment
-            .newInstance(movie)
+            .newInstance(movie.id)
             .show(supportFragmentManager, MovieDetailFragment::class.simpleName)
     }
 
@@ -164,7 +164,8 @@ class MainActivity : BaseActivity() {
         val newList = mutableListOf<Movie>().apply { addAll(items) }
 
         when (selectedSortType.type) {
-            Sort.Type.FAVOURITE -> { newList.sortByDescending { it.favourite } }
+            Sort.Type.LIKE -> { newList.sortByDescending { it.like } }
+            Sort.Type.LIKE_COUNT -> { newList.sortByDescending { it.likeCount } }
             Sort.Type.NAME -> { newList.sortBy { it.title } }
             Sort.Type.SCORE -> { newList.sortByDescending { it.rtScore } }
             Sort.Type.DIRECTOR -> { newList.sortBy { it.director } }
@@ -195,8 +196,8 @@ class MainActivity : BaseActivity() {
     }
 
     private fun sendAnalyticsEventMovie(movie: Movie) {
-        val favorite = !movie.favourite
-        when (favorite){
+        val like = !movie.like
+        when (like){
             true -> sendAnalyticEventAddFavoriteMovie(movie)
             false -> sendAnalyticEventDeleteFavoriteMovie(movie)
         }
