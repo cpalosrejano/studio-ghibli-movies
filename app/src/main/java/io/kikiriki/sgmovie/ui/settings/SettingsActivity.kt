@@ -6,8 +6,8 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import android.widget.Toast
 import dagger.hilt.android.AndroidEntryPoint
 import io.kikiriki.sgmovie.R
 import io.kikiriki.sgmovie.databinding.ActivitySettingsBinding
@@ -46,6 +46,7 @@ class SettingsActivity : BaseActivity() {
         } catch (_:Exception) {
             viewBinding.appInfoTvVersion.visibility = View.GONE
         }
+
     }
 
     private fun openPrivacyPolicy() {
