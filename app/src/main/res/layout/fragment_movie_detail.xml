@@ -47,7 +47,6 @@
 
                     <TextView
                         android:id="@+id/lbl_title"
-                        android:textAppearance="@style/TextAppearance.Material3.TitleLarge"
                         android:layout_width="0dp"
                         style="@style/TitleLargeTextStyle"
                         android:layout_height="wrap_content"
@@ -156,6 +155,32 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     android:layout_margin="16dp"
                     tools:text="The son of a sailor, 5-year old Sosuke lives a quiet life on an oceanside cliff with his mother Lisa. One fateful day, he finds a beautiful goldfish trapped in a bottle on the beach and upon rescuing her, names her Ponyo. But she is no ordinary goldfish. The daughter of a masterful wizard and a sea goddess, Ponyo uses her father's magic to transform herself into a young girl and quickly falls in love with Sosuke, but the use of such powerful sorcery causes a dangerous imbalance in the world. As the moon steadily draws nearer to the earth and Ponyo's father sends the ocean's mighty waves to find his daughter, the two children embark on an adventure of a lifetime to save the world and fulfill Ponyo's dreams of becoming human." />
+
+                <TextView
+                    android:id="@+id/lbl_streaming_providers"
+                    android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+                    android:layout_width="0dp"
+                    style="@style/TitleMediumTextStyle"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/lbl_description"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="28dp"
+                    tools:text="Where to watch" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_streaming_providers"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/lbl_streaming_providers"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="8dp"
+                    tools:listitem="@layout/item_streaming_provider" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
