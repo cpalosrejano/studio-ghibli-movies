@@ -160,14 +160,14 @@
                     android:id="@+id/lbl_streaming_providers"
                     android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
                     android:layout_width="0dp"
+                    android:text="@string/movie_detail_lbl_where_to_watch"
                     style="@style/TitleMediumTextStyle"
                     android:layout_height="wrap_content"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/lbl_description"
                     app:layout_constraintEnd_toEndOf="parent"
                     android:layout_marginHorizontal="16dp"
-                    android:layout_marginTop="28dp"
-                    tools:text="Where to watch" />
+                    android:layout_marginTop="28dp" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycler_streaming_providers"
@@ -178,7 +178,8 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/lbl_streaming_providers"
                     app:layout_constraintEnd_toEndOf="parent"
-                    android:layout_marginHorizontal="16dp"
+                    android:paddingHorizontal="16dp"
+                    android:clipToPadding="false"
                     android:layout_marginTop="8dp"
                     tools:listitem="@layout/item_streaming_provider" />
 
