@@ -19,5 +19,6 @@ data class Movie(
     val rtScore: Int,
     val coproduction: Boolean,
     val like: Boolean = false,
-    val likeCount: Long = 0
+    val likeCount: Long = 0,
+    val tmdbId: String,
 ) : Parcelable
