@@ -38,7 +38,8 @@ class UpdateMovieLikeUseCaseTest : BaseTest() {
             runningTime = 124,
             rtScore = 97,
             coproduction = false,
-            like = true
+            like = true,
+            tmdbId = "1234"
         )
 
         // when

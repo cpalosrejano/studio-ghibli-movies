@@ -3,7 +3,7 @@ package io.kikiriki.sgmovie.data.repository.movie
 import io.kikiriki.sgmovie.core.test.BaseTest
 import io.kikiriki.sgmovie.data.exception.LocalDataSourceException
 import io.kikiriki.sgmovie.data.exception.RemoteDataSourceException
-import io.kikiriki.sgmovie.data.model.mapper.MovieMapper
+import io.kikiriki.sgmovie.data.model.movie.MovieMapper
 import io.kikiriki.sgmovie.data.repository.movie.firestore.MovieFirestoreDataSource
 import io.kikiriki.sgmovie.data.repository.movie.local.MovieDao
 import io.kikiriki.sgmovie.data.repository.movie.local.MovieLocalDataSourceImpl

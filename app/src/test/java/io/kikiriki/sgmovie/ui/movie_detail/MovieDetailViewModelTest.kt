@@ -5,6 +5,7 @@ import io.kikiriki.sgmovie.core.test.BaseTest
 import io.kikiriki.sgmovie.data.exception.LocalDataSourceException
 import io.kikiriki.sgmovie.domain.model.Movie
 import io.kikiriki.sgmovie.domain.usecase.GetMovieByIdUseCase
+import io.kikiriki.sgmovie.domain.usecase.GetStreamingProviderUseCase
 import io.kikiriki.sgmovie.domain.usecase.UpdateMovieLikeUseCase
 import io.mockk.coEvery
 import io.mockk.impl.annotations.RelaxedMockK
@@ -16,13 +17,17 @@ import org.junit.Test
 @ExperimentalCoroutinesApi
 class MovieDetailViewModelTest : BaseTest() {
 
+    @RelaxedMockK private lateinit var getStreamingProviderUseCase: GetStreamingProviderUseCase
     @RelaxedMockK private lateinit var updateMovieLikeUseCase: UpdateMovieLikeUseCase
     @RelaxedMockK private lateinit var getMovieByIdUseCase: GetMovieByIdUseCase
     private lateinit var movieDetailViewModel: MovieDetailViewModel
 
     override fun onStart() {
         super.onStart()
-        movieDetailViewModel = MovieDetailViewModel(updateMovieLikeUseCase, getMovieByIdUseCase)
+        movieDetailViewModel = MovieDetailViewModel(
+            getStreamingProviderUseCase,
+            updateMovieLikeUseCase,
+            getMovieByIdUseCase)
     }
 
     @Test
@@ -42,7 +47,8 @@ class MovieDetailViewModelTest : BaseTest() {
             runningTime = 124,
             rtScore = 97,
             coproduction = false,
-            like = true
+            like = true,
+            tmdbId = "23455"
         )
         val exception = LocalDataSourceException(
             code = LocalDataSourceException.Code.CANNOT_UPDATE_MOVIE,
@@ -76,7 +82,8 @@ class MovieDetailViewModelTest : BaseTest() {
             runningTime = 124,
             rtScore = 97,
             coproduction = false,
-            like = true
+            like = true,
+            tmdbId = "23455"
         )
 
         // when

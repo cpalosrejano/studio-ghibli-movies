@@ -39,8 +39,10 @@ class GetMoviesUseCaseTest : BaseTest() {
         var resultException: Throwable? = null
         var resultData: List<Movie>? = null
 
+        val timestamp = System.currentTimeMillis()
         val lang = Locale.getDefault().toLanguageTag()
         coEvery { preferenceStorage.getLanguage() } returns lang
+        coEvery { preferenceStorage.getTimestampLastRequest() } returns timestamp
         coEvery { movieRepository.get(lang, false) } returns flowOf(GResult.Success(movies))
         getMoviesUseCase().onEach {
             when (it) {
@@ -76,7 +78,8 @@ class GetMoviesUseCaseTest : BaseTest() {
                 runningTime = 124,
                 rtScore = 97,
                 coproduction = false,
-                like = true
+                like = true,
+                tmdbId = "23455"
             ),
             Movie(
                 id = "0440483e-ca0e-4120-8c50-4c8cd9b965d6",
@@ -92,15 +95,18 @@ class GetMoviesUseCaseTest : BaseTest() {
                 runningTime = 134,
                 rtScore = 92,
                 coproduction = false,
-                like = true
+                like = true,
+                tmdbId = "23455"
             ),
         )
 
         // when
         var resultException: Throwable? = null
         var resultData: List<Movie>? = null
+        val timestamp = System.currentTimeMillis()
         val lang = Locale.getDefault().toLanguageTag()
         coEvery { preferenceStorage.getLanguage() } returns lang
+        coEvery { preferenceStorage.getTimestampLastRequest() } returns timestamp
         coEvery { movieRepository.get(lang, false) } returns flowOf(GResult.Success(movies))
         getMoviesUseCase().onEach {
             when (it) {

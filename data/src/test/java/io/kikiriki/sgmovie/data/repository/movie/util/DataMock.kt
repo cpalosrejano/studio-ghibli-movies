@@ -1,7 +1,7 @@
 package io.kikiriki.sgmovie.data.repository.movie.util
 
-import io.kikiriki.sgmovie.data.model.MovieLocal
-import io.kikiriki.sgmovie.data.model.MovieRemote
+import io.kikiriki.sgmovie.data.model.movie.MovieLocal
+import io.kikiriki.sgmovie.data.model.movie.MovieRemote
 import io.kikiriki.sgmovie.domain.model.Movie
 
 object DataMock {
@@ -79,7 +79,8 @@ object DataMock {
             releaseDate = 2001,
             runningTime = 124,
             rtScore = 97,
-            coproduction = false
+            coproduction = false,
+            tmdbId = "23455"
         ),
         MovieLocal(
             id = "0440483e-ca0e-4120-8c50-4c8cd9b965d6",
@@ -94,7 +95,8 @@ object DataMock {
             releaseDate = 1997,
             runningTime = 134,
             rtScore = 92,
-            coproduction = false
+            coproduction = false,
+            tmdbId = "23455"
         ),
         MovieLocal(
             id = "58611129-2dbc-4a81-a72f-77ddfc1b1b49",
@@ -109,7 +111,8 @@ object DataMock {
             releaseDate = 1988,
             runningTime = 86,
             rtScore = 93,
-            coproduction = false
+            coproduction = false,
+            tmdbId = "23455"
         ),
         MovieLocal(
             id = "758bf02e-3122-46e0-884e-67cf83df1786",
@@ -124,7 +127,8 @@ object DataMock {
             releaseDate = 2008,
             runningTime = 100,
             rtScore = 92,
-            coproduction = false
+            coproduction = false,
+            tmdbId = "23455"
         )
     )
 
@@ -143,7 +147,8 @@ object DataMock {
             runningTime = 124,
             rtScore = 97,
             coproduction = false,
-            like = true
+            like = true,
+            tmdbId = "23455"
         ),
         Movie(
             id = "0440483e-ca0e-4120-8c50-4c8cd9b965d6",
@@ -159,7 +164,8 @@ object DataMock {
             runningTime = 134,
             rtScore = 92,
             coproduction = false,
-            like = true
+            like = true,
+            tmdbId = "23455"
         ),
         Movie(
             id = "58611129-2dbc-4a81-a72f-77ddfc1b1b49",
@@ -175,7 +181,8 @@ object DataMock {
             runningTime = 86,
             rtScore = 93,
             coproduction = false,
-            like = false
+            like = false,
+            tmdbId = "23455"
         ),
         Movie(
             id = "758bf02e-3122-46e0-884e-67cf83df1786",
@@ -191,7 +198,8 @@ object DataMock {
             runningTime = 100,
             rtScore = 92,
             coproduction = false,
-            like = true
+            like = true,
+            tmdbId = "23455"
         )
     )
 
