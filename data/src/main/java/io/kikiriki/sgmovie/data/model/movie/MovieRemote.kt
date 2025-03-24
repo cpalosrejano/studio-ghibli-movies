@@ -1,4 +1,4 @@
-package io.kikiriki.sgmovie.data.model
+package io.kikiriki.sgmovie.data.model.movie
 
 data class MovieRemote(
     val id: String,
@@ -13,5 +13,6 @@ data class MovieRemote(
     val release_date: Int? = null,
     val running_time: Int? = null,
     val rt_score: Int? = null,
-    val coproduction: Boolean? = null
+    val coproduction: Boolean? = null,
+    val tmdb_id: String? = null
 )

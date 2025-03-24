@@ -1,7 +1,5 @@
-package io.kikiriki.sgmovie.data.model.mapper
+package io.kikiriki.sgmovie.data.model.movie
 
-import io.kikiriki.sgmovie.data.model.MovieLocal
-import io.kikiriki.sgmovie.data.model.MovieRemote
 import io.kikiriki.sgmovie.domain.model.Movie
 
 object MovieMapper {
@@ -20,7 +18,8 @@ object MovieMapper {
             releaseDate = movieRemote.release_date ?: 0,
             runningTime = movieRemote.running_time ?: 0,
             rtScore = movieRemote.rt_score ?: 0,
-            coproduction = movieRemote.coproduction ?: false
+            coproduction = movieRemote.coproduction ?: false,
+            tmdbId = movieRemote.tmdb_id.orEmpty()
         )
     }
     fun remoteToData(moviesRemote: List<MovieRemote>) : List<Movie> {
@@ -42,7 +41,8 @@ object MovieMapper {
             runningTime = movieLocal.runningTime,
             rtScore = movieLocal.rtScore,
             coproduction = movieLocal.coproduction,
-            like = movieLocal.like
+            like = movieLocal.like,
+            tmdbId = movieLocal.tmdbId
         )
     }
     fun localToData(moviesLocal: List<MovieLocal>) : List<Movie> {
@@ -64,7 +64,8 @@ object MovieMapper {
             runningTime = movie.runningTime,
             rtScore = movie.rtScore,
             coproduction = movie.coproduction,
-            like = movie.like
+            like = movie.like,
+            tmdbId = movie.tmdbId
         )
     }
     fun dataToLocal(movies: List<Movie>) : List<MovieLocal> {
