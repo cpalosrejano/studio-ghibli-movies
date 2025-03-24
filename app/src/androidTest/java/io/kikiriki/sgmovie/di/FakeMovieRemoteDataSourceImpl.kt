@@ -1,6 +1,6 @@
 package io.kikiriki.sgmovie.di
 
-import io.kikiriki.sgmovie.data.model.MovieRemote
+import io.kikiriki.sgmovie.data.model.movie.MovieRemote
 import io.kikiriki.sgmovie.data.repository.movie.remote.MovieRemoteDataSource
 import io.kikiriki.sgmovie.utils.EspressoIdleResource
 import javax.inject.Inject
