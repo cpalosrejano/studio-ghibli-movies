@@ -9,7 +9,7 @@ class GetStreamingProviderUseCase @Inject constructor(
     private val tmdbRepository: TMDBRepository
 ) {
 
-    suspend fun invoke(movie: Movie, countryCode: String) : Result<List<StreamingProvider>> {
+    suspend operator fun invoke(movie: Movie, countryCode: String) : Result<List<StreamingProvider>> {
         tmdbRepository.getStreamingProviders(movie.tmdbId).fold(
             onSuccess = { mapCountryProviders ->
                 val providers = mapCountryProviders[countryCode] ?: emptyList()
