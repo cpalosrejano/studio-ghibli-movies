@@ -1,4 +1,4 @@
-package io.kikiriki.sgmovie.data.model
+package io.kikiriki.sgmovie.data.model.movie
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
@@ -26,4 +26,6 @@ data class MovieLocal(
     val rtScore: Int,
     val coproduction: Boolean,
     var like: Boolean = false,
+    @ColumnInfo("tmdb_id")
+    var tmdbId: String
 )
