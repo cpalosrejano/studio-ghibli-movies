@@ -14,5 +14,5 @@ data class MovieRemote(
     val running_time: Int? = null,
     val rt_score: Int? = null,
     val coproduction: Boolean? = null,
-    val tmdb_id: String? = null
+    val tmdb_id: Int? = null
 )
