@@ -19,7 +19,7 @@ object MovieMapper {
             runningTime = movieRemote.running_time ?: 0,
             rtScore = movieRemote.rt_score ?: 0,
             coproduction = movieRemote.coproduction ?: false,
-            tmdbId = movieRemote.tmdb_id.orEmpty()
+            tmdbId = movieRemote.tmdb_id.toString()
         )
     }
     fun remoteToData(moviesRemote: List<MovieRemote>) : List<Movie> {
