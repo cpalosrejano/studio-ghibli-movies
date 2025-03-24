@@ -55,6 +55,9 @@ class MovieDetailFragment : BottomSheetDialogFragment() {
 
     private fun setupView() {
         viewBinding.recyclerStreamingProviders.adapter = streamingProviderAdapter
+        streamingProviderAdapter.onItemClick = { streamingProvider ->
+            Toast.makeText(context, streamingProvider.name, Toast.LENGTH_SHORT).show()
+        }
         viewBinding.lblLike.setOnClickListener {
             viewModel.updateMovieLike()
         }
