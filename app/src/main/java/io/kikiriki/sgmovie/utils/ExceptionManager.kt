@@ -21,6 +21,7 @@ class ExceptionManager {
                 BaseCode.REMOTE_RESOURCE_NOT_FOUND -> R.string.error_network_not_found
                 BaseCode.REMOTE_HTTP_UNKNOWN -> R.string.error_network_unknown
                 BaseCode.REMOTE_NO_INTERNET_CONNECTION -> R.string.error_network_no_connected
+                BaseCode.STREAMING_PROVIDER_NOT_FOUND -> R.string.error_network_streaming_provider_not_found
 
                 BaseCode.LOCAL_CANNOT_GET_MOVIES -> R.string.error_bbdd_get_movies
                 BaseCode.LOCAL_CANNOT_GET_MOVIE_DETAIL -> R.string.error_bbdd_get_movie_detail
