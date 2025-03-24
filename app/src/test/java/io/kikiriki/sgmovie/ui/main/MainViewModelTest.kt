@@ -185,7 +185,8 @@ class MainViewModelTest : BaseTest() {
                 runningTime = 124,
                 rtScore = 97,
                 coproduction = false,
-                like = true
+                like = true,
+                tmdbId = "23455"
             ),
             Movie(
                 id = "0440483e-ca0e-4120-8c50-4c8cd9b965d6",
@@ -201,7 +202,8 @@ class MainViewModelTest : BaseTest() {
                 runningTime = 134,
                 rtScore = 92,
                 coproduction = false,
-                like = true
+                like = true,
+                tmdbId = "23455"
             ),
         )
 
@@ -235,7 +237,8 @@ class MainViewModelTest : BaseTest() {
             runningTime = 124,
             rtScore = 97,
             coproduction = false,
-            like = true
+            like = true,
+            tmdbId = "23455"
         )
         val exception = LocalDataSourceException(
             code = LocalDataSourceException.Code.CANNOT_UPDATE_MOVIE,
@@ -269,7 +272,8 @@ class MainViewModelTest : BaseTest() {
             runningTime = 124,
             rtScore = 97,
             coproduction = false,
-            like = true
+            like = true,
+            tmdbId = "23455"
         )
 
         // when
