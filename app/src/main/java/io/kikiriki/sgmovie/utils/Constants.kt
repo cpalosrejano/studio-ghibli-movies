@@ -6,6 +6,7 @@ object Constants {
 
     object Coil {
         const val CROSSFADE: Int = 600
+        const val ROUNDED_CORNERS_XS: Float = 4f
         const val ROUNDED_CORNERS: Float = 16f
         val ROUNDED_CORNERS_XL: Float = 28.px.toFloat()
     }

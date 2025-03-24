@@ -5,6 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import coil.load
 import coil.transform.RoundedCornersTransformation
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -16,10 +18,11 @@ import dagger.hilt.android.AndroidEntryPoint
 import io.kikiriki.sgmovie.R
 import io.kikiriki.sgmovie.databinding.FragmentMovieDetailBinding
 import io.kikiriki.sgmovie.domain.model.Movie
+import io.kikiriki.sgmovie.domain.model.StreamingProvider
+import io.kikiriki.sgmovie.ui.adapter.AdapterStreamingProvider
 import io.kikiriki.sgmovie.utils.Constants.Coil.CROSSFADE
 import io.kikiriki.sgmovie.utils.Constants.Coil.ROUNDED_CORNERS
 import io.kikiriki.sgmovie.utils.Constants.Coil.ROUNDED_CORNERS_XL
-import io.kikiriki.sgmovie.utils.extension.getParcelableSupport
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -29,6 +32,8 @@ class MovieDetailFragment : BottomSheetDialogFragment() {
     @Inject lateinit var viewModel: MovieDetailViewModel
 
     private lateinit var firebaseAnalytics: FirebaseAnalytics
+
+    private val streamingProviderAdapter = AdapterStreamingProvider()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,6 +54,7 @@ class MovieDetailFragment : BottomSheetDialogFragment() {
     }
 
     private fun setupView() {
+        viewBinding.recyclerStreamingProviders.adapter = streamingProviderAdapter
         viewBinding.lblLike.setOnClickListener {
             viewModel.updateMovieLike()
         }
@@ -61,11 +67,19 @@ class MovieDetailFragment : BottomSheetDialogFragment() {
             error?.let { Toast.makeText(context, it, Toast.LENGTH_LONG).show() }
         }
 
+        viewModel.streamingProviderError.observe(viewLifecycleOwner) { error: Int? ->
+            error?.let { showStreamingProviderError(error) }
+        }
+
         // print movie updates
         viewModel.movie.observe(viewLifecycleOwner) { movie: Movie ->
             updateMovieDetail(movie)
         }
 
+        // show streaming providers
+        viewModel.streamingProviders.observe(viewLifecycleOwner) { providers ->
+            providers?.let { loadStreamingProviders(it) }
+        }
     }
 
     private fun updateMovieDetail(movie: Movie) {
@@ -93,6 +107,25 @@ class MovieDetailFragment : BottomSheetDialogFragment() {
         val iconFavourite = if(movie.like) R.drawable.ic_like_filled else R.drawable.ic_like
         viewBinding.lblLike.setCompoundDrawablesWithIntrinsicBounds(0, iconFavourite,0,0)
         viewBinding.lblLike.text = getString(R.string.movie_detail_lbl_likes, movie.likeCount)
+    }
+
+    private fun loadStreamingProviders(providers: List<StreamingProvider>) {
+        if (providers.isEmpty()) {
+            viewBinding.lblStreamingProvidersNotAvailable.text =
+                getString(R.string.movie_detail_lbl_streaming_provider_not_available)
+            viewBinding.lblStreamingProvidersNotAvailable.isVisible = true
+            viewBinding.recyclerStreamingProviders.isGone = true
+        } else {
+            viewBinding.lblStreamingProvidersNotAvailable.isGone = true
+            viewBinding.recyclerStreamingProviders.isVisible = true
+            streamingProviderAdapter.submitList(providers)
+        }
+    }
+
+    private fun showStreamingProviderError(message: Int) {
+        viewBinding.lblStreamingProvidersNotAvailable.text = getString(message)
+        viewBinding.lblStreamingProvidersNotAvailable.isVisible = true
+        viewBinding.recyclerStreamingProviders.isGone = true
     }
 
     private fun sendAnalyticEventAddFavoriteMovie(movie: Movie) {
