@@ -2,7 +2,7 @@ package io.kikiriki.sgmovie.data.repository.movie.remote
 
 import io.kikiriki.sgmovie.core.coroutines.di.IODispatcher
 import io.kikiriki.sgmovie.data.exception.RemoteDataSourceException
-import io.kikiriki.sgmovie.data.model.MovieRemote
+import io.kikiriki.sgmovie.data.model.movie.MovieRemote
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException

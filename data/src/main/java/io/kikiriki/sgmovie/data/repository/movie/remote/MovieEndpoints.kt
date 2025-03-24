@@ -1,6 +1,6 @@
 package io.kikiriki.sgmovie.data.repository.movie.remote
 
-import io.kikiriki.sgmovie.data.model.MovieRemote
+import io.kikiriki.sgmovie.data.model.movie.MovieRemote
 import retrofit2.http.GET
 import retrofit2.http.Headers
 import retrofit2.http.Query

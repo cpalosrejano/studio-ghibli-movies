@@ -1,7 +1,7 @@
 package io.kikiriki.sgmovie.data.repository.movie
 
 import io.kikiriki.sgmovie.core.coroutines.di.IODispatcher
-import io.kikiriki.sgmovie.data.model.mapper.MovieMapper
+import io.kikiriki.sgmovie.data.model.movie.MovieMapper
 import io.kikiriki.sgmovie.data.repository.movie.firestore.MovieFirestoreDataSource
 import io.kikiriki.sgmovie.data.repository.movie.local.MovieLocalDataSource
 import io.kikiriki.sgmovie.data.repository.movie.mock.MovieMockDataSource
