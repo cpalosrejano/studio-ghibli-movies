@@ -1,3 +1,6 @@
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.kotlin.kapt)
     alias(libs.plugins.android.library) // id("com.android.library")
@@ -13,6 +16,15 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
+    }
+
+    buildFeatures {
+        buildConfig = true
+    }
+
+    val tmdbApiKey = getTmdbApiKey()
+    buildTypes.forEach {
+        it.buildConfigField("String", "TMDB_API_KEY", "\"${tmdbApiKey}\"")
     }
 
     buildTypes {
@@ -73,4 +85,13 @@ dependencies {
 // Hilt: Allow references to generated code
 kapt {
     correctErrorTypes = true
+}
+
+private fun getTmdbApiKey() : String {
+    // load properties
+    val prop = Properties()
+    prop.load(FileInputStream(File(rootProject.rootDir, "local.properties")))
+
+    // load tmdb api key
+    return prop.getProperty("TMDB_API_KEY") ?: ""
 }
