@@ -9,6 +9,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import io.kikiriki.sgmovie.data.repository.movie.remote.MovieEndpoints
+import io.kikiriki.sgmovie.data.repository.tmdb.remote.TMDBEndpoints
 import io.kikiriki.sgmovie.data.utils.Constants
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -37,12 +38,21 @@ object NetworkModule {
     }
 
     @Provides
-    fun provideProductEndpoints(okHttp: OkHttpClient) : MovieEndpoints {
+    fun provideMovieEndpoints(okHttp: OkHttpClient) : MovieEndpoints {
         return Retrofit.Builder()
             .addConverterFactory(MoshiConverterFactory.create().asLenient())
-            .baseUrl(Constants.Repository.URL)
+            .baseUrl(Constants.Repository.URL_API_MOVIE)
             .client(okHttp).build()
             .create(MovieEndpoints::class.java)
+    }
+
+    @Provides
+    fun provideTMDBEndpoints(okHttp: OkHttpClient) : TMDBEndpoints {
+        return Retrofit.Builder()
+            .addConverterFactory(MoshiConverterFactory.create().asLenient())
+            .baseUrl(Constants.Repository.URL_API_TMDB)
+            .client(okHttp).build()
+            .create(TMDBEndpoints::class.java)
     }
 
     @Singleton
