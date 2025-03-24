@@ -169,6 +169,7 @@
                     android:layout_marginTop="28dp" />
 
                 <RelativeLayout
+                    android:id="@+id/layout_streaming_providers"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
@@ -199,6 +200,30 @@
                         android:visibility="gone"/>
 
                 </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/lbl_provided_by_just_watch"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/layout_streaming_providers"
+                    app:layout_constraintStart_toStartOf="parent"
+                    style="@style/BodySmallTextStyle"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginHorizontal="16dp"
+                    android:text="@string/movie_detail_lbl_provided_by_just_watch"/>
+
+                <ImageView
+                    android:id="@+id/img_provided_by_just_watch"
+                    android:layout_width="0dp"
+                    android:layout_height="16dp"
+                    android:contentDescription="@string/app_name"
+                    app:layout_constraintTop_toBottomOf="@id/lbl_provided_by_just_watch"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintDimensionRatio="13859 : 2246"
+                    android:layout_marginTop="6dp"
+                    android:layout_marginHorizontal="16dp"
+                    android:scaleType="fitStart"
+                    android:src="@drawable/ic_justwatch_logo" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
