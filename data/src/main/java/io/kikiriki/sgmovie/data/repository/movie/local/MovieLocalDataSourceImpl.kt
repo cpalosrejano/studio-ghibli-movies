@@ -2,8 +2,7 @@ package io.kikiriki.sgmovie.data.repository.movie.local
 
 import io.kikiriki.sgmovie.core.coroutines.di.IODispatcher
 import io.kikiriki.sgmovie.data.exception.LocalDataSourceException
-import io.kikiriki.sgmovie.data.model.MovieLocal
-import io.kikiriki.sgmovie.domain.model.Movie
+import io.kikiriki.sgmovie.data.model.movie.MovieLocal
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
