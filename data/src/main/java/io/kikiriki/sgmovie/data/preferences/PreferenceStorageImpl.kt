@@ -9,6 +9,7 @@ class PreferenceStorageImpl(
 
     companion object {
         private const val KEY_LANGUAGE = "lang"
+        private const val KEY_LAST_REQUEST_TIMESTAMP = "lastRequestTimestamp"
     }
 
     override fun getLanguage(): String? {
@@ -17,5 +18,13 @@ class PreferenceStorageImpl(
 
     override fun setLanguage(language: String) {
         preferences.edit().putString(KEY_LANGUAGE, language).apply()
+    }
+
+    override fun setTimestampLastRequest(timestamp: Long) {
+        preferences.edit().putLong(KEY_LAST_REQUEST_TIMESTAMP, timestamp).apply()
+    }
+
+    override fun getTimestampLastRequest(): Long {
+        return preferences.getLong(KEY_LAST_REQUEST_TIMESTAMP, 0)
     }
 }
