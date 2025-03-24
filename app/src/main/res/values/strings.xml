@@ -22,7 +22,8 @@
     <string name="movie_detail_lbl_running_time_min">%1$s min</string>
     <string name="movie_detail_lbl_likes">%1$d likes</string>
     <string name="movie_detail_error_cannot_update_like">Cannot update movie like</string>
-    <string name="movie_detail_lbl_where_to_watch">Where to watch</string>
+    <string name="movie_detail_lbl_streaming_providers">Watch it on:</string>
+    <string name="movie_detail_lbl_streaming_provider_not_available">Not available in your country :(</string>
 
     <!-- CUSTOM VIEWS -->
     <string name="view_empty_lbl_empty">There is nothing here</string>
@@ -48,6 +49,7 @@
     <string name="error_feature_not_implemented">Feature not implemented yet</string>
     <string name="error_network_no_connected">No internet connection</string>
     <string name="error_network_unknown">Error connecting with our servers</string>
+    <string name="error_network_streaming_provider_not_found">Error getting streaming providers</string>
 
     <!-- DEFAULT ERROR -->
     <string name="default_error">Ops, something went wrong</string>
