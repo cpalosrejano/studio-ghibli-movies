@@ -1,6 +1,6 @@
 package io.kikiriki.sgmovie.data.repository.movie.local
 
-import io.kikiriki.sgmovie.data.model.MovieLocal
+import io.kikiriki.sgmovie.data.model.movie.MovieLocal
 import kotlinx.coroutines.flow.Flow
 
 interface MovieLocalDataSource {

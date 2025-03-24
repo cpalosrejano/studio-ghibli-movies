@@ -22,7 +22,10 @@ object DatabaseModule {
         if (! this::database.isInitialized) {
             database = Room
                 .databaseBuilder(context, AppDatabase::class.java, "sgmovie-database")
-                .addMigrations(DBMigrations.MIGRATION_1_2)
+                .addMigrations(
+                    DBMigrations.MIGRATION_1_2,
+                    DBMigrations.MIGRATION_2_3
+                )
                 .build()
         }
         return database

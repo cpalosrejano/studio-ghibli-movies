@@ -53,4 +53,10 @@ object DBMigrations {
             db.execSQL("DROP TABLE movies_old")
         }
     }
+
+    val MIGRATION_2_3 = object : Migration(1, 2) {
+        override fun migrate(db: SupportSQLiteDatabase) {
+            db.execSQL("ALTER TABLE movies ADD COLUMN tmdb_id TEXT NOT NULL DEFAULT ''")
+        }
+    }
 }
