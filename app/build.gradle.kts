@@ -48,6 +48,7 @@ android {
 
 dependencies {
 
+    implementation(project(":analytics"))
     implementation(project(":domain"))
     implementation(project(":data"))
     testImplementation(project(":core:test"))
@@ -56,8 +57,6 @@ dependencies {
     implementation(platform(libs.firebase.bom))
     // firebase: crashlytics
     implementation(libs.firebase.crashlytics)
-    // firebase: analytics
-    implementation(libs.firebase.analytics)
 
     // android X: kotlin core
     implementation(libs.androidx.core.ktx)
