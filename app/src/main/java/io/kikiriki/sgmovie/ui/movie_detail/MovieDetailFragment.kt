@@ -23,6 +23,7 @@ import io.kikiriki.sgmovie.ui.adapter.AdapterStreamingProvider
 import io.kikiriki.sgmovie.utils.Constants.Coil.CROSSFADE
 import io.kikiriki.sgmovie.utils.Constants.Coil.ROUNDED_CORNERS
 import io.kikiriki.sgmovie.utils.Constants.Coil.ROUNDED_CORNERS_XL
+import java.util.Locale
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -33,7 +34,9 @@ class MovieDetailFragment : BottomSheetDialogFragment() {
 
     private lateinit var firebaseAnalytics: FirebaseAnalytics
 
-    private val streamingProviderAdapter = AdapterStreamingProvider()
+    private val spFlatRateAdapter = AdapterStreamingProvider()
+    private val spRentAdapter = AdapterStreamingProvider()
+    private val spBuyAdapter = AdapterStreamingProvider()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,10 +57,21 @@ class MovieDetailFragment : BottomSheetDialogFragment() {
     }
 
     private fun setupView() {
-        viewBinding.recyclerStreamingProviders.adapter = streamingProviderAdapter
-        streamingProviderAdapter.onItemClick = { streamingProvider ->
+        viewBinding.recyclerStreamingProvidersFlatRate.adapter = spFlatRateAdapter
+        spFlatRateAdapter.onItemClick = { streamingProvider ->
             Toast.makeText(context, streamingProvider.name, Toast.LENGTH_SHORT).show()
         }
+
+        viewBinding.recyclerStreamingProvidersRent.adapter = spRentAdapter
+        spRentAdapter.onItemClick = { streamingProvider ->
+            Toast.makeText(context, streamingProvider.name, Toast.LENGTH_SHORT).show()
+        }
+
+        viewBinding.recyclerStreamingProvidersBuy.adapter = spBuyAdapter
+        spBuyAdapter.onItemClick = { streamingProvider ->
+            Toast.makeText(context, streamingProvider.name, Toast.LENGTH_SHORT).show()
+        }
+
         viewBinding.lblLike.setOnClickListener {
             viewModel.updateMovieLike()
         }
@@ -71,7 +85,9 @@ class MovieDetailFragment : BottomSheetDialogFragment() {
         }
 
         viewModel.streamingProviderError.observe(viewLifecycleOwner) { error: Int? ->
-            error?.let { showStreamingProviderError(error) }
+            error?.let {
+                showStreamingProviderError(getString(error))
+            }
         }
 
         // print movie updates
@@ -81,7 +97,20 @@ class MovieDetailFragment : BottomSheetDialogFragment() {
 
         // show streaming providers
         viewModel.streamingProviders.observe(viewLifecycleOwner) { providers ->
-            providers?.let { loadStreamingProviders(it) }
+            providers?.let {
+                // load providers
+                loadFlatRateProviders(it.flatrate)
+                loadRentProviders(it.rent)
+                loadBuyProviders(it.buy)
+
+                // show empty providers message if all of them are empty
+                val emptyProviders = it.flatrate.isEmpty() && it.rent.isEmpty() && it.buy.isEmpty()
+                if (emptyProviders) {
+                    val countryName = Locale.getDefault().displayCountry + " " + Locale.getDefault().country
+                    val msg = getString(R.string.movie_detail_lbl_streaming_providers_not_available, countryName)
+                    showStreamingProviderError(msg)
+                }
+            }
         }
     }
 
@@ -112,23 +141,27 @@ class MovieDetailFragment : BottomSheetDialogFragment() {
         viewBinding.lblLike.text = getString(R.string.movie_detail_lbl_likes, movie.likeCount)
     }
 
-    private fun loadStreamingProviders(providers: List<StreamingProvider>) {
-        if (providers.isEmpty()) {
-            viewBinding.lblStreamingProvidersNotAvailable.text =
-                getString(R.string.movie_detail_lbl_streaming_provider_not_available)
-            viewBinding.lblStreamingProvidersNotAvailable.isVisible = true
-            viewBinding.recyclerStreamingProviders.isGone = true
-        } else {
-            viewBinding.lblStreamingProvidersNotAvailable.isGone = true
-            viewBinding.recyclerStreamingProviders.isVisible = true
-            streamingProviderAdapter.submitList(providers)
-        }
+    private fun loadFlatRateProviders(providers: List<StreamingProvider>) {
+        viewBinding.layoutStreamingProvidersFlatRate.isVisible = providers.isNotEmpty()
+        spFlatRateAdapter.submitList(providers)
     }
 
-    private fun showStreamingProviderError(message: Int) {
-        viewBinding.lblStreamingProvidersNotAvailable.text = getString(message)
+    private fun loadRentProviders(providers: List<StreamingProvider>) {
+        viewBinding.layoutStreamingProvidersRent.isVisible = providers.isNotEmpty()
+        spRentAdapter.submitList(providers)
+    }
+
+    private fun loadBuyProviders(providers: List<StreamingProvider>) {
+        viewBinding.layoutStreamingProvidersBuy.isVisible = providers.isNotEmpty()
+        spBuyAdapter.submitList(providers)
+    }
+
+    private fun showStreamingProviderError(message: String) {
+        viewBinding.layoutStreamingProvidersFlatRate.isGone = true
+        viewBinding.layoutStreamingProvidersRent.isGone = true
+        viewBinding.layoutStreamingProvidersBuy.isGone = true
         viewBinding.lblStreamingProvidersNotAvailable.isVisible = true
-        viewBinding.recyclerStreamingProviders.isGone = true
+        viewBinding.lblStreamingProvidersNotAvailable.text = message
     }
 
     private fun sendAnalyticEventAddFavoriteMovie(movie: Movie) {
