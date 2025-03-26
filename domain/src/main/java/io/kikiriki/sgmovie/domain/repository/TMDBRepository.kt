@@ -1,9 +1,9 @@
 package io.kikiriki.sgmovie.domain.repository
 
-import io.kikiriki.sgmovie.domain.model.StreamingProvider
+import io.kikiriki.sgmovie.domain.model.WatchProviders
 
 interface TMDBRepository {
 
-    suspend fun getStreamingProviders(tmdbId: String) : Result<Map<String,List<StreamingProvider>>>
+    suspend fun getStreamingProviders(tmdbId: String) : Result<Map<String, WatchProviders>>
 
 }
