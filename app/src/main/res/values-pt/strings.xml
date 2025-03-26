@@ -22,6 +22,11 @@
     <string name="movie_detail_lbl_running_time_min">%1$s min</string>
     <string name="movie_detail_lbl_likes">%1$d gostos</string>
     <string name="movie_detail_error_cannot_update_like">Não é possível atualizar o filme como</string>
+    <string name="movie_detail_lbl_streaming_providers_flat_rate">Taxa fixa</string>
+    <string name="movie_detail_lbl_streaming_providers_rent">Aluguel</string>
+    <string name="movie_detail_lbl_streaming_providers_buy">Comprar</string>
+    <string name="movie_detail_lbl_streaming_providers_not_available">Não disponível em %1$s :(</string>
+    <string name="movie_detail_lbl_provided_by_just_watch">Fornecido por JustWatch</string>
 
     <!-- CUSTOM VIEWS -->
     <string name="view_empty_lbl_empty">Não há nada aqui</string>
@@ -47,6 +52,7 @@
     <string name="error_feature_not_implemented">Característica ainda não implementada</string>
     <string name="error_network_no_connected">Sem ligação à internet</string>
     <string name="error_network_unknown">Erro ao ligar com os nossos servidores</string>
+    <string name="error_network_streaming_provider_not_found">Erro ao obter provedores de streaming</string>
 
     <!-- DEFAULT ERROR -->
     <string name="default_error">Ups, algo correu mal</string>
