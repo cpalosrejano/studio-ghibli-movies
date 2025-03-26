@@ -22,6 +22,11 @@
     <string name="movie_detail_lbl_running_time_min">%1$s min</string>
     <string name="movie_detail_lbl_likes">%1$d likes</string>
     <string name="movie_detail_error_cannot_update_like">Hindi ma-update tulad ng pelikula</string>
+    <string name="movie_detail_lbl_streaming_providers_flat_rate">Flat rate</string>
+    <string name="movie_detail_lbl_streaming_providers_rent">Renta</string>
+    <string name="movie_detail_lbl_streaming_providers_buy">Bumili</string>
+    <string name="movie_detail_lbl_streaming_providers_not_available">Hindi available sa %1$s :(</string>
+    <string name="movie_detail_lbl_provided_by_just_watch">Ibinigay ng JustWatch</string>
 
     <!-- CUSTOM VIEWS -->
     <string name="view_empty_lbl_empty">Walang anuman dito</string>
@@ -47,6 +52,7 @@
     <string name="error_feature_not_implemented">Hindi pa ipinapatupad ang feature</string>
     <string name="error_network_no_connected">Walang koneksyon sa internet</string>
     <string name="error_network_unknown">Error sa pagkonekta sa aming mga server</string>
+    <string name="error_network_streaming_provider_not_found">Error sa pagkuha ng mga streaming provider</string>
 
     <!-- DEFAULT ERROR -->
     <string name="default_error">Ops, nagkaproblema</string>
