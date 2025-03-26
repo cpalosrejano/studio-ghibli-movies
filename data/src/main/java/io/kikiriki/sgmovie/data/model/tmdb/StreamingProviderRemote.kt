@@ -6,7 +6,9 @@ data class WatchProvidersRemote(
 
 data class CountryWatchProviderRemote(
     val link: String,
-    val flatrate: List<StreamingProviderRemote>?
+    val flatrate: List<StreamingProviderRemote>?,
+    val rent: List<StreamingProviderRemote>?,
+    val buy: List<StreamingProviderRemote>?
 )
 
 data class StreamingProviderRemote(
