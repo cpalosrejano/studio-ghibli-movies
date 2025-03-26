@@ -22,7 +22,8 @@
     <string name="movie_detail_lbl_running_time_min">%1$s min</string>
     <string name="movie_detail_lbl_likes">%1$d suka</string>
     <string name="movie_detail_error_cannot_update_like">Tidak dapat memperbarui film seperti</string>
-    <string name="movie_detail_lbl_streaming_providers_flat_rate">Tarif tetap</string>
+    <string name="movie_detail_lbl_streaming_providers">Tonton di:</string>
+    <string name="movie_detail_lbl_streaming_providers_flat_rate">Berlangganan</string>
     <string name="movie_detail_lbl_streaming_providers_rent">Sewa</string>
     <string name="movie_detail_lbl_streaming_providers_buy">Beli</string>
     <string name="movie_detail_lbl_streaming_providers_not_available">Tidak tersedia di %1$s :(</string>

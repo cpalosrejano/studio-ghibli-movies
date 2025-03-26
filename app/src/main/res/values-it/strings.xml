@@ -22,7 +22,8 @@
     <string name="movie_detail_lbl_running_time_min">%1$s min</string>
     <string name="movie_detail_lbl_likes">%1$d Mi piace</string>
     <string name="movie_detail_error_cannot_update_like">Impossibile aggiornare il film come</string>
-    <string name="movie_detail_lbl_streaming_providers_flat_rate">Tariffa fissa</string>
+    <string name="movie_detail_lbl_streaming_providers">Guardalo su:</string>
+    <string name="movie_detail_lbl_streaming_providers_flat_rate">Abbonamento</string>
     <string name="movie_detail_lbl_streaming_providers_rent">Noleggia</string>
     <string name="movie_detail_lbl_streaming_providers_buy">Acquista</string>
     <string name="movie_detail_lbl_streaming_providers_not_available">Non disponibile in %1$s :(</string>

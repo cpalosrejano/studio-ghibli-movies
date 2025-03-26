@@ -23,7 +23,7 @@
     <string name="movie_detail_lbl_likes">%1$d likes</string>
     <string name="movie_detail_error_cannot_update_like">Cannot update movie like</string>
     <string name="movie_detail_lbl_streaming_providers">Watch it on:</string>
-    <string name="movie_detail_lbl_streaming_providers_flat_rate">Flat rate</string>
+    <string name="movie_detail_lbl_streaming_providers_flat_rate">Subscription</string>
     <string name="movie_detail_lbl_streaming_providers_rent">Rent</string>
     <string name="movie_detail_lbl_streaming_providers_buy">Buy</string>
     <string name="movie_detail_lbl_streaming_providers_not_available">Not available in %1$s :(</string>
