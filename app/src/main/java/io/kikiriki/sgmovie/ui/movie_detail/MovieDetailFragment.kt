@@ -10,10 +10,6 @@ import androidx.core.view.isVisible
 import coil.load
 import coil.transform.RoundedCornersTransformation
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.google.firebase.analytics.FirebaseAnalytics
-import com.google.firebase.analytics.ktx.analytics
-import com.google.firebase.analytics.logEvent
-import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
 import io.kikiriki.sgmovie.R
 import io.kikiriki.sgmovie.databinding.FragmentMovieDetailBinding
@@ -32,15 +28,12 @@ class MovieDetailFragment : BottomSheetDialogFragment() {
     private val viewBinding by lazy { FragmentMovieDetailBinding.inflate(layoutInflater) }
     @Inject lateinit var viewModel: MovieDetailViewModel
 
-    private lateinit var firebaseAnalytics: FirebaseAnalytics
-
     private val spFlatRateAdapter = AdapterStreamingProvider()
     private val spRentAdapter = AdapterStreamingProvider()
     private val spBuyAdapter = AdapterStreamingProvider()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        firebaseAnalytics = Firebase.analytics
 
         val movieId = arguments?.getString(EXTRA_MOVIE_ID).orEmpty()
         viewModel.getMovieById(movieId)
@@ -74,6 +67,7 @@ class MovieDetailFragment : BottomSheetDialogFragment() {
 
         viewBinding.lblLike.setOnClickListener {
             viewModel.updateMovieLike()
+            viewModel.onClickMovieLike()
         }
     }
 
@@ -162,17 +156,6 @@ class MovieDetailFragment : BottomSheetDialogFragment() {
         viewBinding.layoutStreamingProvidersBuy.isGone = true
         viewBinding.lblStreamingProvidersNotAvailable.isVisible = true
         viewBinding.lblStreamingProvidersNotAvailable.text = message
-    }
-
-    private fun sendAnalyticEventAddFavoriteMovie(movie: Movie) {
-        firebaseAnalytics.logEvent("add_favorite") {
-            param("movie", movie.title)
-        }
-    }
-    private fun sendAnalyticEventDeleteFavoriteMovie(movie: Movie) {
-        firebaseAnalytics.logEvent("delete_favorite") {
-            param("movie", movie.title)
-        }
     }
 
     companion object {
