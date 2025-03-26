@@ -10,7 +10,9 @@
 
 
 ## About this app
-This app is a simple Android application which consumes a public API to fetch all the Studio Ghibli movies. The main pruporse of this app is improve my very own skills in Android Development ecosystem. The app is built following the  MVVM, repository pattern and multimodule architecture.
+This app is a simple Android application which consumes an API to fetch all the Studio Ghibli movies. The main pruporse of this app is improve my very own skills in Android Development ecosystem. 
+
+The app is built following the MVVM and multi module architecture with SOLID principles.
 
 
 ## Modules
@@ -19,15 +21,18 @@ The app is implemented with multi module architecture. The modules are the follo
 :app
 :data
 :domain
+:analytics
 :core:test
 :core:coroutines
 ```
 
 * **:app** Contains all the UI (Activity and Fragment) including the ViewModel and UIStates.
 
-* **:data** Contains all the clases responsables of handle data between datasources (local and remote)
+* **:data** Contains all the clases responsible of handle data between datasources (local and remote)
 
 * **:domain** Contains all the UseCases. Is the most separated layer of the app.
+
+* **:analytics** Contains all the classes related to analytics.
 
 * **:core:test** Contains the common resources used to execute test.
 
@@ -47,7 +52,7 @@ This app is made with the following libraries:
 
 * **AndroidX lifecycle:** coroutines with lifecycle aware
 
-* **Firebase:** analytics, crashlytics
+* **Firebase:** analytics, crashlytics, firestore
 
 * **Google Material 3:** theming
 
