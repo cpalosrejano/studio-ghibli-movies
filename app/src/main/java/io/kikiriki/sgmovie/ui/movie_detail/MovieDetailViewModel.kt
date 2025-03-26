@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import io.kikiriki.sgmovie.R
 import io.kikiriki.sgmovie.domain.model.Movie
-import io.kikiriki.sgmovie.domain.model.StreamingProvider
+import io.kikiriki.sgmovie.domain.model.WatchProviders
 import io.kikiriki.sgmovie.domain.usecase.GetMovieByIdUseCase
 import io.kikiriki.sgmovie.domain.usecase.GetStreamingProviderUseCase
 import io.kikiriki.sgmovie.domain.usecase.UpdateMovieLikeUseCase
@@ -30,7 +30,7 @@ class MovieDetailViewModel @Inject constructor(
     private val _movie = MutableLiveData<Movie>()
     val movie: LiveData<Movie> = _movie
 
-    private val _streamingProviders = MutableLiveData<List<StreamingProvider>?>(null)
+    private val _streamingProviders = MutableLiveData<WatchProviders?>(null)
     val streamingProviders = _streamingProviders
 
     private val _streamingProviderError: MutableLiveData<Int?> = MutableLiveData(null)

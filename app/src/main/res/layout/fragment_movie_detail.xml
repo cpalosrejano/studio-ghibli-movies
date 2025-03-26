@@ -157,7 +157,7 @@
                     tools:text="The son of a sailor, 5-year old Sosuke lives a quiet life on an oceanside cliff with his mother Lisa. One fateful day, he finds a beautiful goldfish trapped in a bottle on the beach and upon rescuing her, names her Ponyo. But she is no ordinary goldfish. The daughter of a masterful wizard and a sea goddess, Ponyo uses her father's magic to transform herself into a young girl and quickly falls in love with Sosuke, but the use of such powerful sorcery causes a dangerous imbalance in the world. As the moon steadily draws nearer to the earth and Ponyo's father sends the ocean's mighty waves to find his daughter, the two children embark on an adventure of a lifetime to save the world and fulfill Ponyo's dreams of becoming human." />
 
                 <TextView
-                    android:id="@+id/lbl_streaming_providers"
+                    android:id="@+id/lbl_watch_it_on"
                     style="@style/TitleLargeTextStyle"
                     android:layout_width="0dp"
                     android:text="@string/movie_detail_lbl_streaming_providers"
@@ -168,44 +168,134 @@
                     android:layout_marginHorizontal="16dp"
                     android:layout_marginTop="28dp" />
 
-                <RelativeLayout
-                    android:id="@+id/layout_streaming_providers"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layout_streaming_providers_flat_rate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/lbl_streaming_providers"
-                    app:layout_constraintEnd_toEndOf="parent">
+                    app:layout_constraintTop_toBottomOf="@id/lbl_watch_it_on"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginTop="8dp"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:id="@+id/lbl_streaming_provider_flat_rate"
+                        android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        style="@style/BodyLargeTextStyle"
+                        android:layout_marginHorizontal="16dp"
+                        android:text="@string/movie_detail_lbl_streaming_providers_flat_rate" />
 
                     <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/recycler_streaming_providers"
+                        android:id="@+id/recycler_streaming_providers_flat_rate"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@id/lbl_streaming_provider_flat_rate"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
                         android:orientation="horizontal"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         android:paddingHorizontal="16dp"
                         android:clipToPadding="false"
-                        android:layout_marginTop="8dp"
                         tools:listitem="@layout/item_streaming_provider"/>
 
-                    <TextView
-                        android:id="@+id/lbl_streaming_providers_not_available"
-                        android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
-                        android:layout_width="match_parent"
-                        style="@style/BodyLargeTextStyle"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="16dp"
-                        android:textColor="@color/md_theme_onPrimaryContainer"
-                        android:text="@string/movie_detail_lbl_streaming_provider_not_available"
-                        android:visibility="gone"/>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
-                </RelativeLayout>
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layout_streaming_providers_buy"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/layout_streaming_providers_flat_rate"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginTop="8dp"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:id="@+id/lbl_streaming_provider_buy"
+                        android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        style="@style/BodyLargeTextStyle"
+                        android:layout_marginHorizontal="16dp"
+                        android:text="@string/movie_detail_lbl_streaming_providers_buy" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recycler_streaming_providers_buy"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@id/lbl_streaming_provider_buy"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:orientation="horizontal"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        android:paddingHorizontal="16dp"
+                        android:clipToPadding="false"
+                        tools:listitem="@layout/item_streaming_provider"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layout_streaming_providers_rent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/layout_streaming_providers_buy"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginTop="8dp"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:id="@+id/lbl_streaming_provider_rent"
+                        android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        style="@style/BodyLargeTextStyle"
+                        android:layout_marginHorizontal="16dp"
+                        android:text="@string/movie_detail_lbl_streaming_providers_rent" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recycler_streaming_providers_rent"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toBottomOf="@id/lbl_streaming_provider_rent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:orientation="horizontal"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        android:paddingHorizontal="16dp"
+                        android:clipToPadding="false"
+                        tools:listitem="@layout/item_streaming_provider"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <TextView
+                    android:id="@+id/lbl_streaming_providers_not_available"
+                    android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+                    android:layout_width="match_parent"
+                    app:layout_constraintTop_toBottomOf="@id/layout_streaming_providers_rent"
+                    style="@style/BodyLargeTextStyle"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:textColor="@color/md_theme_onPrimaryContainer"
+                    android:text="@string/movie_detail_lbl_streaming_providers_not_available"
+                    android:visibility="gone"/>
 
                 <TextView
                     android:id="@+id/lbl_provided_by_just_watch"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    app:layout_constraintTop_toBottomOf="@id/layout_streaming_providers"
+                    app:layout_constraintTop_toBottomOf="@id/lbl_streaming_providers_not_available"
                     app:layout_constraintStart_toStartOf="parent"
                     style="@style/BodySmallTextStyle"
                     android:layout_marginTop="16dp"
