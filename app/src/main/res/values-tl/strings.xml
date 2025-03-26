@@ -22,7 +22,8 @@
     <string name="movie_detail_lbl_running_time_min">%1$s min</string>
     <string name="movie_detail_lbl_likes">%1$d likes</string>
     <string name="movie_detail_error_cannot_update_like">Hindi ma-update tulad ng pelikula</string>
-    <string name="movie_detail_lbl_streaming_providers_flat_rate">Flat rate</string>
+    <string name="movie_detail_lbl_streaming_providers">Panoorin ito sa:</string>
+    <string name="movie_detail_lbl_streaming_providers_flat_rate">Subscription</string>
     <string name="movie_detail_lbl_streaming_providers_rent">Renta</string>
     <string name="movie_detail_lbl_streaming_providers_buy">Bumili</string>
     <string name="movie_detail_lbl_streaming_providers_not_available">Hindi available sa %1$s :(</string>

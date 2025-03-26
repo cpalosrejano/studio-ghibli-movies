@@ -22,7 +22,8 @@
     <string name="movie_detail_lbl_running_time_min">%1$s min</string>
     <string name="movie_detail_lbl_likes">%1$d me gusta</string>
     <string name="movie_detail_error_cannot_update_like">No se pudo actualizar</string>
-    <string name="movie_detail_lbl_streaming_providers_flat_rate">Tarifa plana</string>
+    <string name="movie_detail_lbl_streaming_providers">Míralo en:</string>
+    <string name="movie_detail_lbl_streaming_providers_flat_rate">Subscripción</string>
     <string name="movie_detail_lbl_streaming_providers_rent">Alquilar</string>
     <string name="movie_detail_lbl_streaming_providers_buy">Comprar</string>
     <string name="movie_detail_lbl_streaming_providers_not_available">No disponible en %1$s :(</string>

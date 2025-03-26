@@ -22,7 +22,8 @@
     <string name="movie_detail_lbl_running_time_min">%1$s min</string>
     <string name="movie_detail_lbl_likes">%1$d Likes</string>
     <string name="movie_detail_error_cannot_update_like">Film-Likes können nicht aktualisiert werden</string>
-    <string name="movie_detail_lbl_streaming_providers_flat_rate">Flatrate</string>
+    <string name="movie_detail_lbl_streaming_providers">Anschauen auf:</string>
+    <string name="movie_detail_lbl_streaming_providers_flat_rate">Abonnement</string>
     <string name="movie_detail_lbl_streaming_providers_rent">Leihen</string>
     <string name="movie_detail_lbl_streaming_providers_buy">Kaufen</string>
     <string name="movie_detail_lbl_streaming_providers_not_available">Nicht verfügbar in %1$s :(</string>
