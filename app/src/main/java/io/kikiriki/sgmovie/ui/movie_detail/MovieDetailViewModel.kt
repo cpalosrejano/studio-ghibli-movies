@@ -5,6 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import io.kikiriki.sgmovie.R
+import io.kikiriki.sgmovie.analytics.AnalyticEvent
+import io.kikiriki.sgmovie.analytics.AnalyticsService
 import io.kikiriki.sgmovie.domain.model.Movie
 import io.kikiriki.sgmovie.domain.model.WatchProviders
 import io.kikiriki.sgmovie.domain.usecase.GetMovieByIdUseCase
@@ -21,7 +23,8 @@ import javax.inject.Inject
 class MovieDetailViewModel @Inject constructor(
     private val getStreamingProviderUseCase: GetStreamingProviderUseCase,
     private val updateMovieLikeUseCase: UpdateMovieLikeUseCase,
-    private val getMovieByIdUseCase: GetMovieByIdUseCase
+    private val getMovieByIdUseCase: GetMovieByIdUseCase,
+    private val analyticsService: AnalyticsService,
 ) : ViewModel() {
 
     private val _error: MutableLiveData<Int?> = MutableLiveData(null)
@@ -76,6 +79,19 @@ class MovieDetailViewModel @Inject constructor(
                 _error.postValue(error)
             }
         )
+    }
+
+    fun onClickMovieLike() {
+        val movie = movie.value ?: return
+        val like = !movie.like // change to new state
+        when (like) {
+            true -> {
+                analyticsService.logEvent(AnalyticEvent.MovieDetail.MOVIE_LIKE_TRUE)
+            }
+            false -> {
+                analyticsService.logEvent(AnalyticEvent.MovieDetail.MOVIE_LIKE_FALSE)
+            }
+        }
     }
 
     private fun fetchStreamingProviders(movie: Movie) = viewModelScope.launch {

@@ -5,6 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import io.kikiriki.sgmovie.R
+import io.kikiriki.sgmovie.analytics.AnalyticEvent
+import io.kikiriki.sgmovie.analytics.AnalyticsService
 import io.kikiriki.sgmovie.domain.model.Movie
 import io.kikiriki.sgmovie.domain.model.base.GResult
 import io.kikiriki.sgmovie.domain.usecase.GetMoviesUseCase
@@ -19,6 +21,7 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     private val getMoviesUseCase: GetMoviesUseCase,
     private val updateMovieLikeUseCase: UpdateMovieLikeUseCase,
+    private val analyticsService: AnalyticsService
 ) : ViewModel() {
 
     private val _uiState: MutableLiveData<MainUIState> = MutableLiveData(MainUIState())
@@ -69,6 +72,18 @@ class MainViewModel @Inject constructor(
                 _uiState.value = MainUIState(error = error)
             }
         )
+    }
+
+    fun onClickMovieLike(movie: Movie) {
+        val like = !movie.like // change to new state
+        when (like) {
+            true -> {
+                analyticsService.logEvent(AnalyticEvent.MainScreen.MOVIE_LIKE_TRUE)
+            }
+            false -> {
+                analyticsService.logEvent(AnalyticEvent.MainScreen.MOVIE_LIKE_FALSE)
+            }
+        }
     }
 
 }
