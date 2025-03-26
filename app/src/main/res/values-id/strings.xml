@@ -22,6 +22,11 @@
     <string name="movie_detail_lbl_running_time_min">%1$s min</string>
     <string name="movie_detail_lbl_likes">%1$d suka</string>
     <string name="movie_detail_error_cannot_update_like">Tidak dapat memperbarui film seperti</string>
+    <string name="movie_detail_lbl_streaming_providers_flat_rate">Tarif tetap</string>
+    <string name="movie_detail_lbl_streaming_providers_rent">Sewa</string>
+    <string name="movie_detail_lbl_streaming_providers_buy">Beli</string>
+    <string name="movie_detail_lbl_streaming_providers_not_available">Tidak tersedia di %1$s :(</string>
+    <string name="movie_detail_lbl_provided_by_just_watch">Disediakan oleh JustWatch</string>
 
     <!-- CUSTOM VIEWS -->
     <string name="view_empty_lbl_empty">Tidak ada apa pun di sini</string>
@@ -47,6 +52,7 @@
     <string name="error_feature_not_implemented">Fitur belum diimplementasikan</string>
     <string name="error_network_no_connected">Tidak ada koneksi internet</string>
     <string name="error_network_unknown">Kesalahan saat menghubungkan dengan server kami</string>
+    <string name="error_network_streaming_provider_not_found">Kesalahan saat mendapatkan penyedia layanan streaming</string>
 
     <!-- DEFAULT ERROR -->
     <string name="default_error">Ops, ada yang salah</string>
