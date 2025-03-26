@@ -3,7 +3,7 @@ package io.kikiriki.sgmovie.data.repository.tmdb
 import io.kikiriki.sgmovie.core.coroutines.di.IODispatcher
 import io.kikiriki.sgmovie.data.model.tmdb.WatchProviderMapper
 import io.kikiriki.sgmovie.data.repository.tmdb.remote.TMDBRemoteDataSource
-import io.kikiriki.sgmovie.domain.model.StreamingProvider
+import io.kikiriki.sgmovie.domain.model.WatchProviders
 import io.kikiriki.sgmovie.domain.repository.TMDBRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
@@ -14,7 +14,7 @@ class TMDBRepositoryImpl @Inject constructor(
     @IODispatcher private val dispatcher: CoroutineDispatcher
 ) : TMDBRepository {
 
-    override suspend fun getStreamingProviders(tmdbId: String): Result<Map<String, List<StreamingProvider>>> = withContext(dispatcher) {
+    override suspend fun getStreamingProviders(tmdbId: String): Result<Map<String, WatchProviders>> = withContext(dispatcher) {
         return@withContext try {
             val remoteResult = tmdbRemoteDataSource.getWatchProviders(tmdbId).results
             val result = WatchProviderMapper.remoteToDomain(remoteResult)
