@@ -1,11 +1,14 @@
 package io.kikiriki.sgmovie.ui.main
 
 import io.kikiriki.sgmovie.R
+import io.kikiriki.sgmovie.analytics.AnalyticsService
 import io.kikiriki.sgmovie.core.test.BaseTest
 import io.kikiriki.sgmovie.data.exception.LocalDataSourceException
 import io.kikiriki.sgmovie.data.exception.RemoteDataSourceException
 import io.kikiriki.sgmovie.domain.model.Movie
 import io.kikiriki.sgmovie.domain.model.base.GResult
+import io.kikiriki.sgmovie.domain.usecase.GetMoviesUseCase
+import io.kikiriki.sgmovie.domain.usecase.UpdateMovieLikeUseCase
 import io.mockk.coEvery
 import io.mockk.impl.annotations.RelaxedMockK
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -18,16 +21,15 @@ import org.junit.Test
 @ExperimentalCoroutinesApi
 class MainViewModelTest : BaseTest() {
 
-    @RelaxedMockK
-    private lateinit var getMoviesUseCase: io.kikiriki.sgmovie.domain.usecase.GetMoviesUseCase
-    @RelaxedMockK
-    private lateinit var updateMovieLikeUseCase: io.kikiriki.sgmovie.domain.usecase.UpdateMovieLikeUseCase
+    @RelaxedMockK private lateinit var analyticsService: AnalyticsService
+    @RelaxedMockK private lateinit var getMoviesUseCase: GetMoviesUseCase
+    @RelaxedMockK private lateinit var updateMovieLikeUseCase: UpdateMovieLikeUseCase
 
     private lateinit var mainViewModel: MainViewModel
 
     override fun onStart() {
         super.onStart()
-        mainViewModel = MainViewModel(getMoviesUseCase, updateMovieLikeUseCase)
+        mainViewModel = MainViewModel(getMoviesUseCase, updateMovieLikeUseCase, analyticsService)
     }
 
     @Test
