@@ -6,19 +6,21 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
-import androidx.activity.enableEdgeToEdge
 import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
 import dagger.hilt.android.AndroidEntryPoint
 import io.kikiriki.sgmovie.R
 import io.kikiriki.sgmovie.databinding.ActivitySettingsBinding
 import io.kikiriki.sgmovie.ui.BaseActivity
 import io.kikiriki.sgmovie.utils.Constants
 import java.util.Locale
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class SettingsActivity : BaseActivity() {
 
     private val viewBinding by lazy { ActivitySettingsBinding.inflate(layoutInflater) }
+    @Inject lateinit var viewModel: SettingsViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,8 +39,14 @@ class SettingsActivity : BaseActivity() {
     private fun setupView() {
         setSupportActionBar(viewBinding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        viewBinding.lblPrivacyPolicy.setOnClickListener { openPrivacyPolicy() }
-        viewBinding.lblTranslateApp.setOnClickListener { translateApp() }
+        viewBinding.lblPrivacyPolicy.setOnClickListener {
+            viewModel.onClickPrivacyPolicy()
+            openPrivacyPolicy()
+        }
+        viewBinding.lblTranslateApp.setOnClickListener {
+            viewModel.onClickTranslateApp()
+            translateApp()
+        }
 
         try {
             val versionName: String = packageManager.getPackageInfo(packageName, 0).versionName.orEmpty()
