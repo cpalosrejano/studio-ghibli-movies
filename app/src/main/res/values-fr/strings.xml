@@ -10,8 +10,7 @@
     <string name="settings_lbl_version">Version de l\'application : %1$s</string>
     <string name="settings_lbl_privacy_policy">Politique de confidentialité</string>
     <string name="settings_lbl_translate_app">Traduire l\'application</string>
-    <string name="settings_lbl_translate_app_body">Vous souhaitez nous aider ou nous demander de traduire l\'application ? Parlons-en !</string>
-    <string name="settings_lbl_translate_app_email_subject">Films Studio Ghibli [%1$s]</string>
+    <string name="settings_lbl_translate_app_body">Vous souhaitez nous aider à traduire l\'application dans votre langue ? Parlons-en !</string>    <string name="settings_lbl_translate_app_email_subject">Films Studio Ghibli [%1$s]</string>
     <string name="settings_lbl_translate_app_email_body">Écrivez votre demande ci-dessous</string>
     <string name="settings_lbl_send_email">Envoyer un e-mail</string>
     <string name="settings_lbl_error_no_email_client_found">Aucune application de messagerie n\'est installée</string>

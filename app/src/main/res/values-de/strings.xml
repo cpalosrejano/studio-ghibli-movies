@@ -10,7 +10,7 @@
     <string name="settings_lbl_version">App-Version: %1$s</string>
     <string name="settings_lbl_privacy_policy">Datenschutzerklärung</string>
     <string name="settings_lbl_translate_app">App übersetzen</string>
-    <string name="settings_lbl_translate_app_body">Möchten Sie uns helfen oder uns bitten, die App zu übersetzen? Lass uns reden!</string>
+    <string name="settings_lbl_translate_app_body">Möchtest du uns helfen, die App in deine Sprache zu übersetzen? Lass uns reden!</string>
     <string name="settings_lbl_translate_app_email_subject">Studio Ghibli Filme [%1$s]</string>
     <string name="settings_lbl_translate_app_email_body">Bitte unten Ihre Anfrage eingeben</string>
     <string name="settings_lbl_send_email">E-Mail senden</string>
