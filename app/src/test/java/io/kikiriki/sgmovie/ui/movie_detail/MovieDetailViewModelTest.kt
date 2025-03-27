@@ -1,6 +1,7 @@
 package io.kikiriki.sgmovie.ui.movie_detail
 
 import io.kikiriki.sgmovie.R
+import io.kikiriki.sgmovie.analytics.AnalyticsService
 import io.kikiriki.sgmovie.core.test.BaseTest
 import io.kikiriki.sgmovie.data.exception.LocalDataSourceException
 import io.kikiriki.sgmovie.domain.model.Movie
@@ -20,6 +21,7 @@ class MovieDetailViewModelTest : BaseTest() {
     @RelaxedMockK private lateinit var getStreamingProviderUseCase: GetStreamingProviderUseCase
     @RelaxedMockK private lateinit var updateMovieLikeUseCase: UpdateMovieLikeUseCase
     @RelaxedMockK private lateinit var getMovieByIdUseCase: GetMovieByIdUseCase
+    @RelaxedMockK private lateinit var analyticsService: AnalyticsService
     private lateinit var movieDetailViewModel: MovieDetailViewModel
 
     override fun onStart() {
@@ -27,7 +29,8 @@ class MovieDetailViewModelTest : BaseTest() {
         movieDetailViewModel = MovieDetailViewModel(
             getStreamingProviderUseCase,
             updateMovieLikeUseCase,
-            getMovieByIdUseCase)
+            getMovieByIdUseCase,
+            analyticsService)
     }
 
     @Test
