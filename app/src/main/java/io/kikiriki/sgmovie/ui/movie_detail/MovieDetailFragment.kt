@@ -45,6 +45,7 @@ class MovieDetailFragment : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.logScreenView()
         setupObserver()
         setupView()
     }
@@ -52,16 +53,19 @@ class MovieDetailFragment : BottomSheetDialogFragment() {
     private fun setupView() {
         viewBinding.recyclerStreamingProvidersFlatRate.adapter = spFlatRateAdapter
         spFlatRateAdapter.onItemClick = { streamingProvider ->
+            viewModel.onStreamingProviderSelected(streamingProvider)
             Toast.makeText(context, streamingProvider.name, Toast.LENGTH_SHORT).show()
         }
 
         viewBinding.recyclerStreamingProvidersRent.adapter = spRentAdapter
         spRentAdapter.onItemClick = { streamingProvider ->
+            viewModel.onStreamingProviderSelected(streamingProvider)
             Toast.makeText(context, streamingProvider.name, Toast.LENGTH_SHORT).show()
         }
 
         viewBinding.recyclerStreamingProvidersBuy.adapter = spBuyAdapter
         spBuyAdapter.onItemClick = { streamingProvider ->
+            viewModel.onStreamingProviderSelected(streamingProvider)
             Toast.makeText(context, streamingProvider.name, Toast.LENGTH_SHORT).show()
         }
 

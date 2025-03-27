@@ -8,6 +8,7 @@ import io.kikiriki.sgmovie.R
 import io.kikiriki.sgmovie.analytics.AnalyticEvent
 import io.kikiriki.sgmovie.analytics.AnalyticsService
 import io.kikiriki.sgmovie.domain.model.Movie
+import io.kikiriki.sgmovie.domain.model.StreamingProvider
 import io.kikiriki.sgmovie.domain.model.WatchProviders
 import io.kikiriki.sgmovie.domain.usecase.GetMovieByIdUseCase
 import io.kikiriki.sgmovie.domain.usecase.GetStreamingProviderUseCase
@@ -92,6 +93,20 @@ class MovieDetailViewModel @Inject constructor(
                 analyticsService.logEvent(AnalyticEvent.MovieDetail.MOVIE_LIKE_FALSE)
             }
         }
+    }
+
+    fun onStreamingProviderSelected(streamingProvider: StreamingProvider) {
+        val params = mapOf(
+            "name" to streamingProvider.name.lowercase(),
+            "type" to streamingProvider.type.name.lowercase()
+        )
+        analyticsService.logEvent(AnalyticEvent.MovieDetail.STREAMING_PROVIDER, params)
+    }
+
+    fun logScreenView() {
+        val screenName = "MovieDetail"
+        val screenClass = MovieDetailFragment::class.java.simpleName
+        analyticsService.logScreenView(screenName, screenClass)
     }
 
     private fun fetchStreamingProviders(movie: Movie) = viewModelScope.launch {
