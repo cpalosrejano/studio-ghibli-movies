@@ -130,20 +130,20 @@ class MainActivityUITest {
         // enable favorite the second item list
         onView(withId(R.id.recycler_view))
             .perform(RecyclerViewActions.actionOnItemAtPosition<AdapterMovie.ViewHolderMovie>(
-                itemPosition, clickOnItemWithId(R.id.lbl_like)))
+                itemPosition, clickOnItemWithId(R.id.layout_likes)))
 
         // check if second list item is favorite
         onView(withRecyclerView(R.id.recycler_view).atPosition(itemPosition))
-            .check(matches(imageViewContainsDrawable(R.id.lbl_like, R.drawable.ic_like)))
+            .check(matches(imageViewContainsDrawable(R.id.img_like, R.drawable.ic_like)))
 
         // disable favorite the second item list
         onView(withId(R.id.recycler_view))
             .perform(RecyclerViewActions.actionOnItemAtPosition<AdapterMovie.ViewHolderMovie>(
-                itemPosition, clickOnItemWithId(R.id.lbl_like)))
+                itemPosition, clickOnItemWithId(R.id.layout_likes)))
 
         // check if second list item is not favorite
         onView(withRecyclerView(R.id.recycler_view).atPosition(itemPosition))
-            .check(matches(imageViewContainsDrawable(R.id.lbl_like, R.drawable.ic_like_filled)))
+            .check(matches(imageViewContainsDrawable(R.id.img_like, R.drawable.ic_like_filled)))
 
     }
 
@@ -175,7 +175,7 @@ class MainActivityUITest {
         // perform click on favourite view in the first item view
         onView(withId(R.id.recycler_view))
             .perform(RecyclerViewActions.actionOnItemAtPosition<AdapterMovie.ViewHolderMovie>(
-                itemPosition, clickOnItemWithId(R.id.lbl_like)
+                itemPosition, clickOnItemWithId(R.id.layout_likes)
             ))
 
         // perform click on first item to open detail view
@@ -206,7 +206,7 @@ class MainActivityUITest {
         // perform click on favourite view in the first item view
         onView(withId(R.id.recycler_view))
             .perform(RecyclerViewActions.actionOnItemAtPosition<AdapterMovie.ViewHolderMovie>(
-                itemPosition, clickOnItemWithId(R.id.lbl_like)
+                itemPosition, clickOnItemWithId(R.id.layout_likes)
             ))
 
         // perform click on dialog menu item
@@ -220,7 +220,7 @@ class MainActivityUITest {
         // check if item at position 0 is favorite
         onView(withRecyclerView(R.id.recycler_view).atPosition(0))
             .check(matches(hasDescendant(
-                imageViewContainsDrawable(R.id.lbl_like, R.drawable.ic_like_filled)
+                imageViewContainsDrawable(R.id.img_like, R.drawable.ic_like_filled)
             )))
     }
 
