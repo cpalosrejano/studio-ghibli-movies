@@ -11,6 +11,7 @@ import io.kikiriki.sgmovie.domain.model.Movie
 import io.kikiriki.sgmovie.domain.model.base.GResult
 import io.kikiriki.sgmovie.domain.usecase.GetMoviesUseCase
 import io.kikiriki.sgmovie.domain.usecase.UpdateMovieLikeUseCase
+import io.kikiriki.sgmovie.model.Sort
 import io.kikiriki.sgmovie.utils.ExceptionManager
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
@@ -60,7 +61,6 @@ class MainViewModel @Inject constructor(
     fun updateMovie(movie: Movie) = viewModelScope.launch {
         val newMovieStatus = movie.copy(like = !movie.like)
         val result = updateMovieLikeUseCase(newMovieStatus)
-        // if exception is not null, something went wrong
         result.fold(
             onSuccess = { success ->
                 if (!success) {
@@ -75,15 +75,32 @@ class MainViewModel @Inject constructor(
     }
 
     fun onClickMovieLike(movie: Movie) {
-        val like = !movie.like // change to new state
-        when (like) {
-            true -> {
-                analyticsService.logEvent(AnalyticEvent.MainScreen.MOVIE_LIKE_TRUE)
-            }
-            false -> {
-                analyticsService.logEvent(AnalyticEvent.MainScreen.MOVIE_LIKE_FALSE)
-            }
+        val newLikeStatus = !movie.like // change to new like state
+        if (newLikeStatus) {
+            analyticsService.logEvent(AnalyticEvent.MainScreen.MOVIE_LIKE_TRUE)
+        } else {
+            analyticsService.logEvent(AnalyticEvent.MainScreen.MOVIE_LIKE_FALSE)
         }
+    }
+
+    fun onSortDialogOptionSelected(sortType: Sort) {
+        val eventName = when (sortType.type) {
+            Sort.Type.LIKE -> AnalyticEvent.SortDialog.SORT_BY_LIKES_MINE
+            Sort.Type.LIKE_COUNT -> AnalyticEvent.SortDialog.SORT_BY_LIKES_COUNT
+            Sort.Type.NAME -> AnalyticEvent.SortDialog.SORT_BY_NAME
+            Sort.Type.SCORE -> AnalyticEvent.SortDialog.SORT_BY_SCORE
+            Sort.Type.DIRECTOR -> AnalyticEvent.SortDialog.SORT_BY_DIRECTOR
+            Sort.Type.YEAR -> AnalyticEvent.SortDialog.SORT_BY_YEAR
+        }
+        analyticsService.logEvent(eventName)
+    }
+
+    fun onSortDialogCancel() {
+        analyticsService.logEvent(AnalyticEvent.SortDialog.CANCEL)
+    }
+
+    fun onSortDialogOpened() {
+        analyticsService.logEvent(AnalyticEvent.SortDialog.OPEN)
     }
 
 }
