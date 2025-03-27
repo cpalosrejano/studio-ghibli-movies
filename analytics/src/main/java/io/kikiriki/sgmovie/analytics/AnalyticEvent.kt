@@ -1,32 +1,40 @@
 package io.kikiriki.sgmovie.analytics
 
-sealed class AnalyticEvent(val name: String) {
+sealed interface AnalyticEvent {
+    val eventName: String
 
-    sealed class MainScreen(eventName: String) : AnalyticEvent(eventName) {
-        data object MOVIE_LIKE_TRUE : MainScreen("movie_list_like_true")
-        data object MOVIE_LIKE_FALSE : MainScreen("movie_list_like_false")
+    enum class MainScreen(override val eventName: String) : AnalyticEvent {
+        MOVIE_LIKE_TRUE("movie_list_like_true"),
+        MOVIE_LIKE_FALSE("movie_list_like_false");
     }
 
-    sealed class SortDialog(eventName: String) : AnalyticEvent(eventName) {
-        data object OPEN : SortDialog("sort_movies_open")
-        data object SORT_BY_NAME : SortDialog("sort_movies_by_name")
-        data object SORT_BY_YEAR : SortDialog("sort_movies_by_year")
-        data object SORT_BY_DIRECTOR : SortDialog("sort_movies_by_director")
-        data object SORT_BY_SCORE : SortDialog("sort_movies_by_score")
-        data object SORT_BY_LIKES_COUNT : SortDialog("sort_movies_by_likes_count")
-        data object SORT_BY_LIKES_MINE : SortDialog("sort_movies_by_likes_mine")
-        data object CLOSE : SortDialog("sort_movies_close")
+    enum class SortDialog(override val eventName: String) : AnalyticEvent {
+        OPEN("sort_movies_open"),
+        SORT_BY_NAME("sort_movies_by_name"),
+        SORT_BY_YEAR("sort_movies_by_year"),
+        SORT_BY_DIRECTOR("sort_movies_by_director"),
+        SORT_BY_SCORE("sort_movies_by_score"),
+        SORT_BY_LIKES_COUNT("sort_movies_by_likes_count"),
+        SORT_BY_LIKES_MINE("sort_movies_by_likes_mine"),
+        CANCEL("sort_movies_cancel");
     }
 
-    sealed class MovieDetail(eventName: String) : AnalyticEvent(eventName) {
-        data object MOVIE_LIKE_TRUE : MovieDetail("movie_detail_like_true")
-        data object MOVIE_LIKE_FALSE : MovieDetail("movie_detail_like_false")
-        data object STREAMING_PROVIDER : MovieDetail("movie_detail_streaming_provider")
+    enum class MovieDetail(override val eventName: String) : AnalyticEvent {
+        MOVIE_LIKE_TRUE("movie_detail_like_true"),
+        MOVIE_LIKE_FALSE("movie_detail_like_false"),
+        STREAMING_PROVIDER("movie_detail_streaming_provider");
     }
 
-    sealed class Settings(eventName: String) : AnalyticEvent(eventName) {
-        data object TRANSLATE : Settings("settings_translate")
-        data object PRIVACY_POLICY : Settings("settings_privacy_policy")
-        data object ROADMAP : Settings("settings_roadmap")
+    enum class Settings(override val eventName: String) : AnalyticEvent {
+        TRANSLATE("settings_translate"),
+        PRIVACY_POLICY("settings_privacy_policy"),
+        ROADMAP("settings_roadmap");
+    }
+
+    enum class ScreenView(override val eventName: String) : AnalyticEvent {
+        MAIN_SCREEN("main_screen"),
+        SORT_DIALOG("sort_dialog"),
+        MOVIE_DETAIL("movie_detail"),
+        SETTINGS("settings");
     }
 }
