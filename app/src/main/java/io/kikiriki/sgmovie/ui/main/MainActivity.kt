@@ -122,6 +122,7 @@ class MainActivity : BaseActivity() {
     }
 
     private fun openSortMoviesDialog() {
+        viewModel.onSortDialogOpened()
 
         // get all sorted options
         val sortOptions: List<Sort> = Sort.getAll()
@@ -134,11 +135,13 @@ class MainActivity : BaseActivity() {
         MaterialAlertDialogBuilder(this, R.style.MaterialAlertDialogStyle)
             .setTitle(R.string.dialog_sort_by_lbl_title)
             .setIcon(R.drawable.ic_sort)
-            .setNegativeButton(android.R.string.cancel) { _, _ -> }
+            .setOnCancelListener { viewModel.onSortDialogCancel() }
+            .setNegativeButton(android.R.string.cancel) { _, _ -> viewModel.onSortDialogCancel() }
             .setSingleChoiceItems(sortOptionsLabels, sortSelectedIndex) { dialog, which ->
 
                 // set the selected sorted options and update ui
                 sortOptions.getOrNull(which)?.let { newSortTypeSelected ->
+                    viewModel.onSortDialogOptionSelected(newSortTypeSelected)
                     selectedSortType = newSortTypeSelected
                     sortMovies(adapter.currentList)
                     updateBadgeSortMenu()
