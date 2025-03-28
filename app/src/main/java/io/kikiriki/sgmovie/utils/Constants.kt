@@ -16,7 +16,7 @@ object Constants {
     }
 
     object Contact {
-        const val EMAIL = "cpalosrejano@gmail.com"
+        const val EMAIL = "studioghiblimoviesapp@gmail.com"
     }
 
 }
