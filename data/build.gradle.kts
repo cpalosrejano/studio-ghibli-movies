@@ -58,6 +58,8 @@ dependencies {
     implementation(platform(libs.firebase.bom))
     // firebase: firestore
     implementation(libs.firebase.firestore)
+    // firebase: remote config
+    implementation(libs.firebase.config)
 
     // networking (retrofit + moshi)
     implementation(libs.retrofit)
