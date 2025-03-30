@@ -9,8 +9,8 @@
     <string name="settings_title">Mga Setting</string>
     <string name="settings_lbl_version">Bersyon ng app: %1$s</string>
     <string name="settings_lbl_privacy_policy">Patakaran sa privacy</string>
-    <string name="settings_lbl_translate_app">Isalin ang app</string>
-    <string name="settings_lbl_translate_app_body">Gusto mo bang tulungan kaming isalin ang app sa iyong wika? Mag-usap tayo!</string>
+    <string name="settings_lbl_contact">Contact</string>
+    <string name="settings_lbl_contact_body">Gusto mo bang makipag-ugnayan sa developer ng app na ito? Mag-usap tayo!</string>
     <string name="settings_lbl_translate_app_email_subject">Studio Ghibli Movies [%1$s]</string>
     <string name="settings_lbl_translate_app_email_body">Isulat sa ibaba ng iyong kahilingan</string>
     <string name="settings_lbl_send_email">Magpadala ng email</string>

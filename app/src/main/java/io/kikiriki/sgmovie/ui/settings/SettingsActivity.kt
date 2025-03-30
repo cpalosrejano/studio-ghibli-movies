@@ -27,6 +27,8 @@ class SettingsActivity : BaseActivity() {
         enableEdgeToEdge()
         setContentView(viewBinding.root)
         setupView()
+        setupObservers()
+        viewModel.initialize()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -36,6 +38,17 @@ class SettingsActivity : BaseActivity() {
         return super.onOptionsItemSelected(item)
     }
 
+    private fun setupObservers() {
+//        viewModel.isPaypalEnabled.observe(this) {
+//            viewBinding.lblPaypal.visibility = if (it) View.VISIBLE else View.GONE
+//        }
+
+        viewModel.isContactEnabled.observe(this) {
+            viewBinding.layoutTranslateApp.visibility = if (it) View.VISIBLE else View.GONE
+            viewBinding.layoutTranslateAppDivider.visibility = if (it) View.VISIBLE else View.GONE
+        }
+    }
+
     private fun setupView() {
         setSupportActionBar(viewBinding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -43,7 +56,7 @@ class SettingsActivity : BaseActivity() {
             viewModel.onClickPrivacyPolicy()
             openPrivacyPolicy()
         }
-        viewBinding.lblTranslateApp.setOnClickListener {
+        viewBinding.layoutTranslateApp.setOnClickListener {
             viewModel.onClickTranslateApp()
             translateApp()
         }
