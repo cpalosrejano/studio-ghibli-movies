@@ -9,6 +9,7 @@ import io.kikiriki.sgmovie.analytics.AnalyticEvent
 import io.kikiriki.sgmovie.analytics.AnalyticsService
 import io.kikiriki.sgmovie.domain.model.Movie
 import io.kikiriki.sgmovie.domain.model.base.GResult
+import io.kikiriki.sgmovie.domain.preferences.RemoteConfig
 import io.kikiriki.sgmovie.domain.usecase.GetMoviesUseCase
 import io.kikiriki.sgmovie.domain.usecase.UpdateMovieLikeUseCase
 import io.kikiriki.sgmovie.model.Sort
@@ -22,11 +23,23 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     private val getMoviesUseCase: GetMoviesUseCase,
     private val updateMovieLikeUseCase: UpdateMovieLikeUseCase,
-    private val analyticsService: AnalyticsService
+    private val analyticsService: AnalyticsService,
+    private val remoteConfig: RemoteConfig
 ) : ViewModel() {
 
     private val _uiState: MutableLiveData<MainUIState> = MutableLiveData(MainUIState())
     val uiState: LiveData<MainUIState> = _uiState
+
+    private val _appConfig = MutableLiveData<AppConfig>()
+    val appConfig: LiveData<AppConfig> = _appConfig
+
+    fun getAppConfig() = viewModelScope.launch {
+        _uiState.postValue(MainUIState(isLoading = true))
+        _appConfig.postValue(AppConfig(
+            minAppVersion = remoteConfig.getMinAppVersion(),
+            isMaintenance = remoteConfig.isMaintenanceEnabled()
+        ))
+    }
 
     fun getMovies() = viewModelScope.launch {
         _uiState.postValue(MainUIState(isLoading = true))
