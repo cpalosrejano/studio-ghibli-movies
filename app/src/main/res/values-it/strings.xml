@@ -5,6 +5,15 @@
     <string name="main_menu_lbl_sort">Ordina filmati</string>
     <string name="main_menu_lbl_settings">Impostazioni</string>
 
+    <!-- UPDATE DIALOG -->
+    <string name="dialog_update_title">Nuova versione disponibile</string>
+    <string name="dialog_update_message">È disponibile una nuova versione dell\'app. Aggiorna per continuare a usarla</string>
+    <string name="dialog_update_btn_update">Aggiorna</string>
+
+    <!-- MAINTENANCE DIALOG -->
+    <string name="dialog_maintenance_title">Manutenzione</string>
+    <string name="dialog_maintenance_message">L\'app è in manutenzione. Riprova più tardi</string>
+
     <!-- SETTINGS ACTIVITY -->
     <string name="settings_title">Impostazioni</string>
     <string name="settings_lbl_version">Versione app: %1$s</string>

@@ -5,6 +5,15 @@
     <string name="main_menu_lbl_sort">Trier les films</string>
     <string name="main_menu_lbl_settings">Paramètres</string>
 
+    <!-- UPDATE DIALOG -->
+    <string name="dialog_update_title">Nouvelle version disponible</string>
+    <string name="dialog_update_message">Une nouvelle version de l\'application est disponible. Effectuez une mise à jour pour continuer à l\'utiliser.</string>
+    <string name="dialog_update_btn_update">Mise à jour</string>
+
+    <!-- MAINTENANCE DIALOG -->
+    <string name="dialog_maintenance_title">Maintenance</string>
+    <string name="dialog_maintenance_message">L\'application est en cours de maintenance. Veuillez réessayer ultérieurement.</string>
+
     <!-- SETTINGS ACTIVITY -->
     <string name="settings_title">Paramètres</string>
     <string name="settings_lbl_version">Version de l\'application : %1$s</string>
