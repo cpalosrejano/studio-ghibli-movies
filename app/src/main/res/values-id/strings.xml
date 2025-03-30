@@ -9,8 +9,9 @@
     <string name="settings_title">Pengaturan</string>
     <string name="settings_lbl_version">Versi aplikasi: %1$s</string>
     <string name="settings_lbl_privacy_policy">Kebijakan privasi</string>
-    <string name="settings_lbl_translate_app">Terjemahkan aplikasi</string>
-    <string name="settings_lbl_translate_app_body">Apakah Anda ingin membantu kami menerjemahkan aplikasi ke bahasa Anda? Mari kita bicarakan!</string>    <string name="settings_lbl_translate_app_email_subject">Film Studio Ghibli [%1$s]</string>
+    <string name="settings_lbl_contact">Kontak</string>
+    <string name="settings_lbl_contact_body">Apakah Anda ingin menghubungi pengembang aplikasi ini? Mari kita bicarakan!</string>
+    <string name="settings_lbl_translate_app_email_subject">Film Studio Ghibli [%1$s]</string>
     <string name="settings_lbl_translate_app_email_body">Tulis permintaan Anda di bawah ini</string>
     <string name="settings_lbl_send_email">Kirim email</string>
     <string name="settings_lbl_error_no_email_client_found">Tidak ada aplikasi email yang terpasang</string>

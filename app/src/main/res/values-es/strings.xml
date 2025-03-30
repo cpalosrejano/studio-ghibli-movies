@@ -9,8 +9,8 @@
     <string name="settings_title">Ajustes</string>
     <string name="settings_lbl_version">Version: %1$s</string>
     <string name="settings_lbl_privacy_policy">Política de privacidad</string>
-    <string name="settings_lbl_translate_app">Traducir la app</string>
-    <string name="settings_lbl_translate_app_body">¿Quieres ayudarnos a traducir la app a tu idioma? ¡Hablemos!</string>
+    <string name="settings_lbl_contact">Contacto</string>
+    <string name="settings_lbl_contact_body">¿Quieres contactar con el desarrollador de esta aplicación? ¡Hablemos!</string>
     <string name="settings_lbl_translate_app_email_subject">Películas de Studio Ghibli [%1$s]</string>
     <string name="settings_lbl_translate_app_email_body">Escribe tu solicitud a continuación</string>
     <string name="settings_lbl_send_email">Enviar correo electrónico</string>
