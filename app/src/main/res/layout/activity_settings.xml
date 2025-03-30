@@ -97,7 +97,7 @@
                     android:orientation="vertical">
 
                     <LinearLayout
-                        android:id="@+id/lbl_translate_app"
+                        android:id="@+id/layout_translate_app"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:minHeight="48dp"
@@ -110,7 +110,7 @@
                             android:layout_height="wrap_content"
                             android:gravity="center_vertical"
                             android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
-                            android:text="@string/settings_lbl_translate_app"
+                            android:text="@string/settings_lbl_contact"
                             android:paddingStart="16dp"
                             android:paddingEnd="16dp"/>
                         <TextView
@@ -118,13 +118,14 @@
                             android:layout_height="wrap_content"
                             android:gravity="center_vertical"
                             android:textAppearance="@style/TextAppearance.Material3.BodySmall"
-                            android:text="@string/settings_lbl_translate_app_body"
+                            android:text="@string/settings_lbl_contact_body"
                             android:paddingStart="16dp"
                             android:paddingEnd="16dp"/>
 
                     </LinearLayout>
 
                     <View
+                        android:id="@+id/layout_translate_app_divider"
                         android:background="@color/md_theme_surfaceDim"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"/>
