@@ -5,6 +5,15 @@
     <string name="main_menu_lbl_sort">Sort movies</string>
     <string name="main_menu_lbl_settings">Settings</string>
 
+    <!-- UPDATE DIALOG -->
+    <string name="dialog_update_title">New version available</string>
+    <string name="dialog_update_message">A new version of the app is available. Update to continue using it</string>
+    <string name="dialog_update_btn_update">Update</string>
+
+    <!-- MAINTENANCE DIALOG -->
+    <string name="dialog_maintenance_title">Maintenance</string>
+    <string name="dialog_maintenance_message">The app is under maintenance. Please, try again later</string>
+
     <!-- SETTINGS ACTIVITY -->
     <string name="settings_title">Settings</string>
     <string name="settings_lbl_version">App version: %1$s</string>

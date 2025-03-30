@@ -7,6 +7,7 @@ import io.kikiriki.sgmovie.data.exception.LocalDataSourceException
 import io.kikiriki.sgmovie.data.exception.RemoteDataSourceException
 import io.kikiriki.sgmovie.domain.model.Movie
 import io.kikiriki.sgmovie.domain.model.base.GResult
+import io.kikiriki.sgmovie.domain.preferences.RemoteConfig
 import io.kikiriki.sgmovie.domain.usecase.GetMoviesUseCase
 import io.kikiriki.sgmovie.domain.usecase.UpdateMovieLikeUseCase
 import io.mockk.coEvery
@@ -21,6 +22,7 @@ import org.junit.Test
 @ExperimentalCoroutinesApi
 class MainViewModelTest : BaseTest() {
 
+    @RelaxedMockK private lateinit var remoteConfig: RemoteConfig
     @RelaxedMockK private lateinit var analyticsService: AnalyticsService
     @RelaxedMockK private lateinit var getMoviesUseCase: GetMoviesUseCase
     @RelaxedMockK private lateinit var updateMovieLikeUseCase: UpdateMovieLikeUseCase
@@ -29,7 +31,8 @@ class MainViewModelTest : BaseTest() {
 
     override fun onStart() {
         super.onStart()
-        mainViewModel = MainViewModel(getMoviesUseCase, updateMovieLikeUseCase, analyticsService)
+        mainViewModel = MainViewModel(getMoviesUseCase, updateMovieLikeUseCase,
+            analyticsService, remoteConfig)
     }
 
     @Test

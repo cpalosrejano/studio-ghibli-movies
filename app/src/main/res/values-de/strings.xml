@@ -5,6 +5,15 @@
     <string name="main_menu_lbl_sort">Filme sortieren</string>
     <string name="main_menu_lbl_settings">Einstellungen</string>
 
+    <!-- UPDATE DIALOG -->
+    <string name="dialog_update_title">Neue Version verfügbar</string>
+    <string name="dialog_update_message">Eine neue Version der App ist verfügbar. Aktualisieren Sie die App, um sie weiterhin nutzen zu können.</string>
+    <string name="dialog_update_btn_update">Aktualisieren</string>
+
+    <!-- MAINTENANCE DIALOG -->
+    <string name="dialog_maintenance_title">Wartung</string>
+    <string name="dialog_maintenance_message">Die App wird gewartet. Bitte versuchen Sie es später erneut.</string>
+
     <!-- SETTINGS ACTIVITY -->
     <string name="settings_title">Einstellungen</string>
     <string name="settings_lbl_version">App-Version: %1$s</string>

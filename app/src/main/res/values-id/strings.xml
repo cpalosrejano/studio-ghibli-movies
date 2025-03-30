@@ -5,6 +5,15 @@
     <string name="main_menu_lbl_sort">Urutkan film</string>
     <string name="main_menu_lbl_settings">Pengaturan</string>
 
+    <!-- UPDATE DIALOG -->
+    <string name="dialog_update_title">Versi baru tersedia</string>
+    <string name="dialog_update_message">Versi baru aplikasi tersedia. Perbarui untuk terus menggunakannya</string>
+    <string name="dialog_update_btn_update">Pembaruan</string>
+
+    <!-- MAINTENANCE DIALOG -->
+    <string name="dialog_maintenance_title">Pemeliharaan</string>
+    <string name="dialog_maintenance_message">Aplikasi sedang dalam pemeliharaan. Silakan coba lagi nanti</string>
+
     <!-- SETTINGS ACTIVITY -->
     <string name="settings_title">Pengaturan</string>
     <string name="settings_lbl_version">Versi aplikasi: %1$s</string>
