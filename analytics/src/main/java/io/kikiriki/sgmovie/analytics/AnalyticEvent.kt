@@ -26,7 +26,8 @@ sealed interface AnalyticEvent {
     }
 
     enum class Settings(override val eventName: String) : AnalyticEvent {
-        TRANSLATE("settings_translate"),
+        CONTACT("settings_contact"),
+        PAYPAL("settings_paypal"),
         PRIVACY_POLICY("settings_privacy_policy"),
         ROADMAP("settings_roadmap");
     }

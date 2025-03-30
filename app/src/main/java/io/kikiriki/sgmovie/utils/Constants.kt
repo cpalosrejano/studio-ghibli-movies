@@ -17,6 +17,7 @@ object Constants {
 
     object Contact {
         const val EMAIL = "studioghiblimoviesapp@gmail.com"
+        const val PAYPAL = "https://paypal.me/cpalosrejano"
     }
 
 }
