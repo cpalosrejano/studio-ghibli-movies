@@ -11,8 +11,9 @@
     <string name="settings_lbl_privacy_policy">Datenschutzerklärung</string>
     <string name="settings_lbl_contact">Kontakt</string>
     <string name="settings_lbl_contact_body">Möchten Sie den Entwickler dieser App kontaktieren? Sprechen Sie uns an!</string>
+    <string name="settings_lbl_paypal">Kaffee kaufen</string>
+    <string name="settings_lbl_paypal_body">Gefällt dir die App? Ich würde mich über eine kleine Unterstützung per PayPal freuen.</string>
     <string name="settings_lbl_translate_app_email_subject">Studio Ghibli Filme [%1$s]</string>
-    <string name="settings_lbl_translate_app_email_body">Bitte unten Ihre Anfrage eingeben</string>
     <string name="settings_lbl_send_email">E-Mail senden</string>
     <string name="settings_lbl_error_no_email_client_found">Es ist keine E-Mail-App installiert</string>
 

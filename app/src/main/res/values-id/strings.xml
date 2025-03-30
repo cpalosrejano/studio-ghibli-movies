@@ -11,8 +11,9 @@
     <string name="settings_lbl_privacy_policy">Kebijakan privasi</string>
     <string name="settings_lbl_contact">Kontak</string>
     <string name="settings_lbl_contact_body">Apakah Anda ingin menghubungi pengembang aplikasi ini? Mari kita bicarakan!</string>
+    <string name="settings_lbl_paypal">Belikan saya kopi</string>
+    <string name="settings_lbl_paypal_body">Apakah Anda menyukai aplikasi ini? Saya akan menghargai sedikit dukungan melalui PayPal.</string>
     <string name="settings_lbl_translate_app_email_subject">Film Studio Ghibli [%1$s]</string>
-    <string name="settings_lbl_translate_app_email_body">Tulis permintaan Anda di bawah ini</string>
     <string name="settings_lbl_send_email">Kirim email</string>
     <string name="settings_lbl_error_no_email_client_found">Tidak ada aplikasi email yang terpasang</string>
 
