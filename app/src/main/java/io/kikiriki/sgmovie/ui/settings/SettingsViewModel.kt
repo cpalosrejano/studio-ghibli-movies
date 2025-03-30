@@ -29,8 +29,12 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
-    fun onClickTranslateApp() {
-        analyticsService.logEvent(AnalyticEvent.Settings.TRANSLATE)
+    fun onClickContactApp() {
+        analyticsService.logEvent(AnalyticEvent.Settings.CONTACT)
+    }
+
+    fun onClickPaypal() {
+        analyticsService.logEvent(AnalyticEvent.Settings.PAYPAL)
     }
 
     fun onClickPrivacyPolicy() {

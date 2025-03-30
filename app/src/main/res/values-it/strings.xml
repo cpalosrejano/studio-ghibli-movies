@@ -11,8 +11,9 @@
     <string name="settings_lbl_privacy_policy">Informativa sulla privacy</string>
     <string name="settings_lbl_contact">Contatto</string>
     <string name="settings_lbl_contact_body">Vuoi contattare lo sviluppatore di questa app? Parliamone!</string>
+    <string name="settings_lbl_paypal">Offrimi un caffè</string>
+    <string name="settings_lbl_paypal_body">Ti piace l\'app? Gradirei un piccolo supporto tramite PayPal.</string>
     <string name="settings_lbl_translate_app_email_subject">Film dello Studio Ghibli [%1$s]</string>
-    <string name="settings_lbl_translate_app_email_body">Scrivi qui sotto la tua richiesta</string>
     <string name="settings_lbl_send_email">Invia email</string>
     <string name="settings_lbl_error_no_email_client_found">Non è installata alcuna app di posta</string>
 

@@ -39,13 +39,14 @@ class SettingsActivity : BaseActivity() {
     }
 
     private fun setupObservers() {
-//        viewModel.isPaypalEnabled.observe(this) {
-//            viewBinding.lblPaypal.visibility = if (it) View.VISIBLE else View.GONE
-//        }
+        viewModel.isPaypalEnabled.observe(this) {
+            viewBinding.layoutPaypal.visibility = if (it) View.VISIBLE else View.GONE
+            viewBinding.layoutPaypalDivider.visibility = if (it) View.VISIBLE else View.GONE
+        }
 
         viewModel.isContactEnabled.observe(this) {
-            viewBinding.layoutTranslateApp.visibility = if (it) View.VISIBLE else View.GONE
-            viewBinding.layoutTranslateAppDivider.visibility = if (it) View.VISIBLE else View.GONE
+            viewBinding.layoutContact.visibility = if (it) View.VISIBLE else View.GONE
+            viewBinding.layoutContactDivider.visibility = if (it) View.VISIBLE else View.GONE
         }
     }
 
@@ -54,11 +55,16 @@ class SettingsActivity : BaseActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         viewBinding.lblPrivacyPolicy.setOnClickListener {
             viewModel.onClickPrivacyPolicy()
-            openPrivacyPolicy()
+            openWebBrowser(Constants.Legal.PRIVACY_POLICY_URL)
         }
-        viewBinding.layoutTranslateApp.setOnClickListener {
-            viewModel.onClickTranslateApp()
-            translateApp()
+        viewBinding.layoutContact.setOnClickListener {
+            viewModel.onClickContactApp()
+            sendEmail()
+        }
+
+        viewBinding.layoutPaypal.setOnClickListener {
+            viewModel.onClickPaypal()
+            openWebBrowser(Constants.Contact.PAYPAL)
         }
 
         try {
@@ -70,19 +76,19 @@ class SettingsActivity : BaseActivity() {
 
     }
 
-    private fun openPrivacyPolicy() {
-        val privacyPolicyUrl = Uri.parse(Constants.Legal.PRIVACY_POLICY_URL)
+    private fun openWebBrowser(url: String) {
+        val privacyPolicyUrl = Uri.parse(url)
         val intent = Intent(Intent.ACTION_VIEW, privacyPolicyUrl)
         try { startActivity(intent) } catch (_ : Exception) {}
     }
 
-    private fun translateApp() {
+    private fun sendEmail() {
         val locale = Locale.getDefault().toLanguageTag()
         val intent = Intent(Intent.ACTION_SENDTO).apply {
             data = Uri.parse("mailto:")
             putExtra(Intent.EXTRA_EMAIL, arrayOf(Constants.Contact.EMAIL))
             putExtra(Intent.EXTRA_SUBJECT, getString(R.string.settings_lbl_translate_app_email_subject, locale))
-            putExtra(Intent.EXTRA_TEXT, getString(R.string.settings_lbl_translate_app_email_body))
+            putExtra(Intent.EXTRA_TEXT, "")
         }
         try {
             startActivity(Intent.createChooser(intent, getString(R.string.settings_lbl_send_email)))

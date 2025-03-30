@@ -97,7 +97,7 @@
                     android:orientation="vertical">
 
                     <LinearLayout
-                        android:id="@+id/layout_translate_app"
+                        android:id="@+id/layout_contact"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:minHeight="48dp"
@@ -125,7 +125,41 @@
                     </LinearLayout>
 
                     <View
-                        android:id="@+id/layout_translate_app_divider"
+                        android:id="@+id/layout_contact_divider"
+                        android:background="@color/md_theme_surfaceDim"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"/>
+
+                    <LinearLayout
+                        android:id="@+id/layout_paypal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="48dp"
+                        android:gravity="center_vertical"
+                        android:orientation="vertical"
+                        android:paddingVertical="8dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+                            android:text="@string/settings_lbl_paypal"
+                            android:paddingStart="16dp"
+                            android:paddingEnd="16dp"/>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+                            android:text="@string/settings_lbl_paypal_body"
+                            android:paddingStart="16dp"
+                            android:paddingEnd="16dp"/>
+
+                    </LinearLayout>
+
+                    <View
+                        android:id="@+id/layout_paypal_divider"
                         android:background="@color/md_theme_surfaceDim"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"/>
