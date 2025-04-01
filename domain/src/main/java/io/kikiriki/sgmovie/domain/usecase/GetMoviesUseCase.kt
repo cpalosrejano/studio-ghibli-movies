@@ -20,7 +20,7 @@ class GetMoviesUseCase @Inject constructor(
 
     private val cacheTime = TimeUnit.HOURS.toMillis(12)
 
-    suspend operator fun invoke() : Flow<GResult<List<Movie>, Throwable>> = withContext(dispatcher) {
+    suspend operator fun invoke() : Flow<Result<List<Movie>>> = withContext(dispatcher) {
 
         // get saved data
         val savedLanguage = preferenceStorage.getLanguage()
