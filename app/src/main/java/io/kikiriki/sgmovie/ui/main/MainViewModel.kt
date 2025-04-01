@@ -8,7 +8,6 @@ import io.kikiriki.sgmovie.R
 import io.kikiriki.sgmovie.analytics.AnalyticEvent
 import io.kikiriki.sgmovie.analytics.AnalyticsService
 import io.kikiriki.sgmovie.domain.model.Movie
-import io.kikiriki.sgmovie.domain.model.base.GResult
 import io.kikiriki.sgmovie.domain.preferences.RemoteConfig
 import io.kikiriki.sgmovie.domain.usecase.GetMoviesUseCase
 import io.kikiriki.sgmovie.domain.usecase.UpdateMovieLikeUseCase
@@ -45,24 +44,17 @@ class MainViewModel @Inject constructor(
         _uiState.postValue(MainUIState(isLoading = true))
 
         getMoviesUseCase()
-            .onEach {
-                when (it) {
+            .onEach { result ->
 
-                    is GResult.Success -> {
-                        val movies = it.data
+                result.fold(
+                    onSuccess = { movies ->
                         _uiState.value = MainUIState(items = movies)
-                    }
-                    is GResult.Error -> {
-                        val errorSt = ExceptionManager.getMessage(it.error)
+                    },
+                    onFailure = { error ->
+                        val errorSt = ExceptionManager.getMessage(error)
                         _uiState.value = MainUIState(error = errorSt)
                     }
-                    is GResult.SuccessWithError -> {
-                        val movies = it.data
-                        val errorSt = ExceptionManager.getMessage(it.error)
-                        _uiState.value = MainUIState(items = movies, message = errorSt)
-                    }
-
-                }
+                )
             }
             .catch {
                 val error = ExceptionManager.getMessage(it)

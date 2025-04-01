@@ -8,7 +8,6 @@ import io.kikiriki.sgmovie.data.repository.movie.mock.MovieMockDataSource
 import io.kikiriki.sgmovie.data.repository.movie.remote.MovieRemoteDataSource
 import io.kikiriki.sgmovie.data.utils.Constants
 import io.kikiriki.sgmovie.domain.model.Movie
-import io.kikiriki.sgmovie.domain.model.base.GResult
 import io.kikiriki.sgmovie.domain.repository.MovieRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
@@ -28,7 +27,7 @@ class MovieRepositoryImpl @Inject constructor(
     @IODispatcher private val dispatcher: CoroutineDispatcher
 ) : MovieRepository {
 
-    override fun getMovies(lang: String, coproductions: Boolean, forceRefresh: Boolean): Flow<GResult<List<Movie>, Throwable>> = flow {
+    override fun getMovies(lang: String, coproductions: Boolean, forceRefresh: Boolean): Flow<Result<List<Movie>>> = flow {
 
         // check if we need to fetch movies from API
         val localMovies = local.get()
@@ -37,10 +36,10 @@ class MovieRepositoryImpl @Inject constructor(
             // fetch movies from api and store in room
             fetchMovies(lang, coproductions).fold(
                 onSuccess = { movies: List<Movie> ->
-                    emit(GResult.Success(movies))
+                    emit(Result.success(movies))
                 },
                 onFailure = { error: Throwable ->
-                    emit(GResult.Error(error))
+                    emit(Result.failure(error))
                     return@flow
                 }
             )
@@ -50,7 +49,7 @@ class MovieRepositoryImpl @Inject constructor(
         emitAll(
             local.getAsFlow().map {
                 val data = MovieMapper.localToData(it)
-                GResult.Success(data)
+                Result.success(data)
             }.onEach {
                 println("kprint: lokoooooooh ")
             }

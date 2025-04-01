@@ -15,6 +15,12 @@ class MovieMockDataSourceImpl @Inject constructor(
     @IODispatcher private val dispatcher: CoroutineDispatcher
 )  : MovieMockDataSource {
 
+    val storedLikes = mutableMapOf(
+        "758bf02e-3122-46e0-884e-67cf83df1786" to 4L,
+        "dc2e6bd1-8156-4886-adff-b39e6043af0c" to 2L,
+        "58611129-2dbc-4a81-a72f-77ddfc1b1b49" to 3L
+    )
+
     private var movies = listOf(
         Movie(
             id = "dc2e6bd1-8156-4886-adff-b39e6043af0c",
@@ -30,6 +36,7 @@ class MovieMockDataSourceImpl @Inject constructor(
             runningTime =  124,
             rtScore =  97,
             coproduction = false,
+            likeCount = storedLikes["dc2e6bd1-8156-4886-adff-b39e6043af0c"] ?: 0,
             like = true,
             tmdbId = "1123"
         ),
@@ -47,6 +54,7 @@ class MovieMockDataSourceImpl @Inject constructor(
             runningTime =  134,
             rtScore =  92,
             coproduction = false,
+            likeCount = storedLikes["0440483e-ca0e-4120-8c50-4c8cd9b965d6"] ?: 0,
             like = true,
             tmdbId = "1123"
         ),
@@ -64,6 +72,7 @@ class MovieMockDataSourceImpl @Inject constructor(
             runningTime =  86,
             rtScore =  93,
             coproduction = false,
+            likeCount = storedLikes["58611129-2dbc-4a81-a72f-77ddfc1b1b49"] ?: 0,
             like = false,
             tmdbId = "1123"
         ),
@@ -82,12 +91,13 @@ class MovieMockDataSourceImpl @Inject constructor(
             rtScore =  92,
             coproduction = false,
             like = true,
+            likeCount = storedLikes["758bf02e-3122-46e0-884e-67cf83df1786"] ?: 0,
             tmdbId = "1123"
         )
     )
 
     override fun getMovies(lang: String, coproductions: Boolean, forceRefresh: Boolean):
-            Flow<GResult<List<Movie>, Throwable>> = flowOf(GResult.Success(movies))
+            Flow<Result<List<Movie>>> = flowOf(Result.success(movies))
 
     override fun getMovie(movieId: String): Flow<Movie> {
         val movie = movies.find { it.id == movieId }
@@ -108,10 +118,15 @@ class MovieMockDataSourceImpl @Inject constructor(
     }
 
     override suspend fun getAllMovieLikes(): Result<Map<String, Long>> {
-        TODO("Not yet implemented")
+        return Result.success(storedLikes.toMap())
     }
 
     override suspend fun updateAllMovieLikes(likes: Map<String, Long>): Result<Boolean> {
-        TODO("Not yet implemented")
+        return try {
+            storedLikes.putAll(likes)
+            Result.success(true)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
     }
 }
