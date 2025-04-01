@@ -72,9 +72,7 @@ class MainViewModel @Inject constructor(
     }
 
     fun updateMovie(movie: Movie) = viewModelScope.launch {
-        val newMovieStatus = movie.copy(like = !movie.like)
-        val result = updateMovieLikeUseCase(newMovieStatus)
-        result.fold(
+        updateMovieLikeUseCase(movie).fold(
             onSuccess = { success ->
                 if (!success) {
                     _uiState.value = MainUIState(error = R.string.movie_detail_error_cannot_update_like)

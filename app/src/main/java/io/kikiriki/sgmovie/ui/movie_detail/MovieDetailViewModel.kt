@@ -58,18 +58,14 @@ class MovieDetailViewModel @Inject constructor(
 
     fun updateMovieLike() = viewModelScope.launch {
         // check current movie is not null
-        var newMovieStatus = movie.value
+        val newMovieStatus = movie.value
         if (newMovieStatus == null) {
             _error.postValue(R.string.movie_detail_error_cannot_update_like)
             return@launch
         }
 
-        // switch movie like
-        newMovieStatus = newMovieStatus.copy(like = !newMovieStatus.like)
-
         // update in local and firestore
-        val result = updateMovieLikeUseCase(newMovieStatus)
-        result.fold(
+        updateMovieLikeUseCase(newMovieStatus).fold(
             onSuccess = { success ->
                 if (!success) {
                     _error.postValue(R.string.movie_detail_error_cannot_update_like)
