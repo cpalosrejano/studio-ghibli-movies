@@ -68,4 +68,16 @@ class MovieLocalDataSourceImpl @Inject constructor(
         }
     }
 
+    override suspend fun updateAllLikes(likes: Map<String, Long>): Boolean = withContext(dispatcher) {
+        return@withContext try {
+            movieDao.updateMovieLikes(likes)
+            true
+        } catch (failure: Exception) {
+            failure.printStackTrace()
+            throw LocalDataSourceException(
+                code = LocalDataSourceException.Code.CANNOT_UPDATE_MOVIE,
+                message = failure.localizedMessage.orEmpty()
+            )
+        }
+    }
 }
