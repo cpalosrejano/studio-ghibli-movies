@@ -16,7 +16,7 @@ class UpdateMovieLikeUseCase @Inject constructor(
         val newLikeStatus = !movie.like
         val newLikeCountStatus = movie.likeCount + if (newLikeStatus) +1 else -1
         val newMovieStatus = movie.copy(like = newLikeStatus, likeCount = newLikeCountStatus)
-        return@withContext movieRepository.updateLike(newMovieStatus)
+        return@withContext movieRepository.updateMovie(newMovieStatus)
     }
 
 }

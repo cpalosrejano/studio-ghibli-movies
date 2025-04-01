@@ -29,10 +29,10 @@ class FirebaseSyncWorker @AssistedInject constructor(
 
             //seconds = remoteConfig.getFirestoreRefreshSeconds()
 
-            repository.getAllLikes().fold(
+            repository.getAllMovieLikes().fold(
                 onSuccess = { updatedLikes ->
                     println("kprint: updateLikes = $updatedLikes ")
-                    repository.updateAllLikes(updatedLikes)
+                    repository.updateAllMovieLikes(updatedLikes)
                 },
                 onFailure = { error ->
                     error.printStackTrace()
