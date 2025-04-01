@@ -3,7 +3,7 @@ package io.kikiriki.sgmovie.data.di
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ActivityComponent
+import dagger.hilt.components.SingletonComponent
 import io.kikiriki.sgmovie.data.repository.movie.MovieRepositoryImpl
 import io.kikiriki.sgmovie.data.repository.movie.firestore.MovieFirestoreDataSource
 import io.kikiriki.sgmovie.data.repository.movie.firestore.MovieFirestoreDataSourceImpl
@@ -16,7 +16,7 @@ import io.kikiriki.sgmovie.data.repository.movie.remote.MovieRemoteDataSourceImp
 import io.kikiriki.sgmovie.domain.repository.MovieRepository
 
 @Module
-@InstallIn(ActivityComponent::class)
+@InstallIn(SingletonComponent::class)
 abstract class MovieRepositoryModule {
 
     @Binds
