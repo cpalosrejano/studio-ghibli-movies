@@ -66,6 +66,8 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel)
     implementation(libs.androidx.lifecycle.livedata)
     implementation(libs.androidx.lifecycle.runtime)
+    // android X: worker
+    implementation(libs.androidx.work.runtime.ktx)
 
     // google material
     implementation(libs.google.material)
@@ -77,6 +79,8 @@ dependencies {
     // hilt - dependency injector
     implementation(libs.hilt)
     kapt(libs.hilt.compiler)
+    implementation(libs.androidx.hilt.work)
+    kapt(libs.androidx.hilt.compiler)
 
     // testing
     testImplementation(libs.test.junit)
