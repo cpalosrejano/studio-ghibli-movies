@@ -6,6 +6,7 @@ import com.google.firebase.firestore.SetOptions
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 class MovieFirestoreDataSourceImpl @Inject constructor(
@@ -17,19 +18,13 @@ class MovieFirestoreDataSourceImpl @Inject constructor(
         const val FIELD_LIKE_COUNT = "like_count"
     }
 
-    override fun getLikes(): Flow<Map<String, Long>> = callbackFlow {
-        val listener = firestore.collection(COLLECTION_MOVIES_LIKE)
-            .addSnapshotListener { snapshot, _ ->
-                if (snapshot != null) {
-                    val likesMap = snapshot.documents.associate { doc ->
-                        doc.id to (doc.getLong(FIELD_LIKE_COUNT) ?: 0)
-                    }
-                    trySend(likesMap)
-                }
-            }
-        awaitClose { listener.remove() }
+    override suspend fun getLikes(): Map<String, Long> {
+        val document = firestore.collection(COLLECTION_MOVIES_LIKE).get().await()
+        val likesMap = document.documents.associate { doc ->
+            doc.id to (doc.getLong(FIELD_LIKE_COUNT) ?: 0)
+        }
+        return likesMap
     }
-
 
     override fun getMovieLikesById(movieId: String): Flow<Long> = callbackFlow {
         val docRef = firestore.collection(COLLECTION_MOVIES_LIKE).document(movieId)

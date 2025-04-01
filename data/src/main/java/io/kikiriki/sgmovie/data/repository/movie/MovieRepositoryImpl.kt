@@ -16,6 +16,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -47,16 +48,12 @@ class MovieRepositoryImpl @Inject constructor(
 
         // emit local movies with firestore updates as flow
         emitAll(
-            local.getAsFlow().map { MovieMapper.localToData(it) }
-                .combine(firestore.getLikes()) { movies: List<Movie>, likes ->
-
-                    GResult.Success(
-                        movies.map { movie ->
-                            val likeCount = likes[movie.id] ?: 0
-                            movie.copy(likeCount = likeCount)
-                        }
-                    )
-                }
+            local.getAsFlow().map {
+                val data = MovieMapper.localToData(it)
+                GResult.Success(data)
+            }.onEach {
+                println("kprint: lokoooooooh ")
+            }
         )
     }
 
@@ -80,6 +77,20 @@ class MovieRepositoryImpl @Inject constructor(
                 MovieMapper.localToData(it)
             }.combine(firestore.getMovieLikesById(movieId)) { movie, likeCount ->
                 movie.copy(likeCount = likeCount)
+        }
+    }
+
+    override suspend fun getAllLikes(): Result<Map<String, Long>> {
+        return try { Result.success(firestore.getLikes()) }
+        catch (e: Exception) { Result.failure(e) }
+    }
+
+    override suspend fun updateAllLikes(likes: Map<String, Long>): Result<Boolean> {
+        return try {
+            local.updateAllLikes(likes)
+            Result.success(true)
+        } catch (e: Exception) {
+            Result.failure(e)
         }
     }
 
