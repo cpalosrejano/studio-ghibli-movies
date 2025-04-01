@@ -41,6 +41,7 @@ object MovieMapper {
             runningTime = movieLocal.runningTime,
             rtScore = movieLocal.rtScore,
             coproduction = movieLocal.coproduction,
+            likeCount = movieLocal.likeCount,
             like = movieLocal.like,
             tmdbId = movieLocal.tmdbId
         )
@@ -65,6 +66,7 @@ object MovieMapper {
             rtScore = movie.rtScore,
             coproduction = movie.coproduction,
             like = movie.like,
+            likeCount  = movie.likeCount,
             tmdbId = movie.tmdbId
         )
     }
