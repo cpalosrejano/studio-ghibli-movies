@@ -2,6 +2,7 @@
 core-ktx = "1.15.0"
 constraintlayout = "2.2.0"
 firebase-bom = "33.7.0"
+hilt-compiler = "1.2.0"
 lifecycle = "2.8.7"
 google-material = "1.12.0"
 coil = "2.4.0"
@@ -23,13 +24,17 @@ androidx-test-core = "1.6.1"
 androidx-test-espresso = "3.6.1"
 google-services = "4.4.2"
 plugin-firebase-crashlytics = "3.0.2"
+work-runtime-ktx = "2.10.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
+androidx-hilt-compiler = { module = "androidx.hilt:hilt-compiler", version.ref = "hilt-compiler" }
+androidx-hilt-work = { module = "androidx.hilt:hilt-work", version.ref = "hilt-compiler" }
 androidx-lifecycle-viewmodel = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
 androidx-lifecycle-livedata = { group = "androidx.lifecycle", name = "lifecycle-livedata-ktx", version.ref = "lifecycle" }
 androidx-lifecycle-runtime = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycle" }
+androidx-work-runtime-ktx = { module = "androidx.work:work-runtime-ktx", version.ref = "work-runtime-ktx" }
 firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebase-bom" }
 firebase-config = { module = "com.google.firebase:firebase-config" }
