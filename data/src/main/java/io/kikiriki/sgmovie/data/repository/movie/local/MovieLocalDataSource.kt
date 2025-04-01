@@ -10,4 +10,7 @@ interface MovieLocalDataSource {
     fun getMovieById(movieId: String) : Flow<MovieLocal>
     suspend fun insert(movies: List<MovieLocal>) : Boolean
     suspend fun updateLike(movie: MovieLocal) : Boolean
+
+    suspend fun updateAllLikes(likes: Map<String, Long>) : Boolean
+
 }
