@@ -86,16 +86,16 @@ class MovieMockDataSourceImpl @Inject constructor(
         )
     )
 
-    override fun get(lang: String, coproductions: Boolean, forceRefresh: Boolean):
+    override fun getMovies(lang: String, coproductions: Boolean, forceRefresh: Boolean):
             Flow<GResult<List<Movie>, Throwable>> = flowOf(GResult.Success(movies))
 
-    override fun getMovieById(movieId: String): Flow<Movie> {
+    override fun getMovie(movieId: String): Flow<Movie> {
         val movie = movies.find { it.id == movieId }
         if (movie != null) return flowOf(movie)
         else throw LocalDataSourceException(LocalDataSourceException.Code.CANNOT_GET_MOVIE_DETAIL, "")
     }
 
-    override suspend fun updateLike(movie: Movie): Result<Boolean> = withContext(dispatcher) {
+    override suspend fun updateMovie(movie: Movie): Result<Boolean> = withContext(dispatcher) {
         delay(1000)
         movies = movies.map {
             if (it.id == movie.id) {
@@ -107,4 +107,11 @@ class MovieMockDataSourceImpl @Inject constructor(
         return@withContext Result.success(true)
     }
 
+    override suspend fun getAllMovieLikes(): Result<Map<String, Long>> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun updateAllMovieLikes(likes: Map<String, Long>): Result<Boolean> {
+        TODO("Not yet implemented")
+    }
 }
