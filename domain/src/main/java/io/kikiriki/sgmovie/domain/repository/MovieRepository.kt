@@ -6,14 +6,14 @@ import kotlinx.coroutines.flow.Flow
 
 interface MovieRepository {
 
-    fun get(lang: String, coproductions: Boolean = false, forceRefresh: Boolean = false):
-            Flow<GResult<List<Movie>, Throwable>> // TODO: refactor name to getMovies
+    fun getMovies(lang: String, coproductions: Boolean = false, forceRefresh: Boolean = false):
+            Flow<GResult<List<Movie>, Throwable>>
 
-    fun getMovieById(movieId: String) : Flow<Movie> // TODO: refactor name to getMovie
+    fun getMovie(movieId: String) : Flow<Movie>
 
-    suspend fun updateLike(movie: Movie) : Result<Boolean> // TODO: refactor name to updateMovies
+    suspend fun updateMovie(movie: Movie) : Result<Boolean>
 
-    suspend fun getAllLikes() : Result<Map<String, Long>>
+    suspend fun getAllMovieLikes() : Result<Map<String, Long>>
 
-    suspend fun updateAllLikes(likes: Map<String, Long>) : Result<Boolean>
+    suspend fun updateAllMovieLikes(likes: Map<String, Long>) : Result<Boolean>
 }

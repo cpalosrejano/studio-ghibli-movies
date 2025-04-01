@@ -42,7 +42,7 @@ class GetMoviesUseCase @Inject constructor(
             preferenceStorage.setTimestampLastRequest(currentTimeMillis)
         }
 
-        return@withContext movieRepository.get(
+        return@withContext movieRepository.getMovies(
             forceRefresh = shouldRefreshData,
             lang = currentLanguage
         )

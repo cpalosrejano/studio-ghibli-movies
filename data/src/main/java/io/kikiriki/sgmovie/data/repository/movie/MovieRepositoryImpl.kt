@@ -28,7 +28,7 @@ class MovieRepositoryImpl @Inject constructor(
     @IODispatcher private val dispatcher: CoroutineDispatcher
 ) : MovieRepository {
 
-    override fun get(lang: String, coproductions: Boolean, forceRefresh: Boolean): Flow<GResult<List<Movie>, Throwable>> = flow {
+    override fun getMovies(lang: String, coproductions: Boolean, forceRefresh: Boolean): Flow<GResult<List<Movie>, Throwable>> = flow {
 
         // check if we need to fetch movies from API
         val localMovies = local.get()
@@ -57,9 +57,9 @@ class MovieRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun updateLike(movie: Movie): Result<Boolean> = withContext(dispatcher) {
+    override suspend fun updateMovie(movie: Movie): Result<Boolean> = withContext(dispatcher) {
         if (Constants.Repository.MOCK) {
-            return@withContext mock.updateLike(movie)
+            return@withContext mock.updateMovie(movie)
         }
 
         return@withContext try {
@@ -72,7 +72,7 @@ class MovieRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun getMovieById(movieId: String): Flow<Movie> {
+    override fun getMovie(movieId: String): Flow<Movie> {
         return local.getMovieById(movieId).map {
                 MovieMapper.localToData(it)
             }.combine(firestore.getMovieLikesById(movieId)) { movie, likeCount ->
@@ -80,12 +80,12 @@ class MovieRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getAllLikes(): Result<Map<String, Long>> {
+    override suspend fun getAllMovieLikes(): Result<Map<String, Long>> {
         return try { Result.success(firestore.getLikes()) }
         catch (e: Exception) { Result.failure(e) }
     }
 
-    override suspend fun updateAllLikes(likes: Map<String, Long>): Result<Boolean> {
+    override suspend fun updateAllMovieLikes(likes: Map<String, Long>): Result<Boolean> {
         return try {
             local.updateAllLikes(likes)
             Result.success(true)
