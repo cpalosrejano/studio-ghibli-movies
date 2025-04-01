@@ -8,6 +8,9 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.enableEdgeToEdge
 import androidx.core.view.isVisible
+import androidx.work.ExistingWorkPolicy
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
 import coil.load
 import com.google.android.material.badge.BadgeDrawable
 import com.google.android.material.badge.BadgeUtils
@@ -24,6 +27,7 @@ import io.kikiriki.sgmovie.ui.movie_detail.MovieDetailFragment
 import io.kikiriki.sgmovie.ui.settings.SettingsActivity
 import io.kikiriki.sgmovie.utils.CoilUtils
 import io.kikiriki.sgmovie.utils.extension.getVersionCode
+import io.kikiriki.sgmovie.workers.FirebaseSyncWorker
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -44,6 +48,21 @@ class MainActivity : BaseActivity() {
         setupView()
 
         viewModel.getAppConfig()
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        val workRequest = OneTimeWorkRequestBuilder<FirebaseSyncWorker>()
+            .addTag("firebase_sync")
+            .build()
+
+        WorkManager.getInstance(this).enqueueUniqueWork("FirebaseSync", ExistingWorkPolicy.KEEP, workRequest)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        WorkManager.getInstance(this).cancelAllWorkByTag("firebase_sync")
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
