@@ -26,6 +26,8 @@ data class MovieLocal(
     val rtScore: Int,
     val coproduction: Boolean,
     var like: Boolean = false,
+    @ColumnInfo("like_count")
+    val likeCount: Long = 0,
     @ColumnInfo("tmdb_id")
     var tmdbId: String
 )
