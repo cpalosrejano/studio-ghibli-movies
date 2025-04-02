@@ -31,12 +31,10 @@ class RemoteConfigImpl @Inject constructor(
         remoteConfig.fetchAndActivate().await()
         return remoteConfig.getBoolean(ENABLE_MAINTENANCE)
     }
-
     override suspend fun getMinAppVersion(): Long {
         remoteConfig.fetchAndActivate().await()
         return remoteConfig.getLong(MIN_APP_VERSION)
     }
-
     override suspend fun isContactEnabled(): Boolean {
         remoteConfig.fetchAndActivate().await()
         return remoteConfig.getBoolean(ENABLE_CONTACT)

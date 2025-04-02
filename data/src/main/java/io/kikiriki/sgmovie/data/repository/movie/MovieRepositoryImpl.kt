@@ -50,8 +50,6 @@ class MovieRepositoryImpl @Inject constructor(
             local.getAsFlow().map {
                 val data = MovieMapper.localToData(it)
                 Result.success(data)
-            }.onEach {
-                println("kprint: lokoooooooh ")
             }
         )
     }
