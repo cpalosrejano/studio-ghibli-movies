@@ -42,12 +42,21 @@ class MovieDetailViewModel @Inject constructor(
 
     fun getMovieById(movieId: String) = viewModelScope.launch {
         getMovieByIdUseCase(movieId)
-            .onEach { movie ->
-                _movie.postValue(movie)
-                // fetch streaming provider if are still null
-                if (_streamingProviders.value == null) {
-                    fetchStreamingProviders(movie)
-                }
+            .onEach { result ->
+
+                result.fold(
+                    onSuccess = { movie: Movie ->
+                        _movie.postValue(movie)
+                        // fetch streaming provider if are still null
+                        if (_streamingProviders.value == null) {
+                            fetchStreamingProviders(movie)
+                        }
+                    },
+                    onFailure = {
+                        val error = ExceptionManager.getMessage(it)
+                        _error.postValue(error)
+                    }
+                )
             }
             .catch {
                 val error = ExceptionManager.getMessage(it)
