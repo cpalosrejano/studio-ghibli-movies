@@ -60,7 +60,7 @@ class MovieDetailViewModelTest : BaseTest() {
 
         // when
         coEvery { getMovieByIdUseCase("dc2e6bd1-8156-4886-adff-b39e6043af0c") } returns flowOf(movie)
-        coEvery { updateMovieLikeUseCase(movie.copy(like = !movie.like)) } returns Result.failure(exception)
+        coEvery { updateMovieLikeUseCase(movie) } returns Result.failure(exception)
         movieDetailViewModel.getMovieById("dc2e6bd1-8156-4886-adff-b39e6043af0c")
         movieDetailViewModel.updateMovieLike()
 
