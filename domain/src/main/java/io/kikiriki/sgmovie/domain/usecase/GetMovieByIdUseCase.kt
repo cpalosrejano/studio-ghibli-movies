@@ -13,7 +13,7 @@ class GetMovieByIdUseCase @Inject constructor(
     @IODispatcher private val dispatcher: CoroutineDispatcher
 ) {
 
-    suspend operator fun invoke(movieId: String) : Flow<Movie> = withContext(dispatcher) {
+    suspend operator fun invoke(movieId: String) : Flow<Result<Movie>> = withContext(dispatcher) {
         return@withContext repository.getMovie(movieId)
     }
 
