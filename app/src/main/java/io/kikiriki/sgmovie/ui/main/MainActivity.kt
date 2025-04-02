@@ -54,15 +54,17 @@ class MainActivity : BaseActivity() {
         super.onStart()
 
         val workRequest = OneTimeWorkRequestBuilder<FirebaseSyncWorker>()
-            .addTag("firebase_sync")
+            .addTag(FirebaseSyncWorker.WORKER_NAME)
             .build()
 
-        WorkManager.getInstance(this).enqueueUniqueWork("FirebaseSync", ExistingWorkPolicy.KEEP, workRequest)
+        WorkManager.getInstance(this)
+            .enqueueUniqueWork(FirebaseSyncWorker.WORKER_NAME, ExistingWorkPolicy.KEEP, workRequest)
     }
 
     override fun onPause() {
         super.onPause()
-        WorkManager.getInstance(this).cancelAllWorkByTag("firebase_sync")
+        WorkManager.getInstance(this)
+            .cancelAllWorkByTag(FirebaseSyncWorker.WORKER_NAME)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

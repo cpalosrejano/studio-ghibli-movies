@@ -20,18 +20,12 @@ class FirebaseSyncWorker @AssistedInject constructor(
     private val remoteConfig: RemoteConfig
 ) : CoroutineWorker(context, workerParams) {
 
-    private var seconds = 10L
-
     override suspend fun doWork(): Result {
         return try {
 
-            println("kprint: FirebaseSyncWorker: starting ")
-
-            //seconds = remoteConfig.getFirestoreRefreshSeconds()
-
+            // get likes from firebase and update in room
             repository.getAllMovieLikes().fold(
                 onSuccess = { updatedLikes ->
-                    println("kprint: updateLikes = $updatedLikes ")
                     repository.updateAllMovieLikes(updatedLikes)
                 },
                 onFailure = { error ->
@@ -39,27 +33,24 @@ class FirebaseSyncWorker @AssistedInject constructor(
                 }
             )
 
-            println("kprint: FirebaseSyncWorker: success")
-
-            scheduleNextWork()
+            // reschedule the work with refresh time from remote config
+            scheduleNextWork(remoteConfig.getFirestoreRefreshSeconds())
 
             Result.success()
         } catch (e: Exception) {
-            println("kprint: FirebaseSyncWorker: error: ${e.localizedMessage}")
-            e.printStackTrace()
-            scheduleNextWork()
-
-            Result.retry() // Reintenta si falla
+            Result.retry()
         }
     }
 
-    private fun scheduleNextWork() {
-        println("kprint: FirebaseSyncWorker: scheduling next work in  $seconds seconds ")
+    private fun scheduleNextWork(seconds: Long) {
         val workRequest = OneTimeWorkRequestBuilder<FirebaseSyncWorker>()
             .setInitialDelay(seconds, TimeUnit.SECONDS)
-            .addTag("firebase_sync") // Asigna un tag para poder cancelarlo
+            .addTag(WORKER_NAME)
             .build()
-
         WorkManager.getInstance(applicationContext).enqueue(workRequest)
+    }
+
+    companion object {
+        const val WORKER_NAME = "sync_likes_firebase_room"
     }
 }
