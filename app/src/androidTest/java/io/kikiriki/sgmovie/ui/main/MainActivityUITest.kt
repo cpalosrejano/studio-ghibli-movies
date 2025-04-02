@@ -25,6 +25,7 @@ import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.rules.ActivityScenarioRule
+import androidx.work.WorkerFactory
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import io.kikiriki.sgmovie.R
@@ -38,6 +39,7 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import javax.inject.Inject
 
 
 @HiltAndroidTest
@@ -45,6 +47,9 @@ class MainActivityUITest {
 
     @get:Rule(order = 0)
     var hiltRule = HiltAndroidRule(this)
+
+    @Inject
+    lateinit var workerFactory: WorkerFactory
 
     @get:Rule(order = 1)
     var activityRule: ActivityScenarioRule<MainActivity> = ActivityScenarioRule(MainActivity::class.java)
