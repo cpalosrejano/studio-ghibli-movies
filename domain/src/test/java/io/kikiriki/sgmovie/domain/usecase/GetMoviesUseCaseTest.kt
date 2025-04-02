@@ -2,7 +2,6 @@ package io.kikiriki.sgmovie.domain.usecase
 
 import io.kikiriki.sgmovie.core.test.BaseTest
 import io.kikiriki.sgmovie.domain.model.Movie
-import io.kikiriki.sgmovie.domain.model.base.GResult
 import io.kikiriki.sgmovie.domain.preferences.PreferenceStorage
 import io.kikiriki.sgmovie.domain.repository.MovieRepository
 import io.mockk.coEvery
@@ -43,13 +42,12 @@ class GetMoviesUseCaseTest : BaseTest() {
         val lang = Locale.getDefault().toLanguageTag()
         coEvery { preferenceStorage.getLanguage() } returns lang
         coEvery { preferenceStorage.getTimestampLastRequest() } returns timestamp
-        coEvery { movieRepository.get(lang, false) } returns flowOf(GResult.Success(movies))
-        getMoviesUseCase().onEach {
-            when (it) {
-                is GResult.Success -> { resultData = it.data }
-                is GResult.Error -> { resultException = it.error }
-                is GResult.SuccessWithError -> { resultException = it.error }
-            }
+        coEvery { movieRepository.getMovies(lang, false) } returns flowOf(Result.success(movies))
+        getMoviesUseCase().onEach { result ->
+            result.fold(
+                onSuccess = { resultData = it },
+                onFailure = { resultException = it }
+            )
         }.catch {
             resultException = it
         }.collect()
@@ -107,13 +105,12 @@ class GetMoviesUseCaseTest : BaseTest() {
         val lang = Locale.getDefault().toLanguageTag()
         coEvery { preferenceStorage.getLanguage() } returns lang
         coEvery { preferenceStorage.getTimestampLastRequest() } returns timestamp
-        coEvery { movieRepository.get(lang, false) } returns flowOf(GResult.Success(movies))
-        getMoviesUseCase().onEach {
-            when (it) {
-                is GResult.Success -> resultData = it.data
-                is GResult.Error -> {}
-                is GResult.SuccessWithError -> {}
-            }
+        coEvery { movieRepository.getMovies(lang, false) } returns flowOf(Result.success(movies))
+        getMoviesUseCase().onEach { result ->
+            result.fold(
+                onSuccess = { resultData = it },
+                onFailure = { resultException = it }
+            )
         }.catch {
             resultException = it
         }.collect()

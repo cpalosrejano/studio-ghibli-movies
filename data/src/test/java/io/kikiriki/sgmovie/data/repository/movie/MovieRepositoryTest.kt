@@ -13,7 +13,6 @@ import io.kikiriki.sgmovie.data.repository.movie.remote.MovieRemoteDataSourceImp
 import io.kikiriki.sgmovie.data.repository.movie.util.DataMock
 import io.kikiriki.sgmovie.domain.model.Movie
 import io.kikiriki.sgmovie.domain.model.base.BaseCode
-import io.kikiriki.sgmovie.domain.model.base.GResult
 import io.kikiriki.sgmovie.domain.repository.MovieRepository
 import io.mockk.coEvery
 import io.mockk.impl.annotations.RelaxedMockK
@@ -65,14 +64,14 @@ class MovieRepositoryTest : BaseTest() {
         coEvery { dao.getAll() } returns flowOf(DataMock.moviesLocal)
 
         // when
-        var result: GResult<List<Movie>, Throwable>? = null
-        repository.get(lang, coproductions, true).onEach {
+        var result: Result<List<Movie>>? = null
+        repository.getMovies(lang, coproductions, true).onEach {
             result = it
         }.collect()
 
         // then
-        assert( result is GResult.Success )
-        assert( (result as? GResult.Success)?.data?.isNotEmpty() == true )
+        assert( result?.isSuccess == true)
+        assert( result?.getOrNull()?.isNotEmpty() == true )
     }
 
     @Test
@@ -84,12 +83,8 @@ class MovieRepositoryTest : BaseTest() {
 
         // when
         var exception: Throwable? = null
-        repository.get(lang, coproductions).onEach {
-            when (it) {
-                is GResult.Success -> { it.data }
-                is GResult.Error -> { exception = it.error }
-                is GResult.SuccessWithError -> { exception = it.error }
-            }
+        repository.getMovies(lang, coproductions).onEach {
+            exception = it.exceptionOrNull()
         }.catch {
             exception = it
         }.collect()
@@ -108,12 +103,8 @@ class MovieRepositoryTest : BaseTest() {
 
         // when
         var exception: Throwable? = null
-        repository.get(lang, coproductions).onEach {
-            when (it) {
-                is GResult.Success -> { it.data }
-                is GResult.Error -> { exception = it.error }
-                is GResult.SuccessWithError -> { exception = it.error }
-            }
+        repository.getMovies(lang, coproductions).onEach {
+            exception = it.exceptionOrNull()
         }.catch {
             exception = it
         }.collect()
@@ -133,12 +124,8 @@ class MovieRepositoryTest : BaseTest() {
 
         // when
         var exception: Throwable? = null
-        repository.get(lang, coproductions).onEach {
-            when (it) {
-                is GResult.Success -> { it.data }
-                is GResult.Error -> { exception = it.error }
-                is GResult.SuccessWithError -> { exception = it.error }
-            }
+        repository.getMovies(lang, coproductions).onEach {
+            exception = it.exceptionOrNull()
         }.catch {
             exception = it
         }.collect()
@@ -161,12 +148,8 @@ class MovieRepositoryTest : BaseTest() {
 
         // when
         var exception: Throwable? = null
-        repository.get(lang, coproductions).onEach {
-            when (it) {
-                is GResult.Success -> { it.data }
-                is GResult.Error -> { exception = it.error }
-                is GResult.SuccessWithError -> { exception = it.error }
-            }
+        repository.getMovies(lang, coproductions).onEach {
+            exception = it.exceptionOrNull()
         }.catch {
             exception = it
         }.collect()
@@ -190,12 +173,8 @@ class MovieRepositoryTest : BaseTest() {
 
         // when
         var exception: Throwable? = null
-        val result = repository.get(lang, coproductions, true).first()
-        when (result) {
-            is GResult.Success -> { result.data }
-            is GResult.Error -> { exception = result.error }
-            is GResult.SuccessWithError -> { exception = result.error }
-        }
+        val result = repository.getMovies(lang, coproductions, true).first()
+        exception = result.exceptionOrNull()
 
         // then
         assert( exception is LocalDataSourceException)
@@ -215,7 +194,7 @@ class MovieRepositoryTest : BaseTest() {
 
         // when
         val domainMovie = MovieMapper.localToData(DataMock.moviesLocal.first())
-        val result = repository.updateLike(domainMovie)
+        val result = repository.updateMovie(domainMovie)
 
         // then
         assert( result.isFailure )
@@ -231,7 +210,7 @@ class MovieRepositoryTest : BaseTest() {
         coEvery { dao.updateMovieLike(localMovie) } returns 1
 
         // when
-        val result = repository.updateLike(movie)
+        val result = repository.updateMovie(movie)
 
         // then
         assert( result.isSuccess )
