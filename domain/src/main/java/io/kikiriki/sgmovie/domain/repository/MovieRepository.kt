@@ -8,7 +8,7 @@ interface MovieRepository {
     fun getMovies(lang: String, coproductions: Boolean = false, forceRefresh: Boolean = false):
             Flow<Result<List<Movie>>>
 
-    fun getMovie(movieId: String) : Flow<Movie>
+    fun getMovie(movieId: String) : Flow<Result<Movie>>
 
     suspend fun updateMovie(movie: Movie) : Result<Boolean>
 
