@@ -42,8 +42,12 @@ class UpdateMovieLikeUseCaseTest : BaseTest() {
             tmdbId = "1234"
         )
 
+        val newLikeStatus = !movie.like
+        val newLikeCountStatus = movie.likeCount + if (newLikeStatus) +1 else -1
+        val movieInRepository = movie.copy(like = newLikeStatus, likeCount = newLikeCountStatus)
+
         // when
-        coEvery { movieRepository.updateLike(movie) } returns Result.success(true)
+        coEvery { movieRepository.updateMovie(movieInRepository) } returns Result.success(true)
         val result = updateMovieLikeUseCase(movie)
 
         // then
