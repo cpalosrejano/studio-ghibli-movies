@@ -50,6 +50,8 @@ This app is made with the following libraries:
 
 * **Retrofit + Moshi:** networking
 
+* **WorkerManager:** to execute scheduled works in background
+
 * **AndroidX lifecycle:** coroutines with lifecycle aware
 
 * **Firebase:** analytics, crashlytics, firestore
