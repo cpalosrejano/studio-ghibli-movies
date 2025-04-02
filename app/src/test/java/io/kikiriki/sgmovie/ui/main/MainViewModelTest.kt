@@ -6,7 +6,6 @@ import io.kikiriki.sgmovie.core.test.BaseTest
 import io.kikiriki.sgmovie.data.exception.LocalDataSourceException
 import io.kikiriki.sgmovie.data.exception.RemoteDataSourceException
 import io.kikiriki.sgmovie.domain.model.Movie
-import io.kikiriki.sgmovie.domain.model.base.GResult
 import io.kikiriki.sgmovie.domain.preferences.RemoteConfig
 import io.kikiriki.sgmovie.domain.usecase.GetMoviesUseCase
 import io.kikiriki.sgmovie.domain.usecase.UpdateMovieLikeUseCase
@@ -18,6 +17,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
+import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
 class MainViewModelTest : BaseTest() {
@@ -161,7 +161,7 @@ class MainViewModelTest : BaseTest() {
         val result = listOf<Movie>()
 
         // when
-        coEvery { getMoviesUseCase() } returns flowOf(GResult.Success(result))
+        coEvery { getMoviesUseCase() } returns flowOf(Result.success(result))
         mainViewModel.getMovies()
         delay(100)
 
@@ -213,7 +213,7 @@ class MainViewModelTest : BaseTest() {
         )
 
         // when
-        coEvery { getMoviesUseCase() } returns flowOf(GResult.Success(movies))
+        coEvery { getMoviesUseCase() } returns flowOf(Result.success(movies))
         mainViewModel.getMovies()
         delay(100)
 
@@ -251,7 +251,7 @@ class MainViewModelTest : BaseTest() {
         )
 
         // when
-        coEvery { updateMovieLikeUseCase(movie.copy(like = !movie.like)) } returns Result.failure(exception)
+        coEvery { updateMovieLikeUseCase(movie) } returns Result.failure(exception)
         mainViewModel.updateMovie(movie)
 
         // then
