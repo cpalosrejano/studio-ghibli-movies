@@ -11,11 +11,9 @@ import io.kikiriki.sgmovie.domain.model.Movie
 import io.kikiriki.sgmovie.domain.repository.MovieRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -69,11 +67,10 @@ class MovieRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun getMovie(movieId: String): Flow<Movie> {
+    override fun getMovie(movieId: String): Flow<Result<Movie>> {
         return local.getMovieById(movieId).map {
-                MovieMapper.localToData(it)
-            }.combine(firestore.getMovieLikesById(movieId)) { movie, likeCount ->
-                movie.copy(likeCount = likeCount)
+            val data = MovieMapper.localToData(it)
+            Result.success(data)
         }
     }
 

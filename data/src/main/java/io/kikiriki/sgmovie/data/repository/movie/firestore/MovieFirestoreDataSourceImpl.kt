@@ -3,9 +3,6 @@ package io.kikiriki.sgmovie.data.repository.movie.firestore
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
-import kotlinx.coroutines.channels.awaitClose
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
@@ -24,19 +21,6 @@ class MovieFirestoreDataSourceImpl @Inject constructor(
             doc.id to (doc.getLong(FIELD_LIKE_COUNT) ?: 0)
         }
         return likesMap
-    }
-
-    override fun getMovieLikesById(movieId: String): Flow<Long> = callbackFlow {
-        val docRef = firestore.collection(COLLECTION_MOVIES_LIKE).document(movieId)
-        val listener = docRef.addSnapshotListener { snapshot, error ->
-            if (error != null) {
-                close(error)
-                return@addSnapshotListener
-            }
-            val likeCount = snapshot?.getLong(FIELD_LIKE_COUNT) ?: 0
-            trySend(likeCount)
-        }
-        awaitClose { listener.remove() }
     }
 
     override fun updateLike(movieId: String, like: Boolean) {
