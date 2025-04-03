@@ -96,33 +96,49 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <LinearLayout
+                    <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/layout_contact"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:minHeight="48dp"
                         android:gravity="center_vertical"
                         android:orientation="vertical"
-                        android:paddingVertical="8dp">
+                        android:paddingHorizontal="16dp"
+                        android:paddingVertical="12dp">
+
+                        <ImageView
+                            android:id="@+id/contact_image"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            android:src="@drawable/ic_email"
+                            android:scaleType="center"
+                            android:contentDescription="@string/app_name" />
 
                         <TextView
-                            android:layout_width="match_parent"
+                            android:id="@+id/contact_title"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintStart_toEndOf="@id/contact_image"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            android:layout_marginStart="16dp"
                             android:gravity="center_vertical"
                             android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
-                            android:text="@string/settings_lbl_contact"
-                            android:paddingStart="16dp"
-                            android:paddingEnd="16dp"/>
+                            android:text="@string/settings_lbl_contact"/>
+
                         <TextView
-                            android:layout_width="match_parent"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            app:layout_constraintTop_toBottomOf="@id/contact_title"
+                            app:layout_constraintStart_toStartOf="@id/contact_title"
+                            app:layout_constraintEnd_toEndOf="parent"
                             android:gravity="center_vertical"
                             android:textAppearance="@style/TextAppearance.Material3.BodySmall"
-                            android:text="@string/settings_lbl_contact_body"
-                            android:paddingStart="16dp"
-                            android:paddingEnd="16dp"/>
+                            android:text="@string/settings_lbl_contact_body" />
 
-                    </LinearLayout>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <View
                         android:id="@+id/layout_contact_divider"
@@ -130,33 +146,49 @@
                         android:layout_width="match_parent"
                         android:layout_height="1dp"/>
 
-                    <LinearLayout
+                    <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/layout_paypal"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:minHeight="48dp"
                         android:gravity="center_vertical"
                         android:orientation="vertical"
-                        android:paddingVertical="8dp">
+                        android:paddingHorizontal="16dp"
+                        android:paddingVertical="12dp">
+
+                        <ImageView
+                            android:id="@+id/paypal_image"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            android:src="@drawable/ic_coffee"
+                            android:scaleType="center"
+                            android:contentDescription="@string/app_name" />
 
                         <TextView
-                            android:layout_width="match_parent"
+                            android:id="@+id/paypal_title"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintStart_toEndOf="@id/paypal_image"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            android:layout_marginStart="16dp"
                             android:gravity="center_vertical"
                             android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
-                            android:text="@string/settings_lbl_paypal"
-                            android:paddingStart="16dp"
-                            android:paddingEnd="16dp"/>
+                            android:text="@string/settings_lbl_paypal" />
+
                         <TextView
-                            android:layout_width="match_parent"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            app:layout_constraintTop_toBottomOf="@id/paypal_title"
+                            app:layout_constraintStart_toStartOf="@id/paypal_title"
+                            app:layout_constraintEnd_toEndOf="@id/paypal_title"
                             android:gravity="center_vertical"
                             android:textAppearance="@style/TextAppearance.Material3.BodySmall"
-                            android:text="@string/settings_lbl_paypal_body"
-                            android:paddingStart="16dp"
-                            android:paddingEnd="16dp"/>
+                            android:text="@string/settings_lbl_paypal_body" />
 
-                    </LinearLayout>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <View
                         android:id="@+id/layout_paypal_divider"
@@ -164,15 +196,44 @@
                         android:layout_width="match_parent"
                         android:layout_height="1dp"/>
 
-                    <TextView
-                        android:id="@+id/lbl_privacy_policy"
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/layout_privacy_policy"
                         android:layout_width="match_parent"
-                        android:layout_height="48dp"
+                        android:layout_height="wrap_content"
+                        android:minHeight="48dp"
                         android:gravity="center_vertical"
-                        android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
-                        android:text="@string/settings_lbl_privacy_policy"
-                        android:paddingStart="16dp"
-                        android:paddingEnd="16dp"/>
+                        android:orientation="vertical"
+                        android:paddingHorizontal="16dp"
+                        android:paddingVertical="8dp">
+
+                        <ImageView
+                            android:id="@+id/privacy_policy_image"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            android:src="@drawable/ic_policy"
+                            android:scaleType="center"
+                            android:contentDescription="@string/app_name" />
+
+                        <TextView
+                            android:id="@+id/privacy_policy_title"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintStart_toEndOf="@id/privacy_policy_image"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            android:gravity="center_vertical"
+                            android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+                            android:text="@string/settings_lbl_privacy_policy"
+                            android:paddingStart="16dp"
+                            android:paddingEnd="16dp"/>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
                 </LinearLayout>
 

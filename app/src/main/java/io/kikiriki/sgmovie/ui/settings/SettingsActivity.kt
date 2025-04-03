@@ -2,12 +2,12 @@ package io.kikiriki.sgmovie.ui.settings
 
 import android.content.ActivityNotFoundException
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.core.net.toUri
 import dagger.hilt.android.AndroidEntryPoint
 import io.kikiriki.sgmovie.R
 import io.kikiriki.sgmovie.databinding.ActivitySettingsBinding
@@ -53,7 +53,7 @@ class SettingsActivity : BaseActivity() {
     private fun setupView() {
         setSupportActionBar(viewBinding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        viewBinding.lblPrivacyPolicy.setOnClickListener {
+        viewBinding.layoutPrivacyPolicy.setOnClickListener {
             viewModel.onClickPrivacyPolicy()
             openWebBrowser(Constants.Legal.PRIVACY_POLICY_URL)
         }
@@ -77,7 +77,7 @@ class SettingsActivity : BaseActivity() {
     }
 
     private fun openWebBrowser(url: String) {
-        val privacyPolicyUrl = Uri.parse(url)
+        val privacyPolicyUrl = url.toUri()
         val intent = Intent(Intent.ACTION_VIEW, privacyPolicyUrl)
         try { startActivity(intent) } catch (_ : Exception) {}
     }
@@ -85,7 +85,7 @@ class SettingsActivity : BaseActivity() {
     private fun sendEmail() {
         val locale = Locale.getDefault().toLanguageTag()
         val intent = Intent(Intent.ACTION_SENDTO).apply {
-            data = Uri.parse("mailto:")
+            data = "mailto:".toUri()
             putExtra(Intent.EXTRA_EMAIL, arrayOf(Constants.Contact.EMAIL))
             putExtra(Intent.EXTRA_SUBJECT, getString(R.string.settings_lbl_translate_app_email_subject, locale))
             putExtra(Intent.EXTRA_TEXT, "")
