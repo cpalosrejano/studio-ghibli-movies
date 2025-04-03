@@ -43,6 +43,7 @@ class GetMoviesUseCaseTest : BaseTest() {
 
         val timestamp = System.currentTimeMillis()
         val lang = Locale.getDefault().toLanguageTag()
+        coEvery { remoteConfig.getApiCacheHour() } returns 48
         coEvery { preferenceStorage.getLanguage() } returns lang
         coEvery { preferenceStorage.getTimestampLastRequest() } returns timestamp
         coEvery { movieRepository.getMovies(lang, false) } returns flowOf(Result.success(movies))
@@ -106,6 +107,7 @@ class GetMoviesUseCaseTest : BaseTest() {
         var resultData: List<Movie>? = null
         val timestamp = System.currentTimeMillis()
         val lang = Locale.getDefault().toLanguageTag()
+        coEvery { remoteConfig.getApiCacheHour() } returns 48
         coEvery { preferenceStorage.getLanguage() } returns lang
         coEvery { preferenceStorage.getTimestampLastRequest() } returns timestamp
         coEvery { movieRepository.getMovies(lang, false) } returns flowOf(Result.success(movies))
