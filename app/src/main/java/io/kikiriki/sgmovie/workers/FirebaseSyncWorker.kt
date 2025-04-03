@@ -21,7 +21,12 @@ class FirebaseSyncWorker @AssistedInject constructor(
 ) : CoroutineWorker(context, workerParams) {
 
     override suspend fun doWork(): Result {
-        return try {
+        try {
+            
+            // avoid to do work if maintenance is enabled
+            if (remoteConfig.isMaintenanceEnabled()) {
+                return Result.success()
+            }
 
             // get likes from firebase and update in room
             repository.getAllMovieLikes().fold(
@@ -36,13 +41,14 @@ class FirebaseSyncWorker @AssistedInject constructor(
             // reschedule the work with refresh time from remote config
             scheduleNextWork(remoteConfig.getFirestoreRefreshSeconds())
 
-            Result.success()
+            return Result.success()
         } catch (e: Exception) {
-            Result.retry()
+            return Result.retry()
         }
     }
 
     private fun scheduleNextWork(seconds: Long) {
+        println("kprint: FirebaseSyncWorker.scheduleNextWork( every $seconds seconds ) ")
         val workRequest = OneTimeWorkRequestBuilder<FirebaseSyncWorker>()
             .setInitialDelay(seconds, TimeUnit.SECONDS)
             .addTag(WORKER_NAME)

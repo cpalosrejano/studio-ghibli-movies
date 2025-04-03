@@ -2,8 +2,8 @@ package io.kikiriki.sgmovie.domain.usecase
 
 import io.kikiriki.sgmovie.core.coroutines.di.IODispatcher
 import io.kikiriki.sgmovie.domain.model.Movie
-import io.kikiriki.sgmovie.domain.model.base.GResult
 import io.kikiriki.sgmovie.domain.preferences.PreferenceStorage
+import io.kikiriki.sgmovie.domain.preferences.RemoteConfig
 import io.kikiriki.sgmovie.domain.repository.MovieRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
@@ -15,10 +15,9 @@ import javax.inject.Inject
 class GetMoviesUseCase @Inject constructor(
     private val movieRepository: MovieRepository,
     private val preferenceStorage: PreferenceStorage,
+    private val remoteConfig: RemoteConfig,
     @IODispatcher private val dispatcher: CoroutineDispatcher
 ) {
-
-    private val cacheTime = TimeUnit.HOURS.toMillis(12)
 
     suspend operator fun invoke() : Flow<Result<List<Movie>>> = withContext(dispatcher) {
 
@@ -29,12 +28,15 @@ class GetMoviesUseCase @Inject constructor(
         // get current data
         val currentLanguage = Locale.getDefault().toLanguageTag()
         val currentTimeMillis = System.currentTimeMillis()
+        
+        val apiCacheHours = remoteConfig.getApiCacheHour()
+        val apiCacheMillis = TimeUnit.HOURS.toMillis(apiCacheHours)
 
         // check if we need to refresh data from api
         val shouldRefreshData =
             savedLanguage == null ||
             savedLanguage != currentLanguage ||
-            (currentTimeMillis - lastRequestTimestamp) > cacheTime
+            (currentTimeMillis - lastRequestTimestamp) > apiCacheMillis
 
         // update preferences if we need to refresh
         if (shouldRefreshData) {
