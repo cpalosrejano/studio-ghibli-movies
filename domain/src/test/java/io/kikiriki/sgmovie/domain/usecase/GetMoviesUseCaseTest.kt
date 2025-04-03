@@ -3,6 +3,7 @@ package io.kikiriki.sgmovie.domain.usecase
 import io.kikiriki.sgmovie.core.test.BaseTest
 import io.kikiriki.sgmovie.domain.model.Movie
 import io.kikiriki.sgmovie.domain.preferences.PreferenceStorage
+import io.kikiriki.sgmovie.domain.preferences.RemoteConfig
 import io.kikiriki.sgmovie.domain.repository.MovieRepository
 import io.mockk.coEvery
 import io.mockk.impl.annotations.RelaxedMockK
@@ -20,13 +21,15 @@ import java.util.Locale
 @ExperimentalCoroutinesApi
 class GetMoviesUseCaseTest : BaseTest() {
 
+    @RelaxedMockK private lateinit var remoteConfig: RemoteConfig
     @RelaxedMockK private lateinit var movieRepository: MovieRepository
     @RelaxedMockK private lateinit var preferenceStorage: PreferenceStorage
     private lateinit var getMoviesUseCase: GetMoviesUseCase
 
     override fun onStart() {
         super.onStart()
-        getMoviesUseCase = GetMoviesUseCase(movieRepository, preferenceStorage, Dispatchers.IO)
+        getMoviesUseCase = GetMoviesUseCase(movieRepository, preferenceStorage,
+            remoteConfig, Dispatchers.IO)
     }
 
     @Test

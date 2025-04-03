@@ -50,21 +50,9 @@ class MainActivity : BaseActivity() {
         viewModel.getAppConfig()
     }
 
-    override fun onStart() {
-        super.onStart()
-
-        val workRequest = OneTimeWorkRequestBuilder<FirebaseSyncWorker>()
-            .addTag(FirebaseSyncWorker.WORKER_NAME)
-            .build()
-
-        WorkManager.getInstance(this)
-            .enqueueUniqueWork(FirebaseSyncWorker.WORKER_NAME, ExistingWorkPolicy.KEEP, workRequest)
-    }
-
     override fun onPause() {
         super.onPause()
-        WorkManager.getInstance(this)
-            .cancelAllWorkByTag(FirebaseSyncWorker.WORKER_NAME)
+        stopSyncLikes()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -134,6 +122,7 @@ class MainActivity : BaseActivity() {
             // list items
             viewBinding.recyclerView.isVisible = (uiState.error == null && !uiState.isLoading)
             sortMovies(uiState.items)
+            startSyncLikes()
 
             // error view
             viewBinding.errorView.root.isVisible = uiState.error != null
@@ -250,6 +239,20 @@ class MainActivity : BaseActivity() {
         startActivity(
             Intent(this, SettingsActivity::class.java)
         )
+    }
+
+    private fun startSyncLikes() {
+        val workRequest = OneTimeWorkRequestBuilder<FirebaseSyncWorker>()
+            .addTag(FirebaseSyncWorker.WORKER_NAME)
+            .build()
+
+        WorkManager.getInstance(this)
+            .enqueueUniqueWork(FirebaseSyncWorker.WORKER_NAME, ExistingWorkPolicy.KEEP, workRequest)
+    }
+
+    private fun stopSyncLikes() {
+        WorkManager.getInstance(this)
+            .cancelAllWorkByTag(FirebaseSyncWorker.WORKER_NAME)
     }
 
 }
