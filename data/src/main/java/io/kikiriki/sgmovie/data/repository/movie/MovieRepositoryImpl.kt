@@ -16,23 +16,30 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
+import javax.inject.Named
 
 class MovieRepositoryImpl @Inject constructor(
+    @Named("vercel_datasource") private val remoteVercel: MovieRemoteDataSource,
+    @Named("render_datasource") private val remoteRender: MovieRemoteDataSource,
     private val firestore: MovieFirestoreDataSource,
-    private val remote: MovieRemoteDataSource,
     private val local: MovieLocalDataSource,
     private val mock: MovieMockDataSource,
     @IODispatcher private val dispatcher: CoroutineDispatcher
 ) : MovieRepository {
 
-    override fun getMovies(lang: String, coproductions: Boolean, forceRefresh: Boolean): Flow<Result<List<Movie>>> = flow {
+    override fun getMovies(
+        lang: String,
+        forceRefresh: Boolean,
+        coproductions: Boolean,
+        api: MovieRepository.API,
+    ): Flow<Result<List<Movie>>> = flow {
 
         // check if we need to fetch movies from API
         val localMovies = local.get()
         if (localMovies.isEmpty() || forceRefresh) {
 
             // fetch movies from api and store in room
-            fetchMovies(lang, coproductions).fold(
+            fetchMovies(lang, coproductions, api).fold(
                 onSuccess = { movies: List<Movie> ->
                     emit(Result.success(movies))
                 },
@@ -90,10 +97,18 @@ class MovieRepositoryImpl @Inject constructor(
 
     /**
      * Get movies from API and save them into local database
+     * We can use Render or Vercel API to fetch movies
      */
-    private suspend fun fetchMovies(lang: String, coproductions: Boolean) : Result<List<Movie>> {
+    private suspend fun fetchMovies(lang: String, coproductions: Boolean, api: MovieRepository.API) : Result<List<Movie>> {
         try {
-            val movies = MovieMapper.remoteToData(remote.get(lang, coproductions))
+            val movies = when(api) {
+                MovieRepository.API.VERCEL -> {
+                    MovieMapper.remoteToData(remoteVercel.get(lang, coproductions))
+                }
+                MovieRepository.API.RENDER -> {
+                    MovieMapper.remoteToData(remoteRender.get(lang, coproductions))
+                }
+            }
             local.insert(MovieMapper.dataToLocal(movies))
             return Result.success(movies)
         } catch (e: Exception) {
