@@ -48,7 +48,6 @@ class FirebaseSyncWorker @AssistedInject constructor(
     }
 
     private fun scheduleNextWork(seconds: Long) {
-        println("kprint: FirebaseSyncWorker.scheduleNextWork( every $seconds seconds ) ")
         val workRequest = OneTimeWorkRequestBuilder<FirebaseSyncWorker>()
             .setInitialDelay(seconds, TimeUnit.SECONDS)
             .addTag(WORKER_NAME)
