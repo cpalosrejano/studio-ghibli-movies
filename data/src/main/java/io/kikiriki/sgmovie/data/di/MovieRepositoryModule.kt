@@ -11,8 +11,8 @@ import io.kikiriki.sgmovie.data.repository.movie.local.MovieLocalDataSource
 import io.kikiriki.sgmovie.data.repository.movie.local.MovieLocalDataSourceImpl
 import io.kikiriki.sgmovie.data.repository.movie.mock.MovieMockDataSource
 import io.kikiriki.sgmovie.data.repository.movie.mock.MovieMockDataSourceImpl
-import io.kikiriki.sgmovie.data.repository.movie.remoteVercel.MovieRemoteDataSource
-import io.kikiriki.sgmovie.data.repository.movie.remoteVercel.MovieRemoteDataSourceImpl
+import io.kikiriki.sgmovie.data.repository.movie.remoteVercel.MovieRemoteVercelDataSource
+import io.kikiriki.sgmovie.data.repository.movie.remoteVercel.MovieRemoteVercelDataSourceImpl
 import io.kikiriki.sgmovie.domain.repository.MovieRepository
 
 @Module
@@ -23,7 +23,7 @@ abstract class MovieRepositoryModule {
     abstract fun bindMovieFirestoreDataSource(implementation: MovieFirestoreDataSourceImpl) : MovieFirestoreDataSource
 
     @Binds
-    abstract fun bindMovieRemoteDataSource(implementation: MovieRemoteDataSourceImpl) : MovieRemoteDataSource
+    abstract fun bindMovieRemoteVercelDataSource(implementation: MovieRemoteVercelDataSourceImpl) : MovieRemoteVercelDataSource
 
     @Binds
     abstract fun bindMovieLocalDataSource(implementation: MovieLocalDataSourceImpl) : MovieLocalDataSource
