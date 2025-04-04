@@ -1,4 +1,4 @@
-package io.kikiriki.sgmovie.data.repository.movie.remote.vercel
+package io.kikiriki.sgmovie.data.repository.movie.remote.render
 
 import io.kikiriki.sgmovie.core.coroutines.di.IODispatcher
 import io.kikiriki.sgmovie.data.exception.RemoteDataSourceException
@@ -12,8 +12,8 @@ import java.net.UnknownHostException
 import javax.inject.Inject
 import javax.inject.Named
 
-class MovieRemoteDataSourceVercelImpl @Inject constructor(
-    @Named("vercel_endpoints") private val movieEndpoints: MovieEndpoints,
+class MovieRemoteDataSourceRenderImpl @Inject constructor(
+    @Named("render_endpoints") private val movieEndpoints: MovieEndpoints,
     @IODispatcher private val dispatcher: CoroutineDispatcher
 )  : MovieRemoteDataSource {
 
