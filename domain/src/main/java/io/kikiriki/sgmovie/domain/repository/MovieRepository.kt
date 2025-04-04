@@ -5,8 +5,12 @@ import kotlinx.coroutines.flow.Flow
 
 interface MovieRepository {
 
-    fun getMovies(lang: String, coproductions: Boolean = false, forceRefresh: Boolean = false):
-            Flow<Result<List<Movie>>>
+    fun getMovies(
+        lang: String,
+        forceRefresh: Boolean = false,
+        coproductions: Boolean = false,
+        api: API,
+    ): Flow<Result<List<Movie>>>
 
     fun getMovie(movieId: String) : Flow<Result<Movie>>
 
@@ -15,4 +19,9 @@ interface MovieRepository {
     suspend fun getAllMovieLikes() : Result<Map<String, Long>>
 
     suspend fun updateAllMovieLikes(likes: Map<String, Long>) : Result<Boolean>
+
+    enum class API {
+        VERCEL,
+        RENDER
+    }
 }
