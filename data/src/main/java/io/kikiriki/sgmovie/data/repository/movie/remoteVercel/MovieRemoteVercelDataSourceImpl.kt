@@ -9,10 +9,10 @@ import retrofit2.HttpException
 import java.net.UnknownHostException
 import javax.inject.Inject
 
-class MovieRemoteDataSourceImpl @Inject constructor(
+class MovieRemoteVercelDataSourceImpl @Inject constructor(
     private val movieEndpoints: MovieEndpoints,
     @IODispatcher private val dispatcher: CoroutineDispatcher
-)  : MovieRemoteDataSource {
+)  : MovieRemoteVercelDataSource {
 
     override suspend fun get(lang: String, coproductions: Boolean): List<MovieRemote> = withContext(dispatcher) {
         try {
