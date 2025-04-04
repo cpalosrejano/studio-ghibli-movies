@@ -7,7 +7,8 @@ interface RemoteConfig {
         const val ENABLE_PAYPAL = "enable_paypal"
         const val ENABLE_MAINTENANCE = "enable_maintenance"
         const val ENABLE_CONTACT = "enable_contact"
-        const val MIN_APP_VERSION = "config_min_app_version"
+        const val MIN_APP_VERSION = "min_app_version"
+        const val USE_RENDER_API = "use_render_api"
     }
 
     suspend fun getFirestoreRefreshSeconds(): Long
@@ -16,4 +17,5 @@ interface RemoteConfig {
     suspend fun isMaintenanceEnabled(): Boolean
     suspend fun getMinAppVersion() : Long
     suspend fun isContactEnabled() : Boolean
+    suspend fun shouldUseRenderApi() : Boolean
 }
