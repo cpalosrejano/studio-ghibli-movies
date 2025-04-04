@@ -9,7 +9,7 @@ import io.kikiriki.sgmovie.data.repository.movie.local.MovieDao
 import io.kikiriki.sgmovie.data.repository.movie.local.MovieLocalDataSourceImpl
 import io.kikiriki.sgmovie.data.repository.movie.mock.MovieMockDataSourceImpl
 import io.kikiriki.sgmovie.data.repository.movie.remoteVercel.MovieEndpoints
-import io.kikiriki.sgmovie.data.repository.movie.remoteVercel.MovieRemoteDataSourceImpl
+import io.kikiriki.sgmovie.data.repository.movie.remoteVercel.MovieRemoteVercelDataSourceImpl
 import io.kikiriki.sgmovie.data.repository.movie.util.DataMock
 import io.kikiriki.sgmovie.domain.model.Movie
 import io.kikiriki.sgmovie.domain.model.base.BaseCode
@@ -50,7 +50,7 @@ class MovieRepositoryTest : BaseTest() {
         // build repository
         repository = MovieRepositoryImpl(
             firestore = firestoreDataSource,
-            remote = MovieRemoteDataSourceImpl(endpoints, Dispatchers.Unconfined),
+            remote = MovieRemoteVercelDataSourceImpl(endpoints, Dispatchers.Unconfined),
             local = MovieLocalDataSourceImpl(dao, Dispatchers.Unconfined),
             mock = MovieMockDataSourceImpl(Dispatchers.Unconfined),
             dispatcher = Dispatchers.Unconfined
