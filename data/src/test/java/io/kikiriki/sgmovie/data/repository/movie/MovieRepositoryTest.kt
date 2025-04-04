@@ -50,7 +50,8 @@ class MovieRepositoryTest : BaseTest() {
         // build repository
         repository = MovieRepositoryImpl(
             firestore = firestoreDataSource,
-            remote = MovieRemoteDataSourceVercelImpl(endpoints, Dispatchers.Unconfined),
+            remoteVercel = MovieRemoteDataSourceVercelImpl(endpoints, Dispatchers.Unconfined),
+            remoteRender = MovieRemoteDataSourceVercelImpl(endpoints, Dispatchers.Unconfined),
             local = MovieLocalDataSourceImpl(dao, Dispatchers.Unconfined),
             mock = MovieMockDataSourceImpl(Dispatchers.Unconfined),
             dispatcher = Dispatchers.Unconfined
@@ -65,7 +66,7 @@ class MovieRepositoryTest : BaseTest() {
 
         // when
         var result: Result<List<Movie>>? = null
-        repository.getMovies(lang, coproductions, true).onEach {
+        repository.getMovies(lang, coproductions, true, api = MovieRepository.API.VERCEL).onEach {
             result = it
         }.collect()
 
@@ -83,7 +84,7 @@ class MovieRepositoryTest : BaseTest() {
 
         // when
         var exception: Throwable? = null
-        repository.getMovies(lang, coproductions).onEach {
+        repository.getMovies(lang, coproductions, api = MovieRepository.API.VERCEL).onEach {
             exception = it.exceptionOrNull()
         }.catch {
             exception = it
@@ -103,7 +104,7 @@ class MovieRepositoryTest : BaseTest() {
 
         // when
         var exception: Throwable? = null
-        repository.getMovies(lang, coproductions).onEach {
+        repository.getMovies(lang, coproductions, api = MovieRepository.API.VERCEL).onEach {
             exception = it.exceptionOrNull()
         }.catch {
             exception = it
@@ -124,7 +125,7 @@ class MovieRepositoryTest : BaseTest() {
 
         // when
         var exception: Throwable? = null
-        repository.getMovies(lang, coproductions).onEach {
+        repository.getMovies(lang, coproductions, api = MovieRepository.API.VERCEL).onEach {
             exception = it.exceptionOrNull()
         }.catch {
             exception = it
@@ -148,7 +149,7 @@ class MovieRepositoryTest : BaseTest() {
 
         // when
         var exception: Throwable? = null
-        repository.getMovies(lang, coproductions).onEach {
+        repository.getMovies(lang, coproductions, api = MovieRepository.API.VERCEL).onEach {
             exception = it.exceptionOrNull()
         }.catch {
             exception = it
@@ -173,7 +174,7 @@ class MovieRepositoryTest : BaseTest() {
 
         // when
         var exception: Throwable? = null
-        val result = repository.getMovies(lang, coproductions, true).first()
+        val result = repository.getMovies(lang, coproductions = coproductions, forceRefresh = true, api = MovieRepository.API.VERCEL).first()
         exception = result.exceptionOrNull()
 
         // then
