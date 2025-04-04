@@ -8,7 +8,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import io.kikiriki.sgmovie.data.repository.movie.remote.MovieEndpoints
+import io.kikiriki.sgmovie.data.repository.movie.remoteVercel.MovieEndpoints
 import io.kikiriki.sgmovie.data.repository.tmdb.remote.TMDBEndpoints
 import io.kikiriki.sgmovie.data.utils.Constants
 import okhttp3.OkHttpClient
