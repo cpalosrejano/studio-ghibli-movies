@@ -28,15 +28,16 @@ class GetMoviesUseCase @Inject constructor(
         // get current data
         val currentLanguage = Locale.getDefault().toLanguageTag()
         val currentTimeMillis = System.currentTimeMillis()
-        
-        val apiCacheHours = remoteConfig.getApiCacheHour()
-        val apiCacheMillis = TimeUnit.HOURS.toMillis(apiCacheHours)
 
-        // check if we need to refresh data from api
+        // get data from remote config
+        val apiCacheMillis = TimeUnit.HOURS.toMillis(remoteConfig.getApiCacheHour())
+        val isMaintenanceEnabled = remoteConfig.isMaintenanceEnabled()
+
+        // check if we need to fetch / refresh data from api
         val shouldRefreshData =
-            savedLanguage == null ||
-            savedLanguage != currentLanguage ||
-            (currentTimeMillis - lastRequestTimestamp) > apiCacheMillis
+            !isMaintenanceEnabled &&
+                (savedLanguage == null || savedLanguage != currentLanguage || // lang has changed or null
+                (currentTimeMillis - lastRequestTimestamp) > apiCacheMillis) // or cache time has passed
 
         // update preferences if we need to refresh
         if (shouldRefreshData) {
