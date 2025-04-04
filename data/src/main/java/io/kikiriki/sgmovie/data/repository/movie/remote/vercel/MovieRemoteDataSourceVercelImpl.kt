@@ -1,18 +1,20 @@
-package io.kikiriki.sgmovie.data.repository.movie.remoteVercel
+package io.kikiriki.sgmovie.data.repository.movie.remote.vercel
 
 import io.kikiriki.sgmovie.core.coroutines.di.IODispatcher
 import io.kikiriki.sgmovie.data.exception.RemoteDataSourceException
 import io.kikiriki.sgmovie.data.model.movie.MovieRemote
+import io.kikiriki.sgmovie.data.repository.movie.remote.MovieEndpoints
+import io.kikiriki.sgmovie.data.repository.movie.remote.MovieRemoteDataSource
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import java.net.UnknownHostException
 import javax.inject.Inject
 
-class MovieRemoteVercelDataSourceImpl @Inject constructor(
+class MovieRemoteDataSourceVercelImpl @Inject constructor(
     private val movieEndpoints: MovieEndpoints,
     @IODispatcher private val dispatcher: CoroutineDispatcher
-)  : MovieRemoteVercelDataSource {
+)  : MovieRemoteDataSource {
 
     override suspend fun get(lang: String, coproductions: Boolean): List<MovieRemote> = withContext(dispatcher) {
         try {

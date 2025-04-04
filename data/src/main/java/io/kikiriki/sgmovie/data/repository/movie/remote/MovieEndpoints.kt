@@ -1,4 +1,4 @@
-package io.kikiriki.sgmovie.data.repository.movie.remoteVercel
+package io.kikiriki.sgmovie.data.repository.movie.remote
 
 import io.kikiriki.sgmovie.data.model.movie.MovieRemote
 import retrofit2.http.GET
