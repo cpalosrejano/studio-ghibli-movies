@@ -8,6 +8,7 @@ import io.kikiriki.sgmovie.domain.preferences.RemoteConfig.Companion.ENABLE_MAIN
 import io.kikiriki.sgmovie.domain.preferences.RemoteConfig.Companion.ENABLE_PAYPAL
 import io.kikiriki.sgmovie.domain.preferences.RemoteConfig.Companion.MIN_APP_VERSION
 import io.kikiriki.sgmovie.domain.preferences.RemoteConfig.Companion.MOVIE_LIKES_REFRESH_IN_SECONDS
+import io.kikiriki.sgmovie.domain.preferences.RemoteConfig.Companion.USE_RENDER_API
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
@@ -38,5 +39,9 @@ class RemoteConfigImpl @Inject constructor(
     override suspend fun isContactEnabled(): Boolean {
         remoteConfig.fetchAndActivate().await()
         return remoteConfig.getBoolean(ENABLE_CONTACT)
+    }
+    override suspend fun shouldUseRenderApi(): Boolean {
+        remoteConfig.fetchAndActivate().await()
+        return remoteConfig.getBoolean(USE_RENDER_API)
     }
 }
