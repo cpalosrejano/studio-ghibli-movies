@@ -3,6 +3,7 @@ package io.kikiriki.sgmovie.data.repository.movie.mock
 import io.kikiriki.sgmovie.core.coroutines.di.IODispatcher
 import io.kikiriki.sgmovie.data.exception.LocalDataSourceException
 import io.kikiriki.sgmovie.domain.model.Movie
+import io.kikiriki.sgmovie.domain.repository.MovieRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -95,7 +96,7 @@ class MovieMockDataSourceImpl @Inject constructor(
         )
     )
 
-    override fun getMovies(lang: String, coproductions: Boolean, forceRefresh: Boolean):
+    override fun getMovies(lang: String, forceRefresh: Boolean, coproductions: Boolean, api: MovieRepository.API):
             Flow<Result<List<Movie>>> = flowOf(Result.success(movies))
 
     override fun getMovie(movieId: String): Flow<Result<Movie>> {
