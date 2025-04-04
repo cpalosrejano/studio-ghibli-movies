@@ -2,7 +2,6 @@ package io.kikiriki.sgmovie.ui.main
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -29,6 +28,7 @@ import io.kikiriki.sgmovie.utils.CoilUtils
 import io.kikiriki.sgmovie.utils.extension.getVersionCode
 import io.kikiriki.sgmovie.workers.FirebaseSyncWorker
 import javax.inject.Inject
+import androidx.core.net.toUri
 
 @AndroidEntryPoint
 class MainActivity : BaseActivity() {
@@ -105,11 +105,10 @@ class MainActivity : BaseActivity() {
             // first check if it a min version available
             if (appConfig.minAppVersion > getVersionCode()) {
                 showUpdateDialog()
-                return@observe
+                return@observe // avoid allow user to continue using the app
             } else if (appConfig.isMaintenance) {
                 // then, check if it is maintenance
                 showMaintenanceDialog()
-                return@observe
             }
 
             viewModel.getMovies()
@@ -156,9 +155,9 @@ class MainActivity : BaseActivity() {
             .setCancelable(false)
             .setPositiveButton(R.string.dialog_update_btn_update) { _, _ ->
                 try {
-                    startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$packageName")))
+                    startActivity(Intent(Intent.ACTION_VIEW, "market://details?id=$packageName".toUri()))
                 } catch (e: Exception) {
-                    startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=$packageName")))
+                    startActivity(Intent(Intent.ACTION_VIEW, "https://play.google.com/store/apps/details?id=$packageName".toUri()))
                 }
                 finish()
             }
@@ -169,7 +168,9 @@ class MainActivity : BaseActivity() {
         MaterialAlertDialogBuilder(this, R.style.MaterialAlertDialogStyle)
             .setTitle(R.string.dialog_maintenance_title)
             .setMessage(R.string.dialog_maintenance_message)
-            .setCancelable(false)
+            .setPositiveButton(android.R.string.ok) {
+                dialog, _ -> dialog.dismiss()
+            }
             .show()
     }
 
