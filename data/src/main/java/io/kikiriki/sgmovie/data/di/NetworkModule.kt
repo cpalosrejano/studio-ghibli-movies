@@ -16,6 +16,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.concurrent.TimeUnit
+import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
@@ -38,10 +39,21 @@ object NetworkModule {
     }
 
     @Provides
-    fun provideMovieEndpoints(okHttp: OkHttpClient) : MovieEndpoints {
+    @Named("vercel_endpoints")
+    fun provideMovieEndpointsVercel(okHttp: OkHttpClient) : MovieEndpoints {
         return Retrofit.Builder()
             .addConverterFactory(MoshiConverterFactory.create().asLenient())
-            .baseUrl(Constants.Repository.URL_API_MOVIE)
+            .baseUrl(Constants.Repository.URL_API_MOVIE_VERCEL)
+            .client(okHttp).build()
+            .create(MovieEndpoints::class.java)
+    }
+
+    @Provides
+    @Named("render_endpoints")
+    fun provideMovieEndpointsRender(okHttp: OkHttpClient) : MovieEndpoints {
+        return Retrofit.Builder()
+            .addConverterFactory(MoshiConverterFactory.create().asLenient())
+            .baseUrl(Constants.Repository.URL_API_MOVIE_RENDER)
             .client(okHttp).build()
             .create(MovieEndpoints::class.java)
     }
