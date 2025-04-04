@@ -11,7 +11,7 @@ import io.kikiriki.sgmovie.data.repository.movie.local.MovieLocalDataSource
 import io.kikiriki.sgmovie.data.repository.movie.local.MovieLocalDataSourceImpl
 import io.kikiriki.sgmovie.data.repository.movie.mock.MovieMockDataSource
 import io.kikiriki.sgmovie.data.repository.movie.mock.MovieMockDataSourceImpl
-import io.kikiriki.sgmovie.data.repository.movie.remote.MovieRemoteDataSource
+import io.kikiriki.sgmovie.data.repository.movie.remoteVercel.MovieRemoteDataSource
 import io.kikiriki.sgmovie.domain.repository.MovieRepository
 
 /**
