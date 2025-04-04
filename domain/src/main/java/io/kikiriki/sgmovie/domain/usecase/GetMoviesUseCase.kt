@@ -44,9 +44,16 @@ class GetMoviesUseCase @Inject constructor(
             preferenceStorage.setTimestampLastRequest(currentTimeMillis)
         }
 
+        // which source should use to get movies
+        val apiSource = when (remoteConfig.shouldUseRenderApi()) {
+            true -> { MovieRepository.API.RENDER }
+            else -> { MovieRepository.API.VERCEL }
+        }
+
         return@withContext movieRepository.getMovies(
             forceRefresh = shouldRefreshData,
-            lang = currentLanguage
+            lang = currentLanguage,
+            api = apiSource
         )
     }
 
