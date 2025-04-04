@@ -8,8 +8,8 @@ import io.kikiriki.sgmovie.data.repository.movie.firestore.MovieFirestoreDataSou
 import io.kikiriki.sgmovie.data.repository.movie.local.MovieDao
 import io.kikiriki.sgmovie.data.repository.movie.local.MovieLocalDataSourceImpl
 import io.kikiriki.sgmovie.data.repository.movie.mock.MovieMockDataSourceImpl
-import io.kikiriki.sgmovie.data.repository.movie.remote.MovieEndpoints
-import io.kikiriki.sgmovie.data.repository.movie.remote.MovieRemoteDataSourceImpl
+import io.kikiriki.sgmovie.data.repository.movie.remoteVercel.MovieEndpoints
+import io.kikiriki.sgmovie.data.repository.movie.remoteVercel.MovieRemoteDataSourceImpl
 import io.kikiriki.sgmovie.data.repository.movie.util.DataMock
 import io.kikiriki.sgmovie.domain.model.Movie
 import io.kikiriki.sgmovie.domain.model.base.BaseCode

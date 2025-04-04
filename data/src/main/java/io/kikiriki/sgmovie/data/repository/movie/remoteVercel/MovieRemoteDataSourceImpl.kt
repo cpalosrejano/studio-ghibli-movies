@@ -1,4 +1,4 @@
-package io.kikiriki.sgmovie.data.repository.movie.remote
+package io.kikiriki.sgmovie.data.repository.movie.remoteVercel
 
 import io.kikiriki.sgmovie.core.coroutines.di.IODispatcher
 import io.kikiriki.sgmovie.data.exception.RemoteDataSourceException
