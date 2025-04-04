@@ -46,7 +46,7 @@ class GetMoviesUseCaseTest : BaseTest() {
         coEvery { remoteConfig.getApiCacheHour() } returns 48
         coEvery { preferenceStorage.getLanguage() } returns lang
         coEvery { preferenceStorage.getTimestampLastRequest() } returns timestamp
-        coEvery { movieRepository.getMovies(lang, false) } returns flowOf(Result.success(movies))
+        coEvery { movieRepository.getMovies(lang, false, api = MovieRepository.API.VERCEL) } returns flowOf(Result.success(movies))
         getMoviesUseCase().onEach { result ->
             result.fold(
                 onSuccess = { resultData = it },
@@ -110,7 +110,7 @@ class GetMoviesUseCaseTest : BaseTest() {
         coEvery { remoteConfig.getApiCacheHour() } returns 48
         coEvery { preferenceStorage.getLanguage() } returns lang
         coEvery { preferenceStorage.getTimestampLastRequest() } returns timestamp
-        coEvery { movieRepository.getMovies(lang, false) } returns flowOf(Result.success(movies))
+        coEvery { movieRepository.getMovies(lang, false, api = MovieRepository.API.VERCEL) } returns flowOf(Result.success(movies))
         getMoviesUseCase().onEach { result ->
             result.fold(
                 onSuccess = { resultData = it },
