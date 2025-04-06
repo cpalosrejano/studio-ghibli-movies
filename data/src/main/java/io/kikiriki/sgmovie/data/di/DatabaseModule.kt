@@ -24,7 +24,8 @@ object DatabaseModule {
                 .databaseBuilder(context, AppDatabase::class.java, "sgmovie-database")
                 .addMigrations(
                     DBMigrations.MIGRATION_1_2,
-                    DBMigrations.MIGRATION_2_3
+                    DBMigrations.MIGRATION_2_3,
+                    DBMigrations.MIGRATION_3_4
                 )
                 .build()
         }
