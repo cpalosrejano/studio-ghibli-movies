@@ -16,7 +16,7 @@ android {
         applicationId = "io.kikiriki.sgmovie"
         minSdk = 23
         targetSdk = 35
-        versionCode = 20250404
+        versionCode = 20250406
         versionName = "1.2.1"
 
         /* we will use the custom test runner which support hilt */
