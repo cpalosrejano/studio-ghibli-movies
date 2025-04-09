@@ -17,31 +17,41 @@ class RemoteConfigImpl @Inject constructor(
 ) : RemoteConfig {
 
     override suspend fun getFirestoreRefreshSeconds(): Long {
-        remoteConfig.fetchAndActivate().await()
+        fetchAndActivateConfigs()
         return remoteConfig.getLong(MOVIE_LIKES_REFRESH_IN_SECONDS)
     }
     override suspend fun getApiCacheHour(): Long {
-        remoteConfig.fetchAndActivate().await()
+        fetchAndActivateConfigs()
         return remoteConfig.getLong(API_CACHE_HOURS)
     }
     override suspend fun isPaypalEnabled(): Boolean {
-        remoteConfig.fetchAndActivate().await()
+        fetchAndActivateConfigs()
         return remoteConfig.getBoolean(ENABLE_PAYPAL)
     }
     override suspend fun isMaintenanceEnabled(): Boolean {
-        remoteConfig.fetchAndActivate().await()
+        fetchAndActivateConfigs()
         return remoteConfig.getBoolean(ENABLE_MAINTENANCE)
     }
     override suspend fun getMinAppVersion(): Long {
-        remoteConfig.fetchAndActivate().await()
+        fetchAndActivateConfigs()
         return remoteConfig.getLong(MIN_APP_VERSION)
     }
     override suspend fun isContactEnabled(): Boolean {
-        remoteConfig.fetchAndActivate().await()
+        fetchAndActivateConfigs()
         return remoteConfig.getBoolean(ENABLE_CONTACT)
     }
     override suspend fun shouldUseRenderApi(): Boolean {
-        remoteConfig.fetchAndActivate().await()
+        fetchAndActivateConfigs()
         return remoteConfig.getBoolean(USE_RENDER_API)
+    }
+
+    private suspend fun fetchAndActivateConfigs() : Boolean {
+        return try {
+            remoteConfig.fetchAndActivate().await()
+            true
+        } catch (e: Exception) {
+            e.printStackTrace()
+            false
+        }
     }
 }
