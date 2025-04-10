@@ -36,12 +36,12 @@ object RemoteConfigModule {
 
     private fun getDefaultValues() : Map<String, Any> {
         return mapOf(
-            RemoteConfig.MOVIE_LIKES_REFRESH_IN_SECONDS to 120,  // 2 minutes
-            RemoteConfig.API_CACHE_HOURS to 48,             // 12 hours
+            RemoteConfig.MOVIE_LIKES_REFRESH_IN_SECONDS to 180,  // 3 minutes
+            RemoteConfig.API_CACHE_HOURS to 120,            // 120 hours (5 days)
             RemoteConfig.ENABLE_PAYPAL to true,             // enable paypal by default
             RemoteConfig.ENABLE_MAINTENANCE to false,       // disable maintenance by default
             RemoteConfig.ENABLE_CONTACT to false,           // disable contact by default
-            RemoteConfig.MIN_APP_VERSION to Long.MAX_VALUE, // disable min app version by default
+            RemoteConfig.MIN_APP_VERSION to Long.MIN_VALUE, // disable min app version by default
             RemoteConfig.USE_RENDER_API to false,           // use vercel api by disabling render
         )
     }
